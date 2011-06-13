@@ -182,7 +182,7 @@
   }
   _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
   
-  [self executeFetch];
+  [self executeFetch:YES];
 }
 
 #pragma mark -
@@ -196,7 +196,7 @@
   substitutionVariables = [NSDictionary dictionary];
   sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
   
-  return [[AlbumDataCenter defaultCenter] fetchAlbumsWithTemplate:fetchTemplate andSortDescriptors:sortDescriptors andSubstitutionVariables:substitutionVariables andLimit:_fetchLimit andOffset:_offset];
+  return nil;
 }
 
 - (void)dealloc {

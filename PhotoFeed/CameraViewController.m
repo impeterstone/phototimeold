@@ -8,7 +8,6 @@
 
 #import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
-#import "ComposeViewController.h"
 #import "CameraImageHelper.h"
 
 @implementation CameraViewController (CameraDelegateMethods)
@@ -46,10 +45,10 @@
   [picker release];
   
   // Push compose controller
-  ComposeViewController *cvc = [[ComposeViewController alloc] init];
-  cvc.snappedImage = _snappedImage; // set the snapped image ref
-  [self.navigationController pushViewController:cvc animated:YES];
-  [cvc release];
+//  ComposeViewController *cvc = [[ComposeViewController alloc] init];
+//  cvc.snappedImage = _snappedImage; // set the snapped image ref
+//  [self.navigationController pushViewController:cvc animated:YES];
+//  [cvc release];
 }
 
 @end

@@ -1,6 +1,6 @@
 //
 //  CardCoreDataTableViewController.h
-//  PhotoFeed
+//  Orca
 //
 //  Created by Peter Shih on 2/16/11.
 //  Copyright 2011 LinkedIn. All rights reserved.
@@ -15,13 +15,8 @@
   NSManagedObjectContext *_context;
   NSFetchedResultsController * _fetchedResultsController;
   NSString * _sectionNameKeyPathForFetchedResultsController;
-  NSUInteger _limit;
-  NSUInteger _offset;
-  NSUInteger _fetchLimit;
-  NSUInteger _lastFetchedCount;
   NSTimer *_searchTimer;
   NSPredicate *_searchPredicate;
-  BOOL _changesPending;
 }
 
 @property (nonatomic, assign) NSManagedObjectContext *context;
@@ -34,7 +29,7 @@
 - (void)delayedFilterContentWithTimer:(NSTimer *)timer;
 
 - (void)resetFetchedResultsController;
-- (void)executeFetch;
+- (void)executeFetch:(BOOL)updateFRC;
 - (NSFetchRequest *)getFetchRequest;
 - (void)coreDataDidReset;
 

@@ -27,8 +27,6 @@
     _photoDataCenter.delegate = self;
     _sectionNameKeyPathForFetchedResultsController = [@"position" retain];
     _headerCellCache = [[NSMutableDictionary alloc] init];
-    _limit = 0;
-    _fetchLimit = _limit;
     self.hidesBottomBarWhenPushed = YES;
   }
   return self;
@@ -68,10 +66,7 @@
   
 //  [self setupLoadMoreView];
   
-  [self executeFetch];
-  
-  _album.lastViewed = [NSDate date];
-  [PSCoreDataStack saveInContext:[_album managedObjectContext]];
+  [self executeFetch:YES];
   
   // Get new from server
   [self reloadCardController];
@@ -90,8 +85,6 @@
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {
-  //  NSLog(@"DC finish with response: %@", response);
-  //  [self executeFetch];
   [self dataSourceDidLoad];
 }
 
@@ -216,13 +209,20 @@
   }
   _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
   
-  [self executeFetch];
+  [self executeFetch:YES];
 }
 #pragma mark -
 #pragma mark FetchRequest
 - (NSFetchRequest *)getFetchRequest {
   BOOL ascending = ([self.sectionNameKeyPathForFetchedResultsController isEqualToString:@"position"]) ? YES : NO;
-  return [_photoDataCenter fetchPhotosForAlbumId:_album.id withLimit:_limit andOffset:_offset sortWithKey:self.sectionNameKeyPathForFetchedResultsController ascending:ascending];
+
+  NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:self.sectionNameKeyPathForFetchedResultsController ascending:ascending] autorelease];
+  NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptor, nil] autorelease];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getPhotosForAlbum" substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
+  [fetchRequest setSortDescriptors:sortDescriptors];
+  [fetchRequest setFetchBatchSize:10];
+  //  [fetchRequest setFetchLimit:limit];
+  return fetchRequest;
 }
 
 - (void)dealloc {

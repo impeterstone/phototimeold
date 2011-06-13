@@ -22,7 +22,6 @@
   if (self) {
     _commentDataCenter = [[CommentDataCenter alloc] init];
     _commentDataCenter.delegate = self;
-    _limit = 999;
     _isHeaderExpanded = NO;
     self.hidesBottomBarWhenPushed = YES;
   }
@@ -62,7 +61,7 @@
   
   [self setupFooterView];
   
-  [self executeFetch];
+  [self executeFetch:YES];
   
   // Get new from server
   // Comments don't need to fetch from server immediately, only after a new post
@@ -153,8 +152,6 @@
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {
-  //  NSLog(@"DC finish with response: %@", response);
-  //  [self executeFetch];
   [self dataSourceDidLoad];
 }
 

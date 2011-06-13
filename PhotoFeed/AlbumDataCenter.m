@@ -262,16 +262,6 @@
   } 
 }
 
-#pragma mark -
-#pragma mark Fetch Request
-- (NSFetchRequest *)fetchAlbumsWithTemplate:(NSString *)fetchTemplate andSortDescriptors:(NSArray *)sortDescriptors andSubstitutionVariables:(NSDictionary *)substitutionVariables andLimit:(NSUInteger)limit andOffset:(NSUInteger)offset {
-  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:fetchTemplate substitutionVariables:substitutionVariables];
-  [fetchRequest setSortDescriptors:sortDescriptors];
-  [fetchRequest setFetchBatchSize:10];
-  [fetchRequest setFetchLimit:limit];
-  return fetchRequest;
-}
-
 - (void)dealloc {
   [super dealloc];
 }

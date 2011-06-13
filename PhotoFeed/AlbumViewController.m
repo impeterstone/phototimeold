@@ -21,8 +21,6 @@
   self = [super init];
   if (self) {
     _albumType = AlbumTypeMe;
-    _limit = 50;
-    _fetchLimit = _limit;
   }
   return self;
 }
@@ -121,6 +119,8 @@
 //  [self setupPullRefresh];
   
   [self setupLoadMoreView];
+  
+  [self executeFetch:YES];
 }
 
 - (void)reloadCardController {
@@ -182,6 +182,8 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  album.lastViewed = [NSDate date];
+  [PSCoreDataStack saveInContext:[[PSCoreDataStack newManagedObjectContext] autorelease]];
   
   PhotoViewController *svc = [[PhotoViewController alloc] init];
   svc.album = album;
@@ -253,7 +255,7 @@
       }
       _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
       
-      [self executeFetch];
+      [self executeFetch:YES];
     });
   });
 }
@@ -311,7 +313,10 @@
       break;
   }
   
-  return [[AlbumDataCenter defaultCenter] fetchAlbumsWithTemplate:fetchTemplate andSortDescriptors:sortDescriptors andSubstitutionVariables:substitutionVariables andLimit:_fetchLimit andOffset:_offset];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:fetchTemplate substitutionVariables:substitutionVariables];
+  [fetchRequest setSortDescriptors:sortDescriptors];
+  [fetchRequest setFetchBatchSize:10];
+  return fetchRequest;
 }
 
 - (void)logout {

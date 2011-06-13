@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		250B3188133EBDE70011EEDD /* CardModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B3187133EBDE70011EEDD /* CardModalViewController.m */; };
-		250B318B133EBF0C0011EEDD /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B318A133EBF0B0011EEDD /* ComposeViewController.m */; };
 		250B31AE133EC4220011EEDD /* PSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B31AD133EC4220011EEDD /* PSView.m */; };
 		250B31DF13411DBD0011EEDD /* textview_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 250B31DD13411DBD0011EEDD /* textview_bg.png */; };
 		250B31E013411DBD0011EEDD /* textview_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 250B31DE13411DBD0011EEDD /* textview_bg@2x.png */; };
@@ -424,8 +423,6 @@
 /* Begin PBXFileReference section */
 		250B3186133EBDE70011EEDD /* CardModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardModalViewController.h; sourceTree = "<group>"; };
 		250B3187133EBDE70011EEDD /* CardModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardModalViewController.m; sourceTree = "<group>"; };
-		250B3189133EBF0B0011EEDD /* ComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeViewController.h; sourceTree = "<group>"; };
-		250B318A133EBF0B0011EEDD /* ComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeViewController.m; sourceTree = "<group>"; };
 		250B31AC133EC4220011EEDD /* PSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSView.h; sourceTree = "<group>"; };
 		250B31AD133EC4220011EEDD /* PSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSView.m; sourceTree = "<group>"; };
 		250B31AF133EC86A0011EEDD /* ComposeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeDelegate.h; sourceTree = "<group>"; };
@@ -897,8 +894,6 @@
 				250B3187133EBDE70011EEDD /* CardModalViewController.m */,
 				25EFD4191343F596000108B8 /* CardModalTableViewController.h */,
 				25EFD41A1343F59F000108B8 /* CardModalTableViewController.m */,
-				250B3189133EBF0B0011EEDD /* ComposeViewController.h */,
-				250B318A133EBF0B0011EEDD /* ComposeViewController.m */,
 				2544AC781377CCC10072C86C /* CameraViewController.h */,
 				2544AC791377CCC10072C86C /* CameraViewController.m */,
 			);
@@ -1916,7 +1911,6 @@
 				25FB8BEF133AA7E800C130A8 /* PSCell.m in Sources */,
 				25FB8BF0133AA7E800C130A8 /* PSImageCell.m in Sources */,
 				250B3188133EBDE70011EEDD /* CardModalViewController.m in Sources */,
-				250B318B133EBF0C0011EEDD /* ComposeViewController.m in Sources */,
 				250B31AE133EC4220011EEDD /* PSView.m in Sources */,
 				250B31E3134131FA0011EEDD /* UIScreen+ConvertRect.m in Sources */,
 				250B31EB134162A90011EEDD /* PSTextView.m in Sources */,

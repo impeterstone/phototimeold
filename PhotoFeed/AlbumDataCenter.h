@@ -28,11 +28,4 @@
 - (void)serializeAlbumsFinishedWithRequest:(ASIHTTPRequest *)request;
 - (void)serializeAlbumsWithArray:(NSArray *)array inContext:(NSManagedObjectContext *)context;
 
-
-
-/**
- Fetch Requests
- */
-- (NSFetchRequest *)fetchAlbumsWithTemplate:(NSString *)fetchTemplate andSortDescriptors:(NSArray *)sortDescriptors andSubstitutionVariables:(NSDictionary *)substitutionVariables andLimit:(NSUInteger)limit andOffset:(NSUInteger)offset;
-
 @end
