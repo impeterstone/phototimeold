@@ -70,100 +70,86 @@
 
 #pragma mark Core Data Serialization
 - (void)serializePhotosWithArray:(NSArray *)array forAlbumId:(NSString *)albumId inContext:(NSManagedObjectContext *)context {
-  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"id" ascending:YES];
+  NSString *uniqueKey = @"id";
+  NSString *entityName = @"Photo";
   
-  NSArray *sortedEntities = [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-  
-  NSMutableArray *sortedEntityIds = [NSMutableArray array];
-  for (NSDictionary *entityDict in sortedEntities) {
-    [sortedEntityIds addObject:[entityDict valueForKey:@"id"]];
-  }
-  
-  NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-  [fetchRequest setEntity:[NSEntityDescription entityForName:@"Photo" inManagedObjectContext:context]];
-  [fetchRequest setPredicate:[NSPredicate predicateWithFormat: @"(id IN %@)", sortedEntityIds]];
-  [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"id" ascending:YES] autorelease]]];
+  // Find all existing Pods
+  NSArray *newUniqueKeyArray = [array valueForKey:uniqueKey];
+  NSFetchRequest *existingFetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+  [existingFetchRequest setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
+  [existingFetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueKey, newUniqueKeyArray]];
+  [existingFetchRequest setPropertiesToFetch:[NSArray arrayWithObject:uniqueKey]];
   
   NSError *error = nil;
-  NSArray *foundEntities = [context executeFetchRequest:fetchRequest error:&error];
+  NSArray *foundEntities = [context executeFetchRequest:existingFetchRequest error:&error];
   
-  Photo *photo = nil;
-  int i = 0;
-  for (NSDictionary *entityDict in sortedEntities) {
-    if ([foundEntities count] > 0 && i < [foundEntities count] && [[entityDict valueForKey:@"id"] isEqualToString:[[foundEntities objectAtIndex:i] id]]) {
-      photo = [foundEntities objectAtIndex:i];
-      //      DLog(@"found duplicated photo with id: %@", [[foundEntities objectAtIndex:i] id]);
-      [photo updatePhotoWithDictionary:entityDict forAlbumId:albumId];
-      i++;
+  // Create a dictionary of existing pods
+  NSMutableDictionary *existingEntities = [NSMutableDictionary dictionary];
+  for (id foundEntity in foundEntities) {
+    [existingEntities setObject:foundEntity forKey:[foundEntity valueForKey:uniqueKey]];
+  }
+  
+  Photo *existingEntity = nil;
+  for (NSDictionary *newEntity in array) {
+    NSString *key = [newEntity valueForKey:uniqueKey];
+    existingEntity = [existingEntities objectForKey:key];
+    if (existingEntity) {
+      // update
+      [existingEntity updatePhotoWithDictionary:newEntity forAlbumId:albumId];
     } else {
-      // Insert
-      photo = [Photo addPhotoWithDictionary:entityDict forAlbumId:albumId inContext:context];
+      // insert
+      existingEntity = [Photo addPhotoWithDictionary:newEntity forAlbumId:albumId inContext:context];
     }
     
     // Serialize Comments
-    if ([entityDict objectForKey:@"comments"]) {
-      [self serializeCommentsWithDictionary:[entityDict objectForKey:@"comments"] forPhoto:photo inContext:context];
+    if ([newEntity objectForKey:@"comments"]) {
+      [self serializeCommentsWithDictionary:[newEntity objectForKey:@"comments"] forPhoto:existingEntity inContext:context];
     }
     
     // Serialize Tags
-    if ([entityDict objectForKey:@"tags"]) {
-      [self serializeTagsWithDictionary:[entityDict objectForKey:@"tags"] forPhoto:photo inContext:context];
+    if ([newEntity objectForKey:@"tags"]) {
+      [self serializeTagsWithDictionary:[newEntity objectForKey:@"tags"] forPhoto:existingEntity inContext:context];
     }
   }
 }
 
 - (void)serializeCommentsWithDictionary:(NSDictionary *)dictionary forPhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context {
-  NSMutableSet *comments = [NSMutableSet set];
-  
   // Check for dupes
   // photo may have existing comments, compare those with the new ones
   // comments don't ever get updated, no need to update, just insert new
+  NSSet *existingCommentIds = [photo.comments valueForKey:@"id"];
+  NSArray *newComments = [dictionary valueForKey:@"data"];
   
-  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"id" ascending:YES];
-  NSArray *existingComments = [photo.comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-  
-  NSArray *newComments = [[dictionary valueForKey:@"data"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-
-  int i = 0;
-  for (NSDictionary *commentDict in newComments) {
-    if ([existingComments count] > 0 && i < [existingComments count] && [[commentDict valueForKey:@"id"] isEqualToString:[[existingComments objectAtIndex:i] id]]) {
-      // existing comment found
-      VLog(@"found existing comment with id: %@", [[existingComments objectAtIndex:i] id]);
-      i++;
-    } else {
-      [comments addObject:[Comment addCommentWithDictionary:commentDict inContext:context]];
+  // Add only new comments to a set
+  NSMutableSet *comments = [NSMutableSet set];
+  for (NSDictionary *newComment in newComments) {
+    if (![existingCommentIds containsObject:[newComment objectForKey:@"id"]]) {
+      [comments addObject:[Comment addCommentWithDictionary:newComment inContext:context]];
     }
   }
-  
+
   if ([comments count] > 0) {
-    [photo addComments:comments];
+    [photo performSelector:@selector(addComments:) withObject:comments];
   }
 }
 
 - (void)serializeTagsWithDictionary:(NSDictionary *)dictionary forPhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context {
-  NSMutableSet *tags = [NSMutableSet set];
-  
   // Check for dupes
-  // photo may have existing comments, compare those with the new ones
-  // comments don't ever get updated, no need to update, just insert new
+  // photo may have existing tags, compare those with the new ones
+  // tags don't ever get updated, no need to update, just insert new
+  NSSet *existingTagIds = [photo.tags valueForKey:@"fromId"];
+  NSArray *newTags = [dictionary valueForKey:@"data"];
   
-  NSArray *existingTags = [photo.tags sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fromId" ascending:YES]]];
-  
-  NSArray *newTags = [[dictionary valueForKey:@"data"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"id" ascending:YES]]];
-  
-  int i = 0;
-  for (NSDictionary *tagDict in newTags) {
-    if ([existingTags count] > 0 && i < [existingTags count] && [[tagDict valueForKey:@"id"] isEqualToString:[[existingTags objectAtIndex:i] fromId]]) {
-      // existing comment found
-      VLog(@"found existing tag with id: %@", [[existingTags objectAtIndex:i] fromId]);
-      i++;
-    } else {
-      [tags addObject:[Tag addTagWithDictionary:tagDict inContext:context]];
+  // Add only new tags to a set
+  NSMutableSet *tags = [NSMutableSet set];
+  for (NSDictionary *newTag in newTags) {
+    if (![existingTagIds containsObject:[newTag objectForKey:@"id"]]) {
+      [tags addObject:[Tag addTagWithDictionary:newTag inContext:context]];
     }
   }
   
   if ([tags count] > 0) {
-    [photo addTags:tags];
+    [photo performSelector:@selector(addTags:) withObject:tags];
   }
 }
 

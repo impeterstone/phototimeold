@@ -145,6 +145,9 @@
 
 #pragma mark Core Data Serialization
 - (void)serializeAlbumsWithArray:(NSArray *)array inContext:(NSManagedObjectContext *)context {
+  NSString *uniqueKey = @"aid";
+  NSString *entityName = @"Album";
+  
   // Special multiquery treatment
   NSArray *albumArray = nil;
   NSArray *coverArray = nil;
@@ -160,80 +163,60 @@
     }
   }
   
-  if ([albumArray count] != [coverArray count]) {
-    NSLog(@"albums: %d, covers: %d", [albumArray count], [coverArray count]);
+  // Number of albums in this array
+  NSInteger resultCount = [albumArray count];
+
+  // Create a dictionary of all new covers
+  NSMutableDictionary *covers = [NSMutableDictionary dictionary];
+  for (NSDictionary *cover in coverArray) {
+    [covers setObject:[cover objectForKey:@"src_big"] forKey:[cover objectForKey:uniqueKey]];
   }
   
-  NSUInteger resultCount = [albumArray count];
-  
-  NSArray *sortedEntities = [albumArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"aid" ascending:YES]]];
-  NSArray *sortedCovers = [coverArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"aid" ascending:YES]]];
-  
-  NSMutableArray *sortedEntityIds = [NSMutableArray array];
-  for (NSDictionary *entityDict in sortedEntities) {
-    [sortedEntityIds addObject:[entityDict valueForKey:@"aid"]];
-  }
-  
-  NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-  [fetchRequest setEntity:[NSEntityDescription entityForName:@"Album" inManagedObjectContext:context]];
-  [fetchRequest setPredicate:[NSPredicate predicateWithFormat: @"(aid IN %@)", sortedEntityIds]];
-  [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"aid" ascending:YES]]];
-  
+  // Find all existing Entities
+  NSArray *newUniqueKeyArray = [array valueForKey:uniqueKey];
+  NSFetchRequest *existingFetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+  [existingFetchRequest setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
+  [existingFetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueKey, newUniqueKeyArray]];
+  [existingFetchRequest setPropertiesToFetch:[NSArray arrayWithObject:uniqueKey]];
   
   NSError *error = nil;
-  NSArray *foundEntities = [context executeFetchRequest:fetchRequest error:&error];
+  NSArray *foundEntities = [context executeFetchRequest:existingFetchRequest error:&error];
+  
+  // Create a dictionary of existing entities
+  NSMutableDictionary *existingEntities = [NSMutableDictionary dictionary];
+  for (id foundEntity in foundEntities) {
+    [existingEntities setObject:foundEntity forKey:[foundEntity valueForKey:uniqueKey]];
+  }
   
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  NSUInteger count = 0, LOOP_LIMIT = 1000;
-  
   int i = 0;
-  int k = 0;
-  int c = 0;
-  static NSString *cover = nil;
-  static NSString *aid = nil;
-  for (NSDictionary *entityDict in sortedEntities) {
-    aid = [entityDict valueForKey:@"aid"];
-    
-    // Cover Picture
-    if (c == [sortedCovers count]) {
-      // We ran out of covers
-      cover = nil;
-    }
-    else if ([[entityDict valueForKey:@"aid"] isEqualToString:[[sortedCovers objectAtIndex:c] valueForKey:@"aid"]]) {
-      cover = [[sortedCovers objectAtIndex:c] valueForKey:@"src_big"];
-      c++; // cover incrementer
+  Album *existingEntity = nil;
+  for (NSDictionary *newEntity in albumArray) {
+    NSString *key = [newEntity objectForKey:uniqueKey];
+    NSString *coverSrcBig = [covers objectForKey:key];
+    existingEntity = [existingEntities objectForKey:key];
+    if (existingEntity) {
+      // update
+      [existingEntity updateAlbumWithDictionary:newEntity andCover:coverSrcBig];
     } else {
-      cover = nil;
+      // insert
+      [Album addAlbumWithDictionary:newEntity andCover:coverSrcBig inContext:context];
     }
+    i++;
     
-    if ([foundEntities count] > 0 && i < [foundEntities count] && [aid isEqualToString:[[foundEntities objectAtIndex:i] aid]]) {
-      //      DLog(@"found duplicated album with id: %@", [[foundEntities objectAtIndex:i] id]);
-      [[foundEntities objectAtIndex:i] updateAlbumWithDictionary:entityDict andCover:cover];
-      i++;
-    } else {
-      // Insert
-      [Album addAlbumWithDictionary:entityDict andCover:cover inContext:context];
-    }
-    
-    // Batch import performance
-    count++;
-    if (count == LOOP_LIMIT) {
+    if (i % 100 == 0) {
       [PSCoreDataStack saveInContext:context];
       [PSCoreDataStack resetInContext:context];
-      [pool drain];
       
+      [pool drain];
       pool = [[NSAutoreleasePool alloc] init];
-      count = 0;
-    }
-    
-    k++;
-    if (k % 100 == 0) {
-      NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)k / (CGFloat)resultCount)];
+      
+      NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)i / (CGFloat)resultCount)];
       [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObject:progress forKey:@"progress"]];
     }
   }
   
-  if (count != 0) {
+  if (i % 100 != 0) {
     [PSCoreDataStack saveInContext:context];
     [PSCoreDataStack resetInContext:context];
   }
