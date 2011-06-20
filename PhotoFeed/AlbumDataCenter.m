@@ -11,7 +11,13 @@
 #import "Album.h"
 #import "Album+Serialize.h"
 
+static dispatch_queue_t _coreDataSerializationQueue = nil;
+
 @implementation AlbumDataCenter
+
++ (void)initialize {
+  _coreDataSerializationQueue = dispatch_queue_create("com.sevenminutelabs.albumCoreDataSerializationQueue", NULL);
+}
 
 + (AlbumDataCenter *)defaultCenter {
   static AlbumDataCenter *defaultCenter = nil;
@@ -129,18 +135,6 @@
   
   // Release context
   [context release];
-  
-  [self performSelectorOnMainThread:@selector(serializeAlbumsFinishedWithRequest:) withObject:request waitUntilDone:NO];
-}
-
-- (void)serializeAlbumsFinishedWithRequest:(ASIHTTPRequest *)request {
-  _pendingRequestsToParse--;
-  
-  // Inform Delegate if all responses are parsed
-  if (_pendingRequestsToParse == 0 && _delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-    [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:request withObject:nil];
-    [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
-  }
 }
 
 #pragma mark Core Data Serialization
@@ -227,15 +221,20 @@
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
-  // Process the batched results in a BG thread
-#ifdef USE_JESSA_FIXTURES
-  NSString *path = [[NSBundle mainBundle] pathForResource:@"jessa" ofType:@"json"];
-  NSData *tmpData = [NSData dataWithContentsOfFile:path];
-#else
-  NSInvocationOperation *parseOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(serializeAlbumsWithRequest:) object:request];
-  [[PSParserStack sharedParser] addOperation:parseOp];
-  [parseOp release];
-#endif
+  // Process the batched results using GCD  
+  dispatch_async(_coreDataSerializationQueue, ^{
+    [self serializeAlbumsWithRequest:request];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      // Inform Delegate if all responses are parsed
+      _pendingRequestsToParse--;
+      
+      // Inform Delegate if all responses are parsed
+      if (_pendingRequestsToParse == 0 && _delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:request withObject:nil];
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
+      }
+    });
+  });
 }
 
 - (void)dataCenterRequestFailed:(ASIHTTPRequest *)request {

@@ -11,9 +11,15 @@
 #import "UIImage+ScalingAndCropping.h"
 #import "NSString+URLEncoding+PS.h"
 
+static dispatch_queue_t _urlCacheImageViewQueue = nil;
+
 @implementation PSURLCacheImageView
 
 @synthesize urlPath = _urlPath;
+
++ (void)initialize {
+  _urlCacheImageViewQueue = dispatch_queue_create("com.sevenminutelabs.urlCacheImageViewQueue", NULL);
+}
 
 - (id)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
@@ -25,22 +31,19 @@
 
 //- (void)setUrlPath:(NSString *)urlPath {
 //  [_urlPath autorelease];
-//  _urlPath = [[urlPath encodedURLString] copy];
+//  _urlPath = [urlPath copy];
 //}
 
 - (void)loadImageAndDownload:(BOOL)download {
   if (_urlPath) {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-      UIImage *image = [[PSImageCache sharedCache] imageForURLPath:_urlPath];
+    NSString *urlPath = [[_urlPath copy] autorelease];
+    dispatch_async(_urlCacheImageViewQueue, ^{
+      UIImage *image = [[PSImageCache sharedCache] imageForURLPath:urlPath shouldDownload:download withDelegate:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
         if (image) { 
           self.image = image;
         } else {
           self.image = _placeholderImage;
-          if (download) {
-            // Download the image data from the source URL
-            [[PSImageCache sharedCache] downloadImageForURLPath:_urlPath];
-          }
         }
       });
     });
@@ -63,6 +66,23 @@
         dispatch_async(dispatch_get_main_queue(), ^{
           if (image && ![image isEqual:self.image]) {
             self.image = image;
+          }
+        });
+      });
+    }
+  }
+}
+
+#pragma mark - PSImageCacheDelegate
+- (void)imageCacheDidLoad:(NSData *)imageData forURLPath:(NSString *)urlPath {
+  if ([urlPath isEqualToString:_urlPath]) {
+    if (imageData) {
+      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *image = [UIImage imageWithData:imageData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (image && ![image isEqual:self.image]) {
+            [self setImage:image];
+            //            self.image = image;
           }
         });
       });

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PSImageCacheDelegate.h"
 #import "PSObject.h"
 
 @class ASIHTTPRequest;
@@ -26,13 +27,13 @@
 
 // Image Cache
 - (void)cacheImage:(NSData *)imageData forURLPath:(NSString *)urlPath;
-- (UIImage *)imageForURLPath:(NSString *)urlPath;
+- (UIImage *)imageForURLPath:(NSString *)urlPath shouldDownload:(BOOL)shouldDownload withDelegate:(id)delegate;
 - (BOOL)hasImageForURLPath:(NSString *)urlPath;
 
 // Remote Request
-- (void)downloadImageForURLPath:(NSString *)urlPath;
-- (void)downloadImageRequestFinished:(ASIHTTPRequest *)request;
-- (void)downloadImageRequestFailed:(ASIHTTPRequest *)request;
+- (void)downloadImageForURLPath:(NSString *)urlPath withDelegate:(id)delegate;
+- (void)downloadImageRequestFinished:(ASIHTTPRequest *)request withDelegate:(id)delegate;
+- (void)downloadImageRequestFailed:(ASIHTTPRequest *)request withDelegate:(id)delegate;
 
 // Helpers
 + (NSString *)documentDirectory;

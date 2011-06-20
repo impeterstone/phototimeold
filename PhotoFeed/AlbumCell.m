@@ -7,7 +7,6 @@
 //
 
 #import "AlbumCell.h"
-#import "PSCoreDataImageCache.h"
 #import "UIImage+ScalingAndCropping.h"
 
 #define ALBUM_CELL_HEIGHT 120.0

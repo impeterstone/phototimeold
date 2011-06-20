@@ -95,7 +95,7 @@
     
     if (_urlPathArray) {
       for (NSString *urlPath in _urlPathArray) {
-        UIImage *image = [[PSImageCache sharedCache] imageForURLPath:urlPath];
+        UIImage *image = [[PSImageCache sharedCache] imageForURLPath:urlPath shouldDownload:YES withDelegate:nil];
         if (image) {
           [_images setObject:image forKey:urlPath];
           [self prepareImageArray];

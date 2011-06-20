@@ -96,7 +96,12 @@
 }
 
 - (void)executeFetch:(BOOL)updateFRC {
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+  static dispatch_queue_t coreDataFetchQueue = nil;
+  if (!coreDataFetchQueue) {
+    coreDataFetchQueue = dispatch_queue_create("com.sevenminutelabs.coreDataFetchQueue", NULL);
+  }
+  
+  dispatch_async(coreDataFetchQueue, ^{
     NSError *error = nil;
     NSFetchRequest *backgroundFetch = [[self getFetchRequest] copy];
     

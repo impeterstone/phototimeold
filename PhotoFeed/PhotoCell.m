@@ -7,7 +7,6 @@
 //
 
 #import "PhotoCell.h"
-#import "PSCoreDataImageCache.h"
 #import "UIImage+ScalingAndCropping.h"
 #import "Comment.h"
 

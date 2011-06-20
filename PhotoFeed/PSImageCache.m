@@ -69,18 +69,21 @@
 // Cache Image Data
 - (void)cacheImage:(NSData *)imageData forURLPath:(NSString *)urlPath {
   if (imageData) {
-    // First put it in the NSCache buffer
-    [_buffer setObject:[UIImage imageWithData:imageData] forKey:[urlPath encodedURLParameterString]];
-    
-    // Also write it to file
-    [imageData writeToFile:[_cachePath stringByAppendingPathComponent:[urlPath encodedURLParameterString]] atomically:YES];
+    UIImage *image = [UIImage imageWithData:imageData];
+    if (image) {
+      // First put it in the NSCache buffer
+      [_buffer setObject:[UIImage imageWithData:imageData] forKey:[urlPath encodedURLParameterString]];
+      
+      // Also write it to file
+      [imageData writeToFile:[_cachePath stringByAppendingPathComponent:[urlPath encodedURLParameterString]] atomically:YES];
+    }
     
     VLog(@"PSImageCache CACHE: %@", urlPath);
   }
 }
 
 // Read Cached Image
-- (UIImage *)imageForURLPath:(NSString *)urlPath {
+- (UIImage *)imageForURLPath:(NSString *)urlPath shouldDownload:(BOOL)shouldDownload withDelegate:(id)delegate {
   // First check NSCache buffer
   //  NSData *imageData = [_buffer objectForKey:[urlPath encodedURLParameterString]];
   UIImage *image = [_buffer objectForKey:[urlPath encodedURLParameterString]];
@@ -101,6 +104,10 @@
       return image;
     } else {
       VLog(@"PSImageCache DISK MISS: %@", urlPath);
+      if (shouldDownload) {
+        // Download the image data from the source URL
+        [self downloadImageForURLPath:urlPath withDelegate:delegate];
+      }
       return nil;
     }
   }
@@ -117,7 +124,7 @@
 }
 
 #pragma mark Remote Image Load Request
-- (void)downloadImageForURLPath:(NSString *)urlPath {
+- (void)downloadImageForURLPath:(NSString *)urlPath withDelegate:(id)delegate {
   // Check to make sure urlPath is not in a pendingRequest already
   if ([_pendingRequests objectForKey:urlPath]) return;
   
@@ -127,12 +134,12 @@
   
   // Request Completion Block
   [request setCompletionBlock:^{
-    [self downloadImageRequestFinished:request];
+    [self downloadImageRequestFinished:request withDelegate:delegate];
     // Remove request from pendingRequests
     [_pendingRequests removeObjectForKey:[[request originalURL] absoluteString]];
   }];
   [request setFailedBlock:^{
-    [self downloadImageRequestFailed:request];
+    [self downloadImageRequestFailed:request withDelegate:delegate];
     
     // Remove request from pendingRequests
     [_pendingRequests removeObjectForKey:[[request originalURL] absoluteString]];
@@ -143,11 +150,16 @@
   [request startAsynchronous];
 }
 
-- (void)downloadImageRequestFinished:(ASIHTTPRequest *)request {
+- (void)downloadImageRequestFinished:(ASIHTTPRequest *)request withDelegate:(id)delegate {
   NSString *urlPath = [[request originalURL] absoluteString];
   
   if ([request responseData]) {
     [self cacheImage:[request responseData] forURLPath:urlPath];
+    // Notify delegate
+//    if (delegate && [delegate respondsToSelector:@selector(imageCacheDidLoad:forURLPath:)]) {
+//      [delegate performSelector:@selector(imageCacheDidLoad:forURLPath:) withObject:[request responseData] withObject:urlPath];
+//    }
+    
     // fire notification
     [[NSNotificationCenter defaultCenter] postNotificationName:kPSImageCacheDidCacheImage object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[request responseData], @"imageData", urlPath, @"urlPath", nil]];
   } else {
@@ -155,7 +167,7 @@
   }
 }
 
-- (void)downloadImageRequestFailed:(ASIHTTPRequest *)request {
+- (void)downloadImageRequestFailed:(ASIHTTPRequest *)request withDelegate:(id)delegate {
   // something bad happened
 }
 

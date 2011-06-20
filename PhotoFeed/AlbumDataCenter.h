@@ -25,7 +25,6 @@
  Serialize server response into Album entities
  */
 - (void)serializeAlbumsWithRequest:(ASIHTTPRequest *)request;
-- (void)serializeAlbumsFinishedWithRequest:(ASIHTTPRequest *)request;
 - (void)serializeAlbumsWithArray:(NSArray *)array inContext:(NSManagedObjectContext *)context;
 
 @end

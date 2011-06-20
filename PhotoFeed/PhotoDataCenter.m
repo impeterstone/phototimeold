@@ -14,7 +14,13 @@
 #import "Tag.h"
 #import "Tag+Serialize.h"
 
+static dispatch_queue_t _coreDataSerializationQueue = nil;
+
 @implementation PhotoDataCenter
+
++ (void)initialize {
+  _coreDataSerializationQueue = dispatch_queue_create("com.sevenminutelabs.photoCoreDataSerializationQueue", NULL);
+}
 
 - (id)init {
   self = [super init];
@@ -57,15 +63,6 @@
   // Save to Core Data
   [PSCoreDataStack saveInContext:context];
   [context release];
- 
-  [self performSelectorOnMainThread:@selector(serializePhotosFinishedWithRequest:) withObject:request waitUntilDone:NO];
-}
-
-- (void)serializePhotosFinishedWithRequest:(ASIHTTPRequest *)request {
-  // Inform Delegate
-  if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-    [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:request withObject:nil];
-  }
 }
 
 #pragma mark Core Data Serialization
@@ -156,9 +153,16 @@
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
-  NSInvocationOperation *parseOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(serializePhotosWithRequest:) object:request];
-  [[PSParserStack sharedParser] addOperation:parseOp];
-  [parseOp release];
+  // Process the batched results using GCD
+  dispatch_async(_coreDataSerializationQueue, ^{
+    [self serializePhotosWithRequest:request];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      // Inform Delegate if all responses are parsed
+      if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:request withObject:nil];
+      }
+    });
+  });
 }
 
 - (void)dataCenterRequestFailed:(ASIHTTPRequest *)request {

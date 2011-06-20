@@ -23,7 +23,6 @@
  Serialize server response into Photo entities
  */
 - (void)serializePhotosWithRequest:(ASIHTTPRequest *)request;
-- (void)serializePhotosFinishedWithRequest:(ASIHTTPRequest *)request;
 - (void)serializePhotosWithArray:(NSArray *)array forAlbumId:(NSString *)albumId inContext:(NSManagedObjectContext *)context;
 
 /**
