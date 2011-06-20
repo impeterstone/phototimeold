@@ -82,7 +82,6 @@
   [_searchBar addSubview:searchBackground];
   [_searchBar addSubview:searchBarTextField];
   
-  [_headerView addSubview:_searchBar];
 }
 
 - (void)reloadCardController {

@@ -130,6 +130,7 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       if (updateFRC) {
+        NSPredicate *originalPredicate = [[[self.fetchedResultsController.fetchRequest predicate] copy] autorelease];
         NSError *frcError = nil;
         NSPredicate *frcPredicate = [NSPredicate predicateWithFormat:@"self IN %@", results];
         [self.fetchedResultsController.fetchRequest setPredicate:frcPredicate];
@@ -147,7 +148,7 @@
         }
         
         // Reset the FRC predicate so that it gets delegate callbacks
-        [self.fetchedResultsController.fetchRequest setPredicate:nil];
+        [self.fetchedResultsController.fetchRequest setPredicate:originalPredicate];
       }
       
       [context release];

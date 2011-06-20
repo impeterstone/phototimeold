@@ -24,6 +24,7 @@
   self = [super init];
   if (self) {    
     _items = [[NSMutableArray alloc] initWithCapacity:1];
+    _sectionTitles = [[NSMutableArray alloc] initWithCapacity:1];
   }
   return self;
 }
@@ -38,9 +39,9 @@
 }
 
 - (void)setupSearchDisplayControllerWithScopeButtonTitles:(NSArray *)scopeButtonTitles andPlaceholder:(NSString *)placeholder {
-  _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+  _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)];
   _searchBar.delegate = self;
-//  _searchBar.tintColor = [UIColor darkGrayColor];
+  //  _searchBar.tintColor = [UIColor darkGrayColor];
   _searchBar.placeholder = placeholder;
   _searchBar.barStyle = UIBarStyleBlackOpaque;
   //  _searchBar.backgroundColor = [UIColor clearColor];
@@ -72,14 +73,15 @@
   }
   [_searchBar removeSubviews];
   
-//  UIImageView *scopeBackground = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_background.png"]] autorelease];
-//  scopeBackground.top -= 1;
-//  [segmentedControl insertSubview:scopeBackground atIndex:0];
-//  [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
-//  [segmentedControl setTintColor:[UIColor blueColor]];
+  //  UIImageView *scopeBackground = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_background.png"]] autorelease];
+  //  scopeBackground.top -= 1;
+  //  [segmentedControl insertSubview:scopeBackground atIndex:0];
+  //  [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+  //  [segmentedControl setTintColor:[UIColor blueColor]];
   
   // Add new background
   UIImageView *searchBackground = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_background.png"]] autorelease];
+  searchBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   searchBackground.top -= 1;
   [_searchBar addSubview:searchBackground];
   [_searchBar addSubview:searchBarTextField];
@@ -99,6 +101,10 @@
   //  [self.view insertSubview:_tableView atIndex:0];
   [self.view addSubview:_tableView];
   
+  // Setup optional header/footer
+  [self setupTableHeader];
+  [self setupTableFooter];
+  
   // Set the active scrollView
   _activeScrollView = _tableView;
 }
@@ -115,30 +121,29 @@
   [_refreshHeaderView refreshLastUpdatedDate];
 }
 
+// Optional table header
+- (void)setupTableHeader {
+  // subclass should implement
+}
+
 // Optional table footer
 - (void)setupTableFooter {
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"table_footer_background.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
+  // subclass should implement
 }
 
 // Optional Header View
-- (void)setupHeaderView {
-  _tableView.frame = CGRectMake(_tableView.left, _tableView.top + 44, _tableView.width, _tableView.height - 44);
-  _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-  _headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-  
-  [self.view addSubview:_headerView];
+- (void)setupHeaderWithView:(UIView *)headerView {
+  _tableView.frame = CGRectMake(_tableView.left, _tableView.top + headerView.height, _tableView.width, _tableView.height - headerView.height);  
+  headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+  [self.view addSubview:headerView];
 }
 
 // Optional footer view
-- (void)setupFooterView {
-  _tableView.frame = CGRectMake(_tableView.left, _tableView.top, _tableView.width, _tableView.height - 44);
-  _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, 320, 44)];
-  _footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-  _footerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_bg.png"]];
-  
-  [self.view addSubview:_footerView];
+- (void)setupFooterWithView:(UIView *)footerView {
+  _tableView.frame = CGRectMake(_tableView.left, _tableView.top, _tableView.width, _tableView.height - footerView.height);
+  footerView.top = self.view.height - footerView.height; // 44 navbar
+  footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+  [self.view addSubview:footerView];
 }
 
 // This is the button load more style
@@ -178,7 +183,7 @@
   
   _loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
   _loadMoreView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-  _loadMoreView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loadmore-bg.png"]];
+  _loadMoreView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-darkgray-320x44.png"]];
   UILabel *loadMoreLabel = [[[UILabel alloc] initWithFrame:_loadMoreView.bounds] autorelease];
   loadMoreLabel.backgroundColor = [UIColor clearColor];
   loadMoreLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -188,7 +193,7 @@
   loadMoreLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:16.0];
   loadMoreLabel.textColor = [UIColor whiteColor];
   loadMoreLabel.textAlignment = UITextAlignmentCenter;
-    
+  
   // Activity
   _loadMoreActivity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
   _loadMoreActivity.frame = CGRectMake(12, 12, 20, 20);
@@ -218,7 +223,7 @@
 }
 
 - (void)loadMoreIfAvailable {
-  if (!_tableView.tableFooterView) {
+  if (!_loadMoreView) {
     return;
   }
   // Make sure we are showing the footer first before attempting to load more
@@ -242,7 +247,7 @@
 // Called when the user logs out and we need to clear all cached data
 // Subclasses should override this method
 - (void)clearCachedData {
-  [self.items removeAllObjects];
+  [_items removeAllObjects];
   [self dataSourceDidLoad];
 }
 
@@ -271,7 +276,7 @@
   if (_tableView == self.searchDisplayController.searchResultsTableView) {
     return ([_searchItems count] > 0);
   } else {
-    if ([self.items count] > 0) {
+    if ([_items count] > 0) {
       return YES;
     } else {
       return NO;
@@ -280,7 +285,7 @@
 }
 
 - (BOOL)dataSourceIsReady {
-  return ([self.items count] > 0);
+  return ([_items count] > 0);
 }
 
 - (BOOL)dataIsLoading {
@@ -302,32 +307,31 @@
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return 1;
   } else {
-    return [self.items count];
+    return [_items count];
   }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    return [self.searchItems count];
+    return [_searchItems count];
   } else {
-    return [[self.items objectAtIndex:section] count];
+    return [[_items objectAtIndex:section] count];
   }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//  if (tableView.style == UITableViewStylePlain) {
-//    UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
-//    backgroundView.backgroundColor = CELL_COLOR_ALPHA;
-//    //    backgroundView.alpha = 0.8;
-//    cell.backgroundView = backgroundView;
-//    
-//    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
-//    selectedBackgroundView.backgroundColor = CELL_SELECTED_COLOR;
-//    cell.selectedBackgroundView = selectedBackgroundView;
-//    
-//    [backgroundView release];
-//    [selectedBackgroundView release];
-//  }
+  if (tableView.style == UITableViewStylePlain) {
+    UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+    backgroundView.backgroundColor = CELL_BACKGROUND_COLOR;
+    cell.backgroundView = backgroundView;
+    
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+    selectedBackgroundView.backgroundColor = CELL_SELECTED_COLOR;
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
+    [backgroundView release];
+    [selectedBackgroundView release];
+  }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -363,7 +367,7 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-  tableView.backgroundColor = [UIColor blackColor];
+  tableView.backgroundColor = SEPARATOR_COLOR;
   tableView.separatorColor = SEPARATOR_COLOR;
   tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
@@ -445,14 +449,13 @@
 
 - (void)dealloc {
   RELEASE_SAFELY(_tableView);
+  RELEASE_SAFELY(_sectionTitles);
   RELEASE_SAFELY(_items);
   RELEASE_SAFELY(_searchItems);
   RELEASE_SAFELY(_searchBar);
   RELEASE_SAFELY(_visibleCells);
   RELEASE_SAFELY(_visibleIndexPaths);
   RELEASE_SAFELY(_refreshHeaderView);
-  RELEASE_SAFELY(_headerView);
-  RELEASE_SAFELY(_footerView);
   RELEASE_SAFELY(_loadMoreView);
   RELEASE_SAFELY(_loadMoreButton);
   RELEASE_SAFELY(_loadMoreActivity);

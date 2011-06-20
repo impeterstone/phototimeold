@@ -30,6 +30,7 @@
 
 - (void)newComment;
 - (void)setupHeader;
+- (void)setupFooter;
 - (void)toggleHeader:(UITapGestureRecognizer *)gestureRecognizer;
 
 @end

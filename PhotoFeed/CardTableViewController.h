@@ -13,6 +13,7 @@
 
 @interface CardTableViewController : CardViewController <UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate, EGORefreshTableHeaderDelegate> {
   UITableView *_tableView;
+  NSMutableArray *_sectionTitles;
   NSMutableArray *_items;
   NSMutableArray *_searchItems;
   NSArray *_visibleCells;
@@ -20,8 +21,6 @@
   
   UISearchBar *_searchBar;
   EGORefreshTableHeaderView *_refreshHeaderView;
-  UIView *_headerView;
-  UIView *_footerView;
   UIView *_loadMoreView;
   UIButton *_loadMoreButton;
   UIActivityIndicatorView *_loadMoreActivity;
@@ -35,9 +34,10 @@
 
 - (void)setupTableViewWithFrame:(CGRect)frame andStyle:(UITableViewStyle)style andSeparatorStyle:(UITableViewCellSeparatorStyle)separatorStyle;
 - (void)setupPullRefresh;
+- (void)setupTableHeader;
 - (void)setupTableFooter;
-- (void)setupHeaderView;
-- (void)setupFooterView;
+- (void)setupHeaderWithView:(UIView *)headerView;
+- (void)setupFooterWithView:(UIView *)footerView;
 - (void)setupLoadMoreView;
 - (void)setupSearchDisplayControllerWithScopeButtonTitles:(NSArray *)scopeButtonTitles;
 - (void)setupSearchDisplayControllerWithScopeButtonTitles:(NSArray *)scopeButtonTitles andPlaceholder:(NSString *)placeholder;

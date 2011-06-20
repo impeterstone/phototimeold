@@ -59,13 +59,19 @@
   [self setupHeader];
   [self setupTableFooter];
   
-  [self setupFooterView];
+  [self setupFooter];
   
   [self executeFetch:YES];
   
   // Get new from server
   // Comments don't need to fetch from server immediately, only after a new post
 //  [self reloadCardController];
+}
+
+- (void)setupTableFooter {
+  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"table_footer_background.png"]];
+  _tableView.tableFooterView = footerImage;
+  [footerImage release];
 }
 
 - (void)setupHeader {
@@ -114,8 +120,8 @@
 
 }
 
-- (void)setupFooterView {
-  [super setupFooterView];
+- (void)setupFooter {
+  UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)] autorelease];
   
   // Setup the fake image view
   PSURLCacheImageView *profileImage = [[PSURLCacheImageView alloc] initWithFrame:CGRectMake(10, 7, 30, 30)];
@@ -123,7 +129,7 @@
   [profileImage loadImageAndDownload:YES];
   profileImage.layer.cornerRadius = 5.0;
   profileImage.layer.masksToBounds = YES;
-  [_footerView addSubview:profileImage];
+  [footerView addSubview:profileImage];
   [profileImage release];
   
   // Setup the fake comment button
@@ -137,8 +143,12 @@
   [commentButton setTitle:@"Write a comment..." forState:UIControlStateNormal];
   [commentButton setBackgroundImage:[[UIImage imageNamed:@"bubble.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:15] forState:UIControlStateNormal];
   [commentButton addTarget:self action:@selector(newComment) forControlEvents:UIControlEventTouchUpInside];
-  [_footerView addSubview:commentButton];
+  [footerView addSubview:commentButton];
   [commentButton release];
+  
+  footerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_bg.png"]];
+  
+  [self setupFooterWithView:footerView];
 }
 
 - (void)reloadCardController {
@@ -195,6 +205,19 @@
   
   //  NSLog(@"display");
   return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+  backgroundView.backgroundColor = CELL_WHITE_COLOR;
+  cell.backgroundView = backgroundView;
+  
+  UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+  selectedBackgroundView.backgroundColor = CELL_SELECTED_COLOR;
+  cell.selectedBackgroundView = selectedBackgroundView;
+  
+  [backgroundView release];
+  [selectedBackgroundView release];
 }
 
 #pragma mark -
