@@ -11,12 +11,20 @@
 #import "CardTableViewController.h"
 #import "PSCoreDataStack.h"
 
+typedef enum {
+  FetchTypeCold = 0,
+  FetchTypeRefresh = 1,
+  FetchTypeLoadMore = 2
+} FetchType;
+
 @interface CardCoreDataTableViewController : CardTableViewController <NSFetchedResultsControllerDelegate> {  
   NSManagedObjectContext *_context;
   NSFetchedResultsController * _fetchedResultsController;
   NSString * _sectionNameKeyPathForFetchedResultsController;
   NSTimer *_searchTimer;
   NSPredicate *_searchPredicate;
+  NSInteger _fetchLimit;
+  NSInteger _fetchTotal;
 }
 
 @property (nonatomic, assign) NSManagedObjectContext *context;
@@ -29,7 +37,7 @@
 - (void)delayedFilterContentWithTimer:(NSTimer *)timer;
 
 - (void)resetFetchedResultsController;
-- (void)executeFetch:(BOOL)updateFRC;
+- (void)executeFetch:(FetchType)fetchType;
 - (NSFetchRequest *)getFetchRequest;
 - (void)coreDataDidReset;
 

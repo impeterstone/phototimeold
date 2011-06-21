@@ -61,7 +61,7 @@
   
   [self setupFooter];
   
-  [self executeFetch:YES];
+  [self executeFetch:FetchTypeCold];
   
   // Get new from server
   // Comments don't need to fetch from server immediately, only after a new post

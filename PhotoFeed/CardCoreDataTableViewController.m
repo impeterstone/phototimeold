@@ -10,6 +10,8 @@
 #import "PSCoreDataStack.h"
 #import "PSSearchStack.h"
 
+#define FETCH_COUNT 50
+
 @interface CardCoreDataTableViewController (Private)
 
 
@@ -27,6 +29,8 @@
     _context = nil;
     _fetchedResultsController = nil;
     _sectionNameKeyPathForFetchedResultsController = nil;
+    _fetchLimit = 25;
+    _fetchTotal = _fetchLimit;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changesSaved:) name:NSManagedObjectContextDidSaveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataDidReset) name:kCoreDataDidReset object:nil];
@@ -51,6 +55,16 @@
   [super updateState];
 }
 
+- (void)updateLoadMore {
+  [super updateLoadMore];
+  NSInteger newFetchedCount = [_fetchedResultsController.fetchedObjects count];
+  if (_fetchTotal == newFetchedCount) {
+    _hasMore = YES;
+  } else {
+    _hasMore = NO;
+  }
+}
+
 #pragma mark Data Source
 - (void)reloadCardController {
   [super reloadCardController];
@@ -62,6 +76,11 @@
 
 - (void)loadMore {
   [super loadMore];
+  
+  // Load more
+  _fetchTotal += _fetchLimit;
+  [[[self fetchedResultsController] fetchRequest] setFetchLimit:_fetchTotal];
+  [self executeFetch:FetchTypeLoadMore];
 }
 
 - (void)dataSourceDidLoad {
@@ -95,7 +114,11 @@
   return _fetchedResultsController;
 }
 
-- (void)executeFetch:(BOOL)updateFRC {
+- (void)executeFetch:(FetchType)fetchType {
+  if (fetchType == FetchTypeCold) {
+    _fetchTotal = _fetchLimit;
+  }
+  
   static dispatch_queue_t coreDataFetchQueue = nil;
   if (!coreDataFetchQueue) {
     coreDataFetchQueue = dispatch_queue_create("com.sevenminutelabs.coreDataFetchQueue", NULL);
@@ -129,27 +152,39 @@
       [userInfo setObject:results forKey:@"results"];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (updateFRC) {
-        NSPredicate *originalPredicate = [[[self.fetchedResultsController.fetchRequest predicate] copy] autorelease];
-        NSError *frcError = nil;
-        NSPredicate *frcPredicate = [NSPredicate predicateWithFormat:@"self IN %@", results];
-        [self.fetchedResultsController.fetchRequest setPredicate:frcPredicate];
-        if ([self.fetchedResultsController performFetch:&frcError]) {
-          VLog(@"Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
-          
-          if (self.searchDisplayController.active) {
-            [self.searchDisplayController.searchResultsTableView reloadData];
-          } else {
-            [_tableView reloadData];
-            [self updateState];
-          }
+      NSPredicate *originalPredicate = [[[self.fetchedResultsController.fetchRequest predicate] copy] autorelease];
+      NSError *frcError = nil;
+      NSPredicate *frcPredicate = [NSPredicate predicateWithFormat:@"self IN %@", results];
+      [self.fetchedResultsController.fetchRequest setPredicate:frcPredicate];
+      if ([self.fetchedResultsController performFetch:&frcError]) {
+        VLog(@"Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
+        
+        if (self.searchDisplayController.active) {
+          [self.searchDisplayController.searchResultsTableView reloadData];
         } else {
-          VLog(@"Fetch failed with error: %@", [error localizedDescription]);
+          [_tableView reloadData];
         }
         
-        // Reset the FRC predicate so that it gets delegate callbacks
-        [self.fetchedResultsController.fetchRequest setPredicate:originalPredicate];
+        [self updateState];
+        switch (fetchType) {
+          case FetchTypeCold:
+            if ([_fetchedResultsController.fetchedObjects count] < _fetchLimit && [_fetchedResultsController.fetchedObjects count] > 0) {
+              _hasMore = NO;
+            }
+            break;
+          case FetchTypeLoadMore:
+            [self updateLoadMore];
+            break;
+          default:
+            break;
+        }
+        
+      } else {
+        VLog(@"Fetch failed with error: %@", [error localizedDescription]);
       }
+      
+      // Reset the FRC predicate so that it gets delegate callbacks
+      [self.fetchedResultsController.fetchRequest setPredicate:originalPredicate];
       
       [context release];
       [backgroundFetch release];
@@ -212,6 +247,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
   [_tableView endUpdates];
+  [self updateState];
 }
 
 #pragma mark UISearchDisplayDelegate
@@ -230,12 +266,14 @@
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
   [super searchDisplayControllerWillBeginSearch:controller];
+  [self executeFetch:FetchTypeCold];
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
   [super searchDisplayControllerWillEndSearch:controller];
   _searchPredicate = nil;
-  [self executeFetch:YES];
+  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+  [self executeFetch:FetchTypeCold];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {

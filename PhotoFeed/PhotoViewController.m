@@ -28,6 +28,8 @@
     _sectionNameKeyPathForFetchedResultsController = [@"position" retain];
     _headerCellCache = [[NSMutableDictionary alloc] init];
     self.hidesBottomBarWhenPushed = YES;
+    _fetchLimit = 10;
+    _fetchTotal = _fetchLimit;
   }
   return self;
 }
@@ -66,7 +68,7 @@
   
 //  [self setupLoadMoreView];
   
-  [self executeFetch:YES];
+  [self executeFetch:FetchTypeCold];
   
   // Get new from server
   [self reloadCardController];
@@ -209,7 +211,7 @@
   }
   _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
   
-  [self executeFetch:YES];
+  [self executeFetch:FetchTypeRefresh];
 }
 #pragma mark -
 #pragma mark FetchRequest
@@ -220,8 +222,8 @@
   NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptor, nil] autorelease];
   NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getPhotosForAlbum" substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
   [fetchRequest setSortDescriptors:sortDescriptors];
-  [fetchRequest setFetchBatchSize:10];
-  //  [fetchRequest setFetchLimit:limit];
+  [fetchRequest setFetchBatchSize:5];
+  [fetchRequest setFetchLimit:_fetchTotal];
   return fetchRequest;
 }
 

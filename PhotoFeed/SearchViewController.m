@@ -181,7 +181,7 @@
   }
   _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
   
-  [self executeFetch:YES];
+  [self executeFetch:FetchTypeRefresh];
 }
 
 #pragma mark -

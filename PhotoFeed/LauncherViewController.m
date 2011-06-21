@@ -97,10 +97,6 @@ static UIImage *_actionImage = nil;
   _tabBarController.selectedViewController = [_tabBarController.viewControllers objectAtIndex:2];
 }
 
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-//  return YES;
-//}
-
 - (void)dealloc {
   RELEASE_SAFELY(_tabBarController);
   [super dealloc];

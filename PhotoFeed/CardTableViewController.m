@@ -25,6 +25,8 @@
   if (self) {    
     _items = [[NSMutableArray alloc] initWithCapacity:1];
     _sectionTitles = [[NSMutableArray alloc] initWithCapacity:1];
+    _loadingMore = NO;
+    _hasMore = YES;
   }
   return self;
 }
@@ -107,6 +109,8 @@
   
   // Set the active scrollView
   _activeScrollView = _tableView;
+  
+  [_tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 // SUBCLASS CAN OPTIONALLY CALL
@@ -179,7 +183,7 @@
 
 // This is the automatic load more style
 - (void)setupLoadMoreView {
-  _loadingMore = NO;
+
   
   _loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
   _loadMoreView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -218,26 +222,12 @@
 }
 
 // Subclasses should override
-- (void)loadMore {
-  _loadingMore = YES;
+- (void)updateLoadMore {
+  _loadingMore = NO;
 }
 
-- (void)loadMoreIfAvailable {
-  if (!_loadMoreView) {
-    return;
-  }
-  // Make sure we are showing the footer first before attempting to load more
-  // Once we begin loading more, this should no longer trigger
-  //  NSLog(@"check to load more: %@", NSStringFromCGPoint(_tableView.contentOffset));
-  CGFloat tableBottom = _tableView.contentOffset.y + _tableView.height;
-  CGFloat footerTop = _tableView.tableFooterView.top;
-  
-  if (tableBottom >= footerTop) {
-    // Footer is showing, start loading more
-    if (!_loadingMore) {
-      [self loadMore];
-    }
-  }
+- (void)loadMore {
+  _loadingMore = YES;
 }
 
 - (void)updateState {
@@ -299,10 +289,6 @@
 }
 
 #pragma mark UITableViewDataSource
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 44.0;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return 1;
@@ -367,9 +353,15 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
+  [tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
+  tableView.rowHeight = 120.0;
   tableView.backgroundColor = SEPARATOR_COLOR;
   tableView.separatorColor = SEPARATOR_COLOR;
   tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView {
+  [tableView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
@@ -383,7 +375,7 @@
 #pragma mark UIScrollViewDelegate
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
   if (!decelerate) {
-    [self scrollEndedTrigger];
+//    [self scrollEndedTrigger];
   }
   if (!self.searchDisplayController.active) {
     if (_refreshHeaderView) {
@@ -393,7 +385,7 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  [self scrollEndedTrigger];
+//  [self scrollEndedTrigger];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
@@ -404,7 +396,25 @@
 
 - (void)scrollEndedTrigger {
   //  [self loadImagesForOnScreenRows];
-  [self loadMoreIfAvailable];
+//  [self loadMoreIfAvailable];
+}
+
+// Scrolling observer
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([keyPath isEqualToString:@"contentOffset"] && [object isKindOfClass:[UITableView class]]) {
+    // Make sure we are showing the footer first before attempting to load more
+    // Once we begin loading more, this should no longer trigger
+    //  NSLog(@"check to load more: %@", NSStringFromCGPoint(_tableView.contentOffset));
+    if (!_loadingMore && _hasMore) {
+      UITableView *tableView = (UITableView *)object;
+      CGFloat tableOffset = tableView.contentOffset.y + tableView.height;
+      CGFloat tableBottom = tableView.contentSize.height - tableView.rowHeight;
+      
+      if (tableOffset >= tableBottom) {
+        [self loadMore];
+      }
+    }
+  }
 }
 
 #pragma mark -
@@ -448,6 +458,9 @@
 }
 
 - (void)dealloc {
+  // Remove scrolling observer
+  [_tableView removeObserver:self forKeyPath:@"contentOffset"];
+  
   RELEASE_SAFELY(_tableView);
   RELEASE_SAFELY(_sectionTitles);
   RELEASE_SAFELY(_items);

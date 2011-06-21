@@ -21,6 +21,8 @@
   self = [super init];
   if (self) {
     _albumType = AlbumTypeMe;
+    _fetchLimit = 25;
+    _fetchTotal = _fetchLimit;
   }
   return self;
 }
@@ -45,6 +47,8 @@
   // Table
   CGRect tableFrame = CGRectMake(0, 0, CARD_WIDTH, CARD_HEIGHT);
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
+  
+  self.tableView.rowHeight = 120.0;
   
   // Album Type
   NSArray *scopeArray = nil;
@@ -118,9 +122,9 @@
   // Pull Refresh
 //  [self setupPullRefresh];
   
-  [self setupLoadMoreView];
+//  [self setupLoadMoreView];
   
-  [self executeFetch:YES];
+  [self executeFetch:FetchTypeCold];
 }
 
 - (void)reloadCardController {
@@ -144,10 +148,10 @@
 
 #pragma mark -
 #pragma mark TableView
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  return [AlbumCell rowHeightForObject:album forInterfaceOrientation:[self interfaceOrientation]];
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//  Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//  return [AlbumCell rowHeightForObject:album forInterfaceOrientation:[self interfaceOrientation]];
+//}
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 //  return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
@@ -183,7 +187,7 @@
   
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
   album.lastViewed = [NSDate date];
-  [PSCoreDataStack saveInContext:[[PSCoreDataStack newManagedObjectContext] autorelease]];
+  [PSCoreDataStack saveInContext:[album managedObjectContext]];
   
   PhotoViewController *svc = [[PhotoViewController alloc] init];
   svc.album = album;
@@ -224,40 +228,36 @@
   NSDictionary *userInfo = [timer userInfo];
   NSString *searchText = [userInfo objectForKey:@"searchText"];
   NSString *scope = [userInfo objectForKey:@"scope"];
+
+  NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
+  //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];
   
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
-    //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];
-    
-    NSString *tmp = [[searchText componentsSeparatedByCharactersInSet:separatorCharacterSet] componentsJoinedByString:@" "];
-    NSArray *searchTerms = [tmp componentsSeparatedByString:@" "];
-    
-    for (NSString *searchTerm in searchTerms) {
-      if ([searchTerm length] == 0) continue;
-      NSString *searchValue = searchTerm;
-      if ([scope isEqualToString:@"Author"]) {
-        // search friend's full name
-        [subpredicates addObject:[NSPredicate predicateWithFormat:@"fromName CONTAINS[cd] %@", searchValue]];
-      } else if ([scope isEqualToString:@"Album"]) {
-        // search album name
-        [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchValue]];
-      } else if ([scope isEqualToString:@"Location"]) {
-        [subpredicates addObject:[NSPredicate predicateWithFormat:@"location CONTAINS[cd] %@", searchValue]];
-      } else {
-        // search any
-        [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
-      }
+  NSString *tmp = [[searchText componentsSeparatedByCharactersInSet:separatorCharacterSet] componentsJoinedByString:@" "];
+  NSArray *searchTerms = [tmp componentsSeparatedByString:@" "];
+  
+  for (NSString *searchTerm in searchTerms) {
+    if ([searchTerm length] == 0) continue;
+    NSString *searchValue = searchTerm;
+    if ([scope isEqualToString:@"Author"]) {
+      // search friend's full name
+      [subpredicates addObject:[NSPredicate predicateWithFormat:@"fromName CONTAINS[cd] %@", searchValue]];
+    } else if ([scope isEqualToString:@"Album"]) {
+      // search album name
+      [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchValue]];
+    } else if ([scope isEqualToString:@"Location"]) {
+      [subpredicates addObject:[NSPredicate predicateWithFormat:@"location CONTAINS[cd] %@", searchValue]];
+    } else {
+      // search any
+      [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (_searchPredicate) {
-        RELEASE_SAFELY(_searchPredicate);
-      }
-      _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
-      
-      [self executeFetch:YES];
-    });
-  });
+  }
+  
+  if (_searchPredicate) {
+    RELEASE_SAFELY(_searchPredicate);
+  }
+  _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
+  
+  [self executeFetch:FetchTypeRefresh];
 }
 
 #pragma mark -
@@ -316,6 +316,7 @@
   NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:fetchTemplate substitutionVariables:substitutionVariables];
   [fetchRequest setSortDescriptors:sortDescriptors];
   [fetchRequest setFetchBatchSize:10];
+  [fetchRequest setFetchLimit:_fetchTotal];
   return fetchRequest;
 }
 

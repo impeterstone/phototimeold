@@ -26,6 +26,7 @@
   UIActivityIndicatorView *_loadMoreActivity;
   BOOL _reloading;
   BOOL _loadingMore;
+  BOOL _hasMore;
 }
 
 @property (nonatomic, retain) UITableView *tableView;
@@ -45,8 +46,8 @@
 - (void)showLoadMoreView;
 - (void)hideLoadMoreView;
 
+- (void)updateLoadMore;
 - (void)loadMore;
-- (void)loadMoreIfAvailable;
 
 - (void)loadImagesForOnScreenRows;
 
