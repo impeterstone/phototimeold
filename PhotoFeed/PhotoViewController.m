@@ -30,6 +30,7 @@
     self.hidesBottomBarWhenPushed = YES;
     _fetchLimit = 10;
     _fetchTotal = _fetchLimit;
+    _frcDelegate = nil;
   }
   return self;
 }
@@ -145,8 +146,7 @@
   }
   
   [self tableView:tableView configureCell:cell atIndexPath:indexPath];
-  
-  //  NSLog(@"display");
+
   return cell;
 }
 
@@ -173,6 +173,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
   [(PhotoCell *)cell loadPhoto];
+//  NSLog(@"wdc sec: %d, row: %d", indexPath.section, indexPath.row);
 }
 
 #pragma mark -

@@ -24,6 +24,9 @@
     _commentDataCenter.delegate = self;
     _isHeaderExpanded = NO;
     self.hidesBottomBarWhenPushed = YES;
+    _fetchLimit = 100;
+    _fetchTotal = _fetchLimit;
+    _frcDelegate = nil;
   }
   return self;
 }

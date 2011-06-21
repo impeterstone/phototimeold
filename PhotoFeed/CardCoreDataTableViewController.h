@@ -25,6 +25,7 @@ typedef enum {
   NSPredicate *_searchPredicate;
   NSInteger _fetchLimit;
   NSInteger _fetchTotal;
+  id _frcDelegate;
 }
 
 @property (nonatomic, assign) NSManagedObjectContext *context;

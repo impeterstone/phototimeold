@@ -31,6 +31,7 @@
     _sectionNameKeyPathForFetchedResultsController = nil;
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
+    _frcDelegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changesSaved:) name:NSManagedObjectContextDidSaveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataDidReset) name:kCoreDataDidReset object:nil];
@@ -85,6 +86,11 @@
 
 - (void)dataSourceDidLoad {
   [super dataSourceDidLoad];
+  
+  // If we aren't using an FRC delegate, refetch/reload the table
+  if (_frcDelegate == nil) {
+    [self executeFetch:FetchTypeRefresh];
+  }
 }
 
 #pragma mark Core Data
@@ -109,7 +115,7 @@
   if (_fetchedResultsController) return _fetchedResultsController;
   
   _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self getFetchRequest] managedObjectContext:self.context sectionNameKeyPath:self.sectionNameKeyPathForFetchedResultsController cacheName:nil];
-  _fetchedResultsController.delegate = self;
+  _fetchedResultsController.delegate = _frcDelegate;
   
   return _fetchedResultsController;
 }
