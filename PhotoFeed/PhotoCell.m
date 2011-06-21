@@ -79,7 +79,7 @@ static UIImage *_commentIcon = nil;
     
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
-    _photoView.shouldAnimate = YES;
+    _photoView.shouldAnimate = NO;
 //    _photoView.placeholderImage = [UIImage imageNamed:@"photos-large.png"];
     //    _photoView.shouldScale = YES;
     //    _photoView.layer.borderColor = [[UIColor darkGrayColor] CGColor];

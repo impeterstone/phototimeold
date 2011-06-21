@@ -101,7 +101,7 @@ static UIImage *_overlayImage = nil;
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectMake(0, 0, 320, ALBUM_CELL_HEIGHT)];
     _photoView.shouldScale = YES;
-    _photoView.shouldAnimate = YES;
+    _photoView.shouldAnimate = NO;
     _photoView.delegate = self;
     _photoView.placeholderImage = [UIImage imageNamed:@"album-placeholder.png"];
 //    _photoView = [[PSImageView alloc] initWithFrame:CGRectZero];
