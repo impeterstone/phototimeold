@@ -158,33 +158,37 @@
       [userInfo setObject:results forKey:@"results"];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
+      BOOL shouldReloadTable = NO;
+    
       NSPredicate *originalPredicate = [[[self.fetchedResultsController.fetchRequest predicate] copy] autorelease];
       NSError *frcError = nil;
       NSPredicate *frcPredicate = [NSPredicate predicateWithFormat:@"self IN %@", results];
       [self.fetchedResultsController.fetchRequest setPredicate:frcPredicate];
       if ([self.fetchedResultsController performFetch:&frcError]) {
         VLog(@"Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
-        
-        if (self.searchDisplayController.active) {
-          [self.searchDisplayController.searchResultsTableView reloadData];
-        } else {
-          [_tableView reloadData];
-        }
-        
-        [self updateState];
         switch (fetchType) {
           case FetchTypeCold:
-            if ([_fetchedResultsController.fetchedObjects count] < _fetchLimit && [_fetchedResultsController.fetchedObjects count] > 0) {
+            shouldReloadTable = YES;
+            if ([_fetchedResultsController.fetchedObjects count] > 0 &&[_fetchedResultsController.fetchedObjects count] < _fetchLimit) {
               _hasMore = NO;
             }
             break;
           case FetchTypeLoadMore:
             [self updateLoadMore];
+            shouldReloadTable = YES;
             break;
-          default:
+          case FetchTypeRefresh:
+            shouldReloadTable = YES;
             break;
         }
         
+        if (shouldReloadTable) {
+          if (self.searchDisplayController.active) {
+            [self.searchDisplayController.searchResultsTableView reloadData];
+          } else {
+            [_tableView reloadData];
+          }
+        }
       } else {
         VLog(@"Fetch failed with error: %@", [error localizedDescription]);
       }

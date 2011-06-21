@@ -275,7 +275,7 @@
 }
 
 - (BOOL)dataSourceIsReady {
-  return ([_items count] > 0);
+  return YES;
 }
 
 - (BOOL)dataIsLoading {
