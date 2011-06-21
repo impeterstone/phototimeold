@@ -405,8 +405,8 @@
     // Make sure we are showing the footer first before attempting to load more
     // Once we begin loading more, this should no longer trigger
     //  NSLog(@"check to load more: %@", NSStringFromCGPoint(_tableView.contentOffset));
-    if (!_loadingMore && _hasMore) {
-      UITableView *tableView = (UITableView *)object;
+    UITableView *tableView = (UITableView *)object;
+    if (!_loadingMore && _hasMore && [[tableView visibleCells] count] > 0) {
       CGFloat tableOffset = tableView.contentOffset.y + tableView.height;
       CGFloat tableBottom = tableView.contentSize.height - tableView.rowHeight;
       
