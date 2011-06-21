@@ -198,7 +198,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     }
     i++;
     
-    if (i % 100 == 0) {
+    if (i % 1000 == 0) {
       [PSCoreDataStack saveInContext:context];
       [PSCoreDataStack resetInContext:context];
       
@@ -210,9 +210,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     }
   }
   
-  if (i % 100 != 0) {
+  if (i % 1000 != 0) {
     [PSCoreDataStack saveInContext:context];
-    [PSCoreDataStack resetInContext:context];
+//    [PSCoreDataStack resetInContext:context];
   }
   
   [pool drain];
