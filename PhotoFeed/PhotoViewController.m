@@ -155,7 +155,9 @@
 }
 
 - (void)zoomPhotoForCell:(PhotoCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-  _zoomView = [[PSZoomView alloc] initWithFrame:[[[UIApplication sharedApplication] keyWindow] bounds]];
+  if (!_zoomView) {
+    _zoomView = [[PSZoomView alloc] initWithFrame:[[[UIApplication sharedApplication] keyWindow] bounds]];
+  }
   
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
   _zoomView.photo = photo;
@@ -229,6 +231,7 @@
   _photoDataCenter.delegate = nil;
   RELEASE_SAFELY(_photoDataCenter);
   RELEASE_SAFELY(_headerCellCache);
+  RELEASE_SAFELY(_zoomView);
   [super dealloc];
 }
 

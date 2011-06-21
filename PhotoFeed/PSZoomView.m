@@ -113,7 +113,6 @@
 
 - (void)removeZoomView {
   [self removeFromSuperview];
-  [self release], self = nil;
 }
 
 - (void)dealloc {
