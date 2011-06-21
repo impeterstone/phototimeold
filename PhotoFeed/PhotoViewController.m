@@ -159,8 +159,6 @@
     _zoomView = [[PSZoomView alloc] initWithFrame:[[[UIApplication sharedApplication] keyWindow] bounds]];
   }
   
-  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  _zoomView.photo = photo;
   _zoomView.zoomImageView.image = cell.photoView.image;
   _zoomView.zoomImageView.frame = [cell convertRect:cell.photoView.frame toView:nil];
   _zoomView.oldImageFrame = [cell convertRect:cell.photoView.frame toView:nil];

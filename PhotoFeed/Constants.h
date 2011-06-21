@@ -14,7 +14,7 @@
   #include "TargetConditionals.h"
 #endif
 
-#define CORE_DATA_MOM @"Orca"
+#define CORE_DATA_MOM @"PhotoFeed"
 
 //#define CLEAR_ALL_CACHED_DATA_ON_WARNING
 
