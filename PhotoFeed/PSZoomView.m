@@ -13,6 +13,7 @@
 
 @implementation PSZoomView
 
+@synthesize containerView = _containerView;
 @synthesize zoomImageView = _zoomImageView;
 @synthesize shadeView = _shadeView;
 @synthesize captionLabel = _captionLabel;
@@ -30,11 +31,6 @@
     self.autoresizesSubviews = YES;
     
     _oldImageFrame = CGRectZero;
-    _zoomImageView = [[PSImageView alloc] initWithFrame:frame];
-    _zoomImageView.contentMode = UIViewContentModeScaleAspectFit;
-    _zoomImageView.userInteractionEnabled = YES;
-//    _zoomImageView.alpha = 0.0;
-    _zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     _shadeView = [[UIView alloc] initWithFrame:frame];
     _shadeView.backgroundColor = [UIColor blackColor];
@@ -57,6 +53,13 @@
     _containerView.minimumZoomScale = 1.0;
     _containerView.bouncesZoom = YES;
     _containerView.backgroundColor = [UIColor clearColor];
+    
+    _zoomImageView = [[PSImageView alloc] initWithFrame:_containerView.bounds];
+    _zoomImageView.backgroundColor = [UIColor clearColor];
+    _zoomImageView.contentMode = UIViewContentModeScaleAspectFit;
+    _zoomImageView.userInteractionEnabled = YES;
+    //    _zoomImageView.alpha = 0.0;
+    _zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_containerView addSubview:_zoomImageView];
     
     [self addSubview:_shadeView];
@@ -89,7 +92,8 @@
   _shadeView.alpha = 1.0;
   _captionLabel.alpha = 1.0;
 //  _zoomImageView.alpha = 1.0;
-  self.zoomImageView.center = [[[UIApplication sharedApplication] keyWindow] center];
+  _containerView.center = [[[UIApplication sharedApplication] keyWindow] center];
+  _zoomImageView.frame = _containerView.bounds;
   [UIView commitAnimations];
 }
 

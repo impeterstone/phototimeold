@@ -25,6 +25,7 @@
   CGFloat _lastScale;
 }
 
+@property (nonatomic, retain) UIScrollView *containerView;
 @property (nonatomic, retain) PSImageView *zoomImageView;
 @property (nonatomic, retain) UIView *shadeView;
 @property (nonatomic, retain) UILabel *captionLabel;
