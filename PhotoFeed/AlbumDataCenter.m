@@ -167,7 +167,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   }
   
   // Find all existing Entities
-  NSArray *newUniqueKeyArray = [array valueForKey:uniqueKey];
+  NSArray *newUniqueKeyArray = [albumArray valueForKey:uniqueKey];
   NSFetchRequest *existingFetchRequest = [[[NSFetchRequest alloc] init] autorelease];
   [existingFetchRequest setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
   [existingFetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueKey, newUniqueKeyArray]];
