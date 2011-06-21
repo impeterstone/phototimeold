@@ -86,7 +86,6 @@
 		254097421383517900EBE848 /* searchbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 254097401383517900EBE848 /* searchbar_bg@2x.png */; };
 		254097451383527600EBE848 /* UISearchBar+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 254097441383527600EBE848 /* UISearchBar+Custom.m */; };
 		25409764138478BA00EBE848 /* PhotoFeed.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25409762138478BA00EBE848 /* PhotoFeed.xcdatamodeld */; };
-		2540977813848EE600EBE848 /* NSDate+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2540977713848EE600EBE848 /* NSDate+Helper.m */; };
 		2544ACAC1378829E0072C86C /* CameraImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2544ACAB1378829E0072C86C /* CameraImageHelper.m */; };
 		2544ACAF13788E040072C86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACAE13788E030072C86C /* AVFoundation.framework */; };
 		2544ACB213788E2C0072C86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACB113788E2B0072C86C /* CoreMedia.framework */; };
@@ -99,6 +98,7 @@
 		2547ADAE13B1512500167F9E /* UIScreen+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2547ADAD13B1512300167F9E /* UIScreen+SML.m */; };
 		2547ADB113B1518200167F9E /* NSArray+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2547ADB013B1518000167F9E /* NSArray+SML.m */; };
 		2547ADB413B1535F00167F9E /* PSDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2547ADB313B1535F00167F9E /* PSDataCenter.m */; };
+		2547AE2713B158FD00167F9E /* NSDate+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2547AE2613B158FD00167F9E /* NSDate+Helper.m */; };
 		254BE303138E0D3A00A710E8 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 254BE301138E0D3A00A710E8 /* table_footer_background@2x.png */; };
 		254BE304138E0D3A00A710E8 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 254BE302138E0D3A00A710E8 /* table_footer_background.png */; };
 		25544F211384B1A700948E2C /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25544F201384B1A700948E2C /* ISO8601DateFormatter.m */; };
@@ -405,8 +405,6 @@
 		254097431383527600EBE848 /* UISearchBar+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Custom.h"; sourceTree = "<group>"; };
 		254097441383527600EBE848 /* UISearchBar+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Custom.m"; sourceTree = "<group>"; };
 		25409763138478BA00EBE848 /* PhotoFeed.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoFeed.xcdatamodel; sourceTree = "<group>"; };
-		2540977613848EE500EBE848 /* NSDate+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+Helper.h"; path = "../../../../PhotoFeed/NSDate+Helper.h"; sourceTree = "<group>"; };
-		2540977713848EE600EBE848 /* NSDate+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+Helper.m"; path = "../../../../PhotoFeed/NSDate+Helper.m"; sourceTree = "<group>"; };
 		2544ACAA1378829E0072C86C /* CameraImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraImageHelper.h; sourceTree = "<group>"; };
 		2544ACAB1378829E0072C86C /* CameraImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraImageHelper.m; sourceTree = "<group>"; };
 		2544ACAE13788E030072C86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -428,6 +426,8 @@
 		2547ADB013B1518000167F9E /* NSArray+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SML.m"; sourceTree = "<group>"; };
 		2547ADB213B1535F00167F9E /* PSDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenter.h; sourceTree = "<group>"; };
 		2547ADB313B1535F00167F9E /* PSDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSDataCenter.m; sourceTree = "<group>"; };
+		2547AE2513B158FD00167F9E /* NSDate+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helper.h"; sourceTree = "<group>"; };
+		2547AE2613B158FD00167F9E /* NSDate+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helper.m"; sourceTree = "<group>"; };
 		254BE301138E0D3A00A710E8 /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		254BE302138E0D3A00A710E8 /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		25544F1F1384B1A700948E2C /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
@@ -1222,8 +1222,8 @@
 		25F696BA13B1440700BA625F /* SevenMinuteLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				2540977613848EE500EBE848 /* NSDate+Helper.h */,
-				2540977713848EE600EBE848 /* NSDate+Helper.m */,
+				2547AE2513B158FD00167F9E /* NSDate+Helper.h */,
+				2547AE2613B158FD00167F9E /* NSDate+Helper.m */,
 				25CEF8881339FB8B006F23A7 /* NSData+Compression.h */,
 				25CEF8891339FB8B006F23A7 /* NSData+Compression.m */,
 				25F696BB13B1441F00BA625F /* NSDate+SML.h */,
@@ -1760,7 +1760,6 @@
 				2546E8BA138226A200BD8757 /* Like.m in Sources */,
 				254097451383527600EBE848 /* UISearchBar+Custom.m in Sources */,
 				25409764138478BA00EBE848 /* PhotoFeed.xcdatamodeld in Sources */,
-				2540977813848EE600EBE848 /* NSDate+Helper.m in Sources */,
 				25544F211384B1A700948E2C /* ISO8601DateFormatter.m in Sources */,
 				25B9C74E138C6FEA003FEE96 /* Comment+Serialize.m in Sources */,
 				25B9C759138C8882003FEE96 /* CommentViewController.m in Sources */,
@@ -1811,6 +1810,7 @@
 				2547ADAE13B1512500167F9E /* UIScreen+SML.m in Sources */,
 				2547ADB113B1518200167F9E /* NSArray+SML.m in Sources */,
 				2547ADB413B1535F00167F9E /* PSDataCenter.m in Sources */,
+				2547AE2713B158FD00167F9E /* NSDate+Helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
