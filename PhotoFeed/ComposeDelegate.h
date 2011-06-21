@@ -1,6 +1,6 @@
 //
 //  ComposeDelegate.h
-//  PhotoFeed
+//  Orca
 //
 //  Created by Peter Shih on 3/26/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
@@ -10,5 +10,8 @@
 
 
 @protocol ComposeDelegate <NSObject>
-- (void)composeDidSend;
+
+@optional
+- (void)composeDidSendWithUserInfo:(NSDictionary *)userInfo;
+
 @end

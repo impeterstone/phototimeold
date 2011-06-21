@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "CardCoreDataTableViewController.h"
+#import "ComposeDelegate.h"
 
 @class CommentDataCenter;
 @class Photo;
 
-@interface CommentViewController : CardCoreDataTableViewController {
+@interface CommentViewController : CardCoreDataTableViewController <ComposeDelegate> {
   CommentDataCenter *_commentDataCenter;
   Photo *_photo;
   UIView *_commentHeaderView;

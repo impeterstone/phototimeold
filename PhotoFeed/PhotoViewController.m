@@ -12,7 +12,6 @@
 #import "Photo.h"
 #import "HeaderCell.h"
 #import "PhotoCell.h"
-#import "CameraViewController.h"
 #import "PSZoomView.h"
 #import "CommentViewController.h"
 

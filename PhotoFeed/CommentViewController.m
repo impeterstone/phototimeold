@@ -11,6 +11,7 @@
 #import "Comment.h"
 #import "CommentCell.h"
 #import "Photo.h"
+#import "ComposeViewController.h"
 
 @implementation CommentViewController
 
@@ -175,11 +176,12 @@
 #pragma mark -
 #pragma mark Compose
 - (void)newComment {
-  //  CameraViewController *cvc = [[CameraViewController alloc] init];
-  //  UINavigationController *cnc = [[UINavigationController alloc] initWithRootViewController:cvc];
-  //  [self presentModalViewController:cnc animated:YES];
-  //  [cvc autorelease];
-  //  [cnc autorelease];
+  ComposeViewController *cvc = [[ComposeViewController alloc] init];
+  cvc.photoId = _photo.id;
+  cvc.delegate = self;
+  cvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+  [self presentModalViewController:cvc animated:YES];
+  [cvc release];
 }
 
 #pragma mark -
