@@ -14,6 +14,8 @@
   #include "TargetConditionals.h"
 #endif
 
+#define CORE_DATA_MOM @"Orca"
+
 //#define CLEAR_ALL_CACHED_DATA_ON_WARNING
 
 #define USER_LANGUAGE [[NSLocale preferredLanguages] objectAtIndex:0]
