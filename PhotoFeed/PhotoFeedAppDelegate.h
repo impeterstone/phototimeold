@@ -12,7 +12,6 @@
 
 @class Facebook;
 @class LoginViewController;
-@class LauncherViewController;
 @class LoginDataCenter;
 @class AlbumDataCenter;
 
@@ -20,7 +19,7 @@
   UIWindow *_window;
   Facebook *_facebook;
   LoginViewController *_loginViewController;
-  LauncherViewController *_launcherViewController;
+  UITabBarController *_tabBarController;
   
   AlbumDataCenter *_albumDataCenter;
   
@@ -31,7 +30,6 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (readonly) Facebook *facebook;
 @property (retain) NSString *sessionKey;
-@property (nonatomic, assign) LauncherViewController *launcherViewController;
 
 // Private
 + (void)setupDefaults;
@@ -40,6 +38,8 @@
 - (void)startDownloadAlbums;
 - (void)tryLogin;
 - (void)resetSessionKey;
+
+- (void)setupTabBar;
 
 - (void)getMe;
 - (void)serializeMeWithResponse:(id)response;

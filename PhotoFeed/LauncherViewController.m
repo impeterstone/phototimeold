@@ -33,8 +33,7 @@ static UIImage *_actionImage = nil;
 }
 
 - (void)loadView {
-  [super loadView];
-  self.wantsFullScreenLayout = YES;
+  self.wantsFullScreenLayout = NO;
   
   _tabBarController = [[UITabBarController alloc] init];
   _tabBarController.delegate = self;

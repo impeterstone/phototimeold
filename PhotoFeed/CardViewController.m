@@ -42,8 +42,10 @@
   //  self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
   
   // Setup Nav Bar
-  UIView *navTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
-  _navTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
+  UIView *navTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, self.navigationController.navigationBar.height)];
+  navTitleView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+  _navTitleLabel = [[UILabel alloc] initWithFrame:navTitleView.bounds];
+  _navTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
   _navTitleLabel.textAlignment = UITextAlignmentCenter;
   _navTitleLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
   _navTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0];
@@ -61,6 +63,22 @@
   //  self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-logo.png"]] autorelease];
 }
 
+//- (void)viewDidAppear:(BOOL)animated {
+//  [super viewDidAppear:animated];
+//  [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChangedFromNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//}
+//
+//- (void)viewDidDisappear:(BOOL)animated {
+//  [super viewDidDisappear:animated];
+//  [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+//  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+//}
+
+- (void)orientationChangedFromNotification:(NSNotification *)notification {
+  // may should implement
+}
+
 - (void)back {
   [self.navigationController popViewControllerAnimated:YES];
 }
@@ -68,7 +86,7 @@
 // Optional Implementation
 - (void)addBackButton {
   UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
-  back.frame = CGRectMake(0, 0, 60, 30);
+  back.frame = CGRectMake(0, 0, 60, self.navigationController.navigationBar.height - 14);
   [back setTitle:@"Back" forState:UIControlStateNormal];
   [back setTitleEdgeInsets:UIEdgeInsetsMake(0, 9, 0, 0)];
   back.titleLabel.font = NAV_BUTTON_FONT;
@@ -85,7 +103,7 @@
 
 - (void)addButtonWithTitle:(NSString *)title andSelector:(SEL)selector isLeft:(BOOL)isLeft {
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-  button.frame = CGRectMake(0, 0, 60, 30);
+  button.frame = CGRectMake(0, 0, 60, self.navigationController.navigationBar.height - 14);
   [button setTitle:title forState:UIControlStateNormal];
   button.titleLabel.font = NAV_BUTTON_FONT;
   button.titleLabel.shadowColor = [UIColor blackColor];
@@ -103,6 +121,7 @@
 
 - (void)addButtonWithImage:(UIImage *)image andSelector:(SEL)selector isLeft:(BOOL)isLeft {
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+  button.autoresizingMask = UIViewAutoresizingFlexibleHeight;
   button.frame = CGRectMake(0, 0, 60, 30);
   [button setBackgroundImage:image forState:UIControlStateNormal];
   [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];  

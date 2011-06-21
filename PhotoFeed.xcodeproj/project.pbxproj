@@ -218,6 +218,7 @@
 		25D4D2AA13B0780C00A21C4C /* compose-send-pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D4D29C13B0780C00A21C4C /* compose-send-pressed@2x.png */; };
 		25D4D2AB13B0780C00A21C4C /* compose-send.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D4D29D13B0780C00A21C4C /* compose-send.png */; };
 		25D4D2AC13B0780C00A21C4C /* compose-send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D4D29E13B0780C00A21C4C /* compose-send@2x.png */; };
+		25D4D2AF13B084D400A21C4C /* UITabBarController+Autorotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D4D2AE13B084D400A21C4C /* UITabBarController+Autorotate.m */; };
 		25D4FAAE13963C29007BE372 /* photo-caption-overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D4FAAD13963C29007BE372 /* photo-caption-overlay.png */; };
 		25DC5F2F136626ED00868001 /* AlbumDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DC5F2E136626EC00868001 /* AlbumDataCenter.m */; };
 		25DC5F3B136648A300868001 /* NSDictionary+Merge.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DC5F3A136648A300868001 /* NSDictionary+Merge.m */; };
@@ -617,6 +618,8 @@
 		25D4D29C13B0780C00A21C4C /* compose-send-pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose-send-pressed@2x.png"; sourceTree = "<group>"; };
 		25D4D29D13B0780C00A21C4C /* compose-send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose-send.png"; sourceTree = "<group>"; };
 		25D4D29E13B0780C00A21C4C /* compose-send@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose-send@2x.png"; sourceTree = "<group>"; };
+		25D4D2AD13B084D400A21C4C /* UITabBarController+Autorotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Autorotate.h"; sourceTree = "<group>"; };
+		25D4D2AE13B084D400A21C4C /* UITabBarController+Autorotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Autorotate.m"; sourceTree = "<group>"; };
 		25D4FAAD13963C29007BE372 /* photo-caption-overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-caption-overlay.png"; sourceTree = "<group>"; };
 		25DC5F2D136626EC00868001 /* AlbumDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumDataCenter.h; sourceTree = "<group>"; };
 		25DC5F2E136626EC00868001 /* AlbumDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumDataCenter.m; sourceTree = "<group>"; };
@@ -1032,6 +1035,8 @@
 				2540977313848ADD00EBE848 /* NSURL+Util.m */,
 				25C77C4C138E7B2A00D09103 /* UIImage+NSCoding.h */,
 				25C77C4D138E7B2A00D09103 /* UIImage+NSCoding.m */,
+				25D4D2AD13B084D400A21C4C /* UITabBarController+Autorotate.h */,
+				25D4D2AE13B084D400A21C4C /* UITabBarController+Autorotate.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1857,6 +1862,7 @@
 				254E43D013AF31ED00FD9D74 /* PSImageCache.m in Sources */,
 				25D4D28B13B0776100A21C4C /* ComposeViewController.m in Sources */,
 				25D4D28E13B077A300A21C4C /* PSAlertCenter.m in Sources */,
+				25D4D2AF13B084D400A21C4C /* UITabBarController+Autorotate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

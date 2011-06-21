@@ -13,8 +13,8 @@
 
 @class Photo;
 
-@interface PSZoomView : PSView <UIGestureRecognizerDelegate> {
-  UIView *_containerView;
+@interface PSZoomView : PSView <UIScrollViewDelegate> {
+  UIScrollView *_containerView;
   PSImageView *_zoomImageView;
   UIView *_shadeView;
   UILabel *_captionLabel;

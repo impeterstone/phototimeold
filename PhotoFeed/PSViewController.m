@@ -25,10 +25,6 @@
   self.view.autoresizesSubviews = YES;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void)dealloc {
   DLog(@"Called by class: %@", [self class]);
   [super dealloc];

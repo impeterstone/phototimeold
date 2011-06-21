@@ -8,6 +8,7 @@
  */
 
 #import "PhotoFeedAppDelegate.h"
+#import "UITabBarController+Autorotate.h"
 #import "UIScreen+ConvertRect.h"
 #import "UIView+Additions.h"
 #import "UILabel+SizeToFitWidth.h"

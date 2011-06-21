@@ -26,15 +26,15 @@
   if (self) {
     _photo = nil;
     self.backgroundColor = [UIColor clearColor];
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-//    self.autoresizesSubviews = YES;
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.autoresizesSubviews = YES;
     
     _oldImageFrame = CGRectZero;
     _zoomImageView = [[PSImageView alloc] initWithFrame:frame];
     _zoomImageView.contentMode = UIViewContentModeScaleAspectFit;
     _zoomImageView.userInteractionEnabled = YES;
 //    _zoomImageView.alpha = 0.0;
-    _zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     _shadeView = [[UIView alloc] initWithFrame:frame];
     _shadeView.backgroundColor = [UIColor blackColor];
@@ -50,78 +50,28 @@
     _captionLabel.shadowColor = [UIColor blackColor];
     _captionLabel.shadowOffset = CGSizeMake(0, 1);
     _captionLabel.alpha = 0.0;
-    _captionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     
-    _containerView = [[UIView alloc] initWithFrame:self.bounds];
+    _containerView = [[UIScrollView alloc] initWithFrame:frame];
+    _containerView.delegate = self;
+    _containerView.maximumZoomScale = 3.0;
+    _containerView.minimumZoomScale = 1.0;
+    _containerView.bouncesZoom = YES;
     _containerView.backgroundColor = [UIColor clearColor];
+    [_containerView addSubview:_zoomImageView];
     
     [self addSubview:_shadeView];
     [self addSubview:_containerView];
-    [_containerView addSubview:_zoomImageView];
-    [_containerView addSubview:_captionLabel];
-
+    [self addSubview:_captionLabel];
     
-    // Gestures
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
-    pinchGesture.delegate = self;
-    [_zoomImageView addGestureRecognizer:pinchGesture];
-    [pinchGesture release];
-    
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-    panGesture.maximumNumberOfTouches = 2;
-    [_zoomImageView addGestureRecognizer:panGesture];
-    [panGesture release];
-    
+    // Gestures    
     UITapGestureRecognizer *removeTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeZoom)] autorelease];
     [self addGestureRecognizer:removeTap];
-    
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChangedFromNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
   }
   return self;
 }
 
-#pragma mark -
-#pragma mark Gestures
-- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gestureRecognizer {
-  
-  if([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
-    // Reset the last scale, necessary if there are multiple objects with different scales
-    _lastScale = [gestureRecognizer scale];
-  }
-  
-  if ([gestureRecognizer state] == UIGestureRecognizerStateBegan ||
-      [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
-    
-    CGFloat currentScale = [[[gestureRecognizer view].layer valueForKeyPath:@"transform.scale"] floatValue];
-    
-    // Constants to adjust the max/min values of zoom
-    const CGFloat kMaxScale = 2.0;
-    const CGFloat kMinScale = 1.0;
-    
-    CGFloat newScale = 1 -  (_lastScale - [gestureRecognizer scale]); // new scale is in the range (0-1)
-    newScale = MIN(newScale, kMaxScale / currentScale);
-    newScale = MAX(newScale, kMinScale / currentScale);
-    CGAffineTransform transform = CGAffineTransformScale([[gestureRecognizer view] transform], newScale, newScale);
-    [gestureRecognizer view].transform = transform;
-    
-    _lastScale = [gestureRecognizer scale];  // Store the previous scale factor for the next pinch gesture call
-  }
-}
-
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer {
-  UIView *piece = [gestureRecognizer view];
-  
-  if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
-    CGPoint translation = [gestureRecognizer translationInView:[piece superview]];
-    
-    [piece setCenter:CGPointMake([piece center].x + translation.x, [piece center].y + translation.y)];
-    [gestureRecognizer setTranslation:CGPointZero inView:[piece superview]];
-  }
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-  return YES;
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+  return _zoomImageView;
 }
 
 - (void)showZoom {
@@ -144,8 +94,8 @@
 }
 
 - (void)removeZoom {
-  _containerView.transform = CGAffineTransformIdentity;
-  _containerView.bounds = CGRectMake(0, 0, 320, 480);
+  [_containerView setZoomScale:1.0 animated:NO];
+//  _containerView.bounds = CGRectMake(0, 0, 320, 480);
   
   [UIView beginAnimations:@"ZoomImage" context:nil];
   [UIView setAnimationDelegate:self];
@@ -163,48 +113,10 @@
 
 - (void)removeZoomView {
   [self removeFromSuperview];
-  _zoomImageView.transform = CGAffineTransformIdentity;
-}
-
-- (void)orientationChangedFromNotification:(NSNotification *)notification {
-  UIDevice *device = [notification object];
-  UIDeviceOrientation orientation = [device orientation];
-
-  [UIView beginAnimations:@"ViewOrientationChange" context:nil];
-  [UIView setAnimationDuration:0.4];
-  [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-  
-  switch (orientation) {
-    case UIDeviceOrientationPortrait:
-      _containerView.transform = CGAffineTransformIdentity;
-      _containerView.bounds = CGRectMake(0, 0, 320, 480);
-      break;
-    case UIDeviceOrientationPortraitUpsideDown:
-      _containerView.transform = CGAffineTransformIdentity;
-      _containerView.transform = CGAffineTransformMakeRotation(RADIANS(180));
-      _containerView.bounds = CGRectMake(0, 0, 320, 480);
-      break;
-    case UIDeviceOrientationLandscapeLeft:
-      _containerView.transform = CGAffineTransformIdentity;
-      _containerView.transform = CGAffineTransformMakeRotation(RADIANS(90));
-      _containerView.bounds = CGRectMake(0, 0, 480, 320);
-      break;
-    case UIDeviceOrientationLandscapeRight:
-      _containerView.transform = CGAffineTransformIdentity;
-      _containerView.transform = CGAffineTransformMakeRotation(RADIANS(270));
-      _containerView.bounds = CGRectMake(0, 0, 480, 320);
-      break;
-    default:
-      // face up or face down, no-op
-      break;
-  }
-  
-  [UIView commitAnimations];
+  [self release], self = nil;
 }
 
 - (void)dealloc {
-  [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
   RELEASE_SAFELY(_zoomImageView);
   RELEASE_SAFELY(_shadeView);
   RELEASE_SAFELY(_caption);

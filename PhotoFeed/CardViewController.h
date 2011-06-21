@@ -38,4 +38,7 @@
 - (void)addButtonWithTitle:(NSString *)title andSelector:(SEL)selector isLeft:(BOOL)isLeft;
 - (void)addButtonWithImage:(UIImage *)image andSelector:(SEL)selector isLeft:(BOOL)isLeft;
 
+// Orientation
+- (void)orientationChangedFromNotification:(NSNotification *)notification;
+
 @end

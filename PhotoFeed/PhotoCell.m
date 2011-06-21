@@ -41,7 +41,7 @@ static UIImage *_commentIcon = nil;
     _photoHeight = 0;
     
     _captionLabel = [[UILabel alloc] init];
-    _commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(MARGIN_X, 0, 320 - MARGIN_X * 2 - DISCLOSURE_WIDTH - MARGIN_X, COMMENT_HEIGHT)];
+    _commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(MARGIN_X, 0, self.contentView.width - MARGIN_X * 2 - DISCLOSURE_WIDTH - MARGIN_X, COMMENT_HEIGHT)];
     
     // Background Color
     _captionLabel.backgroundColor = [UIColor clearColor];
@@ -79,6 +79,7 @@ static UIImage *_commentIcon = nil;
     
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
+    _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _photoView.shouldAnimate = NO;
 //    _photoView.placeholderImage = [UIImage imageNamed:@"photos-large.png"];
     //    _photoView.shouldScale = YES;
@@ -87,7 +88,8 @@ static UIImage *_commentIcon = nil;
     
     // Comment
     
-    _commentView = [[UIButton alloc] initWithFrame:CGRectZero];
+    _commentView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 44)];
+    _commentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_commentView addTarget:self action:@selector(commentsSelected) forControlEvents:UIControlEventTouchUpInside];
     [_commentView setBackgroundImage:_commentBackground forState:UIControlStateNormal];
 //    _commentView.backgroundColor = [UIColor colorWithPatternImage:_commentBackground];
@@ -108,9 +110,9 @@ static UIImage *_commentIcon = nil;
     
     // Disclosure indicator for comment
     UIImageView *_disclosureView = [[[UIImageView alloc] initWithImage:_disclosureIndicator] autorelease];
-    _disclosureView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _disclosureView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin;
     _disclosureView.contentMode = UIViewContentModeCenter;
-    _disclosureView.frame = CGRectMake(320 - MARGIN_X - DISCLOSURE_WIDTH, 0, DISCLOSURE_WIDTH, _commentView.height);
+    _disclosureView.frame = CGRectMake(self.contentView.width - MARGIN_X - DISCLOSURE_WIDTH, 0, DISCLOSURE_WIDTH, _commentView.height);
     [_commentView addSubview:_disclosureView];
     
     
@@ -163,7 +165,7 @@ static UIImage *_commentIcon = nil;
   [super layoutSubviews];
   
   // Photo
-  _photoView.frame = CGRectMake(0, 0, 320, floor(_photoHeight / (_photoWidth / 320)));
+  _photoView.frame = CGRectMake(0, 0, self.contentView.width, floor(_photoHeight / (_photoWidth / self.contentView.width)));
   
   CGFloat top = _photoView.bottom;
   CGFloat left = MARGIN_X;
@@ -196,8 +198,8 @@ static UIImage *_commentIcon = nil;
   // Add Comment View
   desiredSize = [UILabel sizeForText:_commentLabel.text width:(textWidth - DISCLOSURE_WIDTH - MARGIN_X) font:_commentLabel.font numberOfLines:_commentLabel.numberOfLines lineBreakMode:_commentLabel.lineBreakMode];
   _commentView.top = _photoView.bottom;
-  _commentView.left = 0.0;
-  _commentView.width = 320;
+//  _commentView.left = 0.0;
+//  _commentView.width = self.contentView.width;
   _commentView.height = desiredSize.height + MARGIN_Y * 2;
   _commentLabel.height = desiredSize.height + MARGIN_Y * 2;
 //  _commentView.height = COMMENT_HEIGHT;
@@ -208,8 +210,9 @@ static UIImage *_commentIcon = nil;
 + (CGFloat)rowHeightForObject:(id)object forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   Photo *photo = (Photo *)object;
   
+  CGFloat rowWidth = [[self class] rowWidthForInterfaceOrientation:interfaceOrientation];
   CGSize desiredSize = CGSizeZero;
-  CGFloat textWidth = [[self class] rowWidthForInterfaceOrientation:interfaceOrientation] - MARGIN_X * 2; // minus image
+  CGFloat textWidth = rowWidth - MARGIN_X * 2; // minus image
   
   //  CGFloat cellWidth = [[self class] rowWidthForInterfaceOrientation:interfaceOrientation];
   CGFloat desiredHeight = 0;
@@ -218,7 +221,7 @@ static UIImage *_commentIcon = nil;
   CGFloat photoWidth = [photo.width floatValue];
   CGFloat photoHeight = [photo.height floatValue];  
   
-  desiredHeight += floor(photoHeight / (photoWidth / 320));
+  desiredHeight += floor(photoHeight / (photoWidth / rowWidth));
   
   // Comments
   //  desiredHeight += COMMENT_HEIGHT;

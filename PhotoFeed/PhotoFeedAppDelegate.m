@@ -10,17 +10,20 @@
 #import "Constants.h"
 #import "FBConnect.h"
 #import "LoginViewController.h"
-#import "LauncherViewController.h"
 #import "LoginDataCenter.h"
 #import "AlbumDataCenter.h"
 #import "PSImageCache.h"
+
+// Tabs
+#import "AlbumViewController.h"
+#import "SearchViewController.h"
+#import "MoreViewController.h"
 
 @implementation PhotoFeedAppDelegate
 
 @synthesize window = _window;
 @synthesize facebook = _facebook;
 @synthesize sessionKey = _sessionKey;
-@synthesize launcherViewController = _launcherViewController;
 
 + (void)initialize {
   [self setupDefaults];
@@ -63,9 +66,11 @@
   _loginViewController = [[LoginViewController alloc] init];
   _loginViewController.delegate = self;
   
-  _launcherViewController = [[LauncherViewController alloc] init];
+  // Tab Bar Controller
+  _tabBarController = [[UITabBarController alloc] init];
+  [self setupTabBar];
   
-  [self.window addSubview:_launcherViewController.view];
+  [self.window addSubview:_tabBarController.view];
   [self.window makeKeyAndVisible];
   
   // Login if necessary
@@ -102,13 +107,51 @@
 //  [[PSImageCache sharedCache] flushImageCacheToDisk];
 }
 
+#pragma mark - Tab Bar
+- (void)setupTabBar {
+  // Setup Tabs
+  AlbumViewController *me = [[[AlbumViewController alloc] init] autorelease];
+  me.albumType = AlbumTypeMe;
+  UINavigationController *meNav = [[[UINavigationController alloc] initWithRootViewController:me] autorelease];
+  
+  AlbumViewController *friends = [[[AlbumViewController alloc] init] autorelease];
+  friends.albumType = AlbumTypeFriends;
+  UINavigationController *friendsNav = [[[UINavigationController alloc] initWithRootViewController:friends] autorelease];
+  
+  AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
+  favorites.albumType = AlbumTypeFavorites;
+  UINavigationController *favoritesNav = [[[UINavigationController alloc] initWithRootViewController:favorites] autorelease];
+  
+  //  SearchViewController *search = [[[SearchViewController alloc] init] autorelease];
+  //  UINavigationController *searchNav = [[[UINavigationController alloc] initWithRootViewController:search] autorelease];
+  
+  AlbumViewController *history = [[[AlbumViewController alloc] init] autorelease];
+  history.albumType = AlbumTypeHistory;
+  UINavigationController *historyNav = [[[UINavigationController alloc] initWithRootViewController:history] autorelease];
+  
+  MoreViewController *more = [[[MoreViewController alloc] init] autorelease];
+  UINavigationController *moreNav = [[[UINavigationController alloc] initWithRootViewController:more] autorelease];
+  
+  // Setup Tab Items
+  me.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Me" image:[UIImage imageNamed:@"111-user.png"] tag:7001] autorelease];
+  friends.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Friends" image:[UIImage imageNamed:@"112-group.png"] tag:7002] autorelease];
+  favorites.tabBarItem = [[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFavorites tag:7003] autorelease];
+  history.tabBarItem = [[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemHistory tag:7004] autorelease];
+  more.tabBarItem = [[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:7005] autorelease];
+  
+  // Set Tab Controllers
+  _tabBarController.viewControllers = [NSArray arrayWithObjects:meNav, friendsNav, favoritesNav, historyNav, moreNav, nil];
+  
+  // Select previously chosen tab
+  _tabBarController.selectedViewController = [_tabBarController.viewControllers objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lastSelectedTab"]];
+}
 
 #pragma mark -
 #pragma mark Login
 - (void)tryLogin {
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    if (![_launcherViewController.modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
-      [_launcherViewController presentModalViewController:_loginViewController animated:NO];
+    if (![_tabBarController.modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
+      [_tabBarController presentModalViewController:_loginViewController animated:NO];
     }
   } else {
     _facebook.accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"];
@@ -241,8 +284,8 @@
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {  
   // Session/Register request finished
-  if ([_launcherViewController.modalViewController isEqual:_loginViewController]) {
-    [_launcherViewController dismissModalViewControllerAnimated:YES];
+  if ([_tabBarController.modalViewController isEqual:_loginViewController]) {
+    [_tabBarController dismissModalViewControllerAnimated:YES];
   }
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
@@ -272,9 +315,9 @@
 }
 
 - (void)dealloc {
+  RELEASE_SAFELY(_tabBarController);
   RELEASE_SAFELY(_sessionKey);
   RELEASE_SAFELY(_loginViewController);
-  RELEASE_SAFELY(_launcherViewController);
   RELEASE_SAFELY(_facebook);
   RELEASE_SAFELY(_window);
   [super dealloc];
