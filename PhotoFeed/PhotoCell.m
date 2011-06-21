@@ -7,7 +7,6 @@
 //
 
 #import "PhotoCell.h"
-#import "UIImage+ScalingAndCropping.h"
 #import "Comment.h"
 
 #define CAPTION_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0]

@@ -7,7 +7,6 @@
 //
 
 #import "Comment+Serialize.h"
-#import "NSDate+Util.h"
 #import "NSDate+Helper.h"
 
 @implementation Comment (Serialize)

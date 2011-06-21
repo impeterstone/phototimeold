@@ -9,7 +9,7 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "ComposeViewController.h"
 #import "ComposeDataCenter.h"
-#import "UIImage+ScalingAndCropping.h"
+#import "UIImage+SML.h"
 #import "PSAlertCenter.h"
 #import "PSImageCache.h"
 

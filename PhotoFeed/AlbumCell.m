@@ -7,7 +7,6 @@
 //
 
 #import "AlbumCell.h"
-#import "UIImage+ScalingAndCropping.h"
 
 #define ALBUM_CELL_HEIGHT 120.0
 #define ALBUM_CELL_HEIGHT_ZOOMED 144.0 // 120 * 1.2

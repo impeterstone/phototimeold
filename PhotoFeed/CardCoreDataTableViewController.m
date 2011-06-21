@@ -8,7 +8,6 @@
 
 #import "CardCoreDataTableViewController.h"
 #import "PSCoreDataStack.h"
-#import "PSSearchStack.h"
 
 #define FETCH_COUNT 50
 

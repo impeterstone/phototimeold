@@ -8,15 +8,7 @@
  */
 
 #import "PhotoFeedAppDelegate.h"
-#import "UITabBarController+Autorotate.h"
-#import "UIScreen+ConvertRect.h"
-#import "UIView+Additions.h"
-#import "UILabel+SizeToFitWidth.h"
-#import "NSDate+Helper.h"
-//#import "NSDate+HumanInterval.h"
-#import "NSURL+Util.h"
-#import "UIImage+NSCoding.h"
-#import "PSRandomSortDescriptor.h"
+#import "NetworkConstants.h"
 
 #ifdef __APPLE__
   #include "TargetConditionals.h"

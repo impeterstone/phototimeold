@@ -7,7 +7,6 @@
 //
 
 #import "Photo+Serialize.h"
-#import "NSDate+Util.h"
 #import "NSDate+Helper.h"
 
 @implementation Photo (Serialize)
