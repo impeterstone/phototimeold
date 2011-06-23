@@ -18,7 +18,7 @@ static UIImage *_bgImage = nil;
 @implementation HeaderCell
 
 + (void)initialize {
-  _bgImage = [[UIImage imageNamed:@"table_plain_header_gray.png"] retain];
+  _bgImage = [[UIImage imageNamed:@"bg-table-header.png"] retain];
 }
 
 - (id)initWithFrame:(CGRect)frame{

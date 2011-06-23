@@ -108,7 +108,7 @@
   NSString *sectionName = [[[self.fetchedResultsController sections] objectAtIndex:section] name];
   
   UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 26)] autorelease];
-  sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"table_plain_header_gray.png"]];
+  sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-table-header.png"]];
   
   UILabel *sectionHeaderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(5, 0, 310, 26)] autorelease];
   sectionHeaderLabel.backgroundColor = [UIColor clearColor];
@@ -161,7 +161,7 @@
 - (void)delayedFilterContentWithTimer:(NSTimer *)timer {
   NSDictionary *userInfo = [timer userInfo];
   NSString *searchText = [userInfo objectForKey:@"searchText"];
-  NSString *scope = [userInfo objectForKey:@"scope"];
+//  NSString *scope = [userInfo objectForKey:@"scope"];
   NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
   
   //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];

@@ -133,6 +133,9 @@
 // Optional table footer
 - (void)setupTableFooter {
   // subclass should implement
+  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
+  _tableView.tableFooterView = footerImage;
+  [footerImage release];
 }
 
 // Optional Header View

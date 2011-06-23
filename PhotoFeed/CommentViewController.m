@@ -72,12 +72,6 @@
 //  [self reloadCardController];
 }
 
-- (void)setupTableFooter {
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"table_footer_background.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
-}
-
 - (void)setupHeader {
   _headerHeight = 0.0;
   _headerOffset = 0.0;
@@ -178,7 +172,7 @@
       
       // Create Rollup
       _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
-      [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"photo-caption-overlay.png" withLeftCapWidth:0 topCapWidth:0]];
+      [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
       [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
       [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
       self.tableView.tableHeaderView = _taggedFriendsView;

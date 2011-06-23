@@ -38,7 +38,7 @@ static UIImage *_vignetteInverted = nil;
     _captionLabel.backgroundColor = [UIColor clearColor];
     
     // Font
-    _captionLabel.font = CAPTION_FONT;
+    _captionLabel.font = TITLE_FONT;
     
     // Text Color
     _captionLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
@@ -66,7 +66,7 @@ static UIImage *_vignetteInverted = nil;
     
     // Rollup
     _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
-//    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"photo-caption-overlay.png" withLeftCapWidth:0 topCapWidth:0]];
+//    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
     _taggedFriendsView.hidden = YES;
 
 //    _photoView.placeholderImage = [UIImage imageNamed:@"photos-large.png"];
