@@ -28,7 +28,7 @@
     _photoDataCenter.delegate = self;
     _sectionNameKeyPathForFetchedResultsController = nil;
     self.hidesBottomBarWhenPushed = YES;
-    _fetchLimit = 10;
+    _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
   }
@@ -73,45 +73,35 @@
   [self reloadCardController];
 }
 
+#pragma mark - Tagged Friends
 - (void)getTaggedFriends {
-  if (!_taggedFriendsView) {
-    NSArray *taggedFriendIds = [[_fetchedResultsController fetchedObjects] valueForKeyPath:@"@distinctUnionOfArrays.tags.fromId"];
-    NSArray *taggedFriendNames = [[_fetchedResultsController fetchedObjects] valueForKeyPath:@"@distinctUnionOfArrays.tags.fromName"];
-
-    // For testing lots of pictures
-//    NSMutableArray *testArray = [NSMutableArray array];
-//    [testArray addObjectsFromArray:taggedFriendIds];
-//    [testArray addObjectsFromArray:taggedFriendIds];
-//    [testArray addObjectsFromArray:taggedFriendIds];
-//    [testArray addObjectsFromArray:taggedFriendIds];
-//    [testArray addObjectsFromArray:taggedFriendIds];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getPhotosForAlbum" substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
+  [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"tags"]];
+  
+  NSArray *allPhotos = [self.context executeFetchRequest:fetchRequest error:NULL];
+  
+  if (allPhotos && [allPhotos count] > 0) {
+    NSArray *taggedFriendIds = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromId"];
+    NSArray *taggedFriendNames = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromName"];
     
     if ([taggedFriendIds count] > 0) {
       NSMutableArray *taggedFriendPictures = [NSMutableArray array];
       for (NSString *friendId in taggedFriendIds) {
         [taggedFriendPictures addObject:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", friendId]];
       }
-      [self setupTaggedFriendsView];
-      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"%d friends were tagged in this album.", [taggedFriendIds count]]];
+      
+      // Create Rollup
+      _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
+      [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"photo-caption-overlay.png" withLeftCapWidth:0 topCapWidth:0]];
+      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this album: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
       [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
-      [_taggedFriendsView setFooterText:[NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]];
+      [_taggedFriendsView layoutIfNeeded];
+      self.tableView.tableHeaderView = _taggedFriendsView;
     }
   }
 }
 
-- (void)setupTaggedFriendsView {
-  [UIView beginAnimations:nil context:nil];
-  [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-  [UIView setAnimationDuration:0.4];
-  
-  // Header
-  _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 90)];
-//  [taggedFriendsView setPictureURLArray:[NSArray arrayWithObjects:@"http://graph.facebook.com/ptshih/picture?type=square", @"http://graph.facebook.com/ptshih/picture?type=square", @"http://graph.facebook.com/ptshih/picture?type=square", nil]];
-  [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"search_background.png" withLeftCapWidth:0 topCapWidth:22]];
-  self.tableView.tableHeaderView = _taggedFriendsView;
-  [UIView commitAnimations];
-}
-
+#pragma mark - State Machine
 - (void)updateState {
   [super updateState];
   [self getTaggedFriends];

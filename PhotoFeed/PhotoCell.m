@@ -8,10 +8,10 @@
 
 #import "PhotoCell.h"
 #import "Comment.h"
-
-#define CAPTION_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0]
+#import "RollupView.h"
 
 static UIImage *_vignette = nil;
+static UIImage *_vignetteInverted = nil;
 
 @implementation PhotoCell
 
@@ -21,6 +21,7 @@ static UIImage *_vignette = nil;
 
 + (void)initialize {
   _vignette = [[UIImage imageNamed:@"vignette-caption.png"] retain];
+  _vignetteInverted = [[UIImage imageNamed:@"vignette-caption-inverted.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -60,6 +61,13 @@ static UIImage *_vignette = nil;
     // Vignette
     _vignetteView = [[UIImageView alloc] initWithImage:_vignette];
     _vignetteView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _vignetteInvertedView = [[UIImageView alloc] initWithImage:_vignetteInverted];
+    _vignetteInvertedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // Rollup
+    _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
+//    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"photo-caption-overlay.png" withLeftCapWidth:0 topCapWidth:0]];
+    _taggedFriendsView.hidden = YES;
 
 //    _photoView.placeholderImage = [UIImage imageNamed:@"photos-large.png"];
     //    _photoView.shouldScale = YES;
@@ -69,6 +77,8 @@ static UIImage *_vignette = nil;
     // Add to contentView
     [self.contentView addSubview:_photoView];
     [self.contentView addSubview:_vignetteView];
+    [self.contentView addSubview:_vignetteInvertedView];
+    [self.contentView addSubview:_taggedFriendsView];
     
     // Add labels
     [self.contentView addSubview:_captionLabel];
@@ -109,6 +119,7 @@ static UIImage *_vignette = nil;
   _photoView.image = nil;
   _photoWidth = 0;
   _photoHeight = 0;
+  _taggedFriendsView.hidden = YES;
 }
 
 - (void)layoutSubviews {
@@ -117,11 +128,24 @@ static UIImage *_vignette = nil;
   // Photo
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, floor(_photoHeight / (_photoWidth / self.contentView.width)));
   _vignetteView.frame = CGRectMake(0, _photoView.bottom - _vignetteView.height, _vignetteView.width, _vignetteView.height);
+  _vignetteInvertedView.frame = CGRectMake(0, 0, _vignetteInvertedView.width, _vignetteInvertedView.height);
   
-  CGFloat top = _photoView.bottom;
+  CGFloat bottom = _photoView.bottom;
   CGFloat left = MARGIN_X;
   CGFloat textWidth = self.contentView.width - MARGIN_X * 2;
   CGSize desiredSize = CGSizeZero;
+  
+  // Rollup
+  if ([_photo.tags count] > 0) {
+    _taggedFriendsView.hidden = NO;
+    NSArray *taggedFriendNames = [[_photo.tags valueForKeyPath:@"@distinctUnionOfObjects.fromName"] allObjects];
+    
+    [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@", [taggedFriendNames componentsJoinedByString:@", "]]];
+    [_taggedFriendsView layoutIfNeeded];
+    _taggedFriendsView.top = 0;
+  } else {
+    _taggedFriendsView.hidden = YES;
+  }
   
   // Caption Label
   if ([_captionLabel.text length] > 0) {    
@@ -130,7 +154,7 @@ static UIImage *_vignette = nil;
     desiredSize = [UILabel sizeForText:_captionLabel.text width:textWidth font:_captionLabel.font numberOfLines:3 lineBreakMode:_captionLabel.lineBreakMode];
     _captionLabel.width = desiredSize.width;
     _captionLabel.height = desiredSize.height;
-    _captionLabel.top = top - _captionLabel.height - MARGIN_Y;
+    _captionLabel.top = bottom - _captionLabel.height - MARGIN_Y;
     _captionLabel.left = left;
     
   } else {
@@ -188,6 +212,8 @@ static UIImage *_vignette = nil;
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_captionLabel);
   RELEASE_SAFELY(_vignetteView);
+  RELEASE_SAFELY(_vignetteInvertedView);
+  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }
 

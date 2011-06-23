@@ -9,10 +9,6 @@
 #import "CommentCell.h"
 #import "Comment.h"
 
-#define NAME_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0]
-#define MESSAGE_FONT [UIFont fontWithName:@"HelveticaNeue" size:14.0]
-#define SMALL_ITALIC_FONT [UIFont fontWithName:@"HelveticaNeue-Italic" size:12.0]
-
 @implementation CommentCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -28,9 +24,9 @@
     _messageLabel.backgroundColor = [UIColor clearColor];
     _timestampLabel.backgroundColor = [UIColor clearColor];
     
-    _nameLabel.font = NAME_FONT;
-    _messageLabel.font = MESSAGE_FONT;
-    _timestampLabel.font = SMALL_ITALIC_FONT;
+    _nameLabel.font = TITLE_FONT;
+    _messageLabel.font = NORMAL_FONT;
+    _timestampLabel.font = SUBTITLE_FONT;
     
     _nameLabel.textColor = FB_COLOR_DARK_GRAY_BLUE;
     _messageLabel.textColor = [UIColor darkTextColor];
@@ -96,11 +92,11 @@
   desiredHeight += MARGIN_Y;
   
   // Name/Timestamp
-  desiredSize = [UILabel sizeForText:comment.fromName width:textWidth font:NAME_FONT numberOfLines:1 lineBreakMode:UILineBreakModeTailTruncation];
+  desiredSize = [UILabel sizeForText:comment.fromName width:textWidth font:TITLE_FONT numberOfLines:1 lineBreakMode:UILineBreakModeTailTruncation];
   desiredHeight += desiredSize.height;
   
   // Message
-  desiredSize = [UILabel sizeForText:comment.message width:textWidth font:MESSAGE_FONT numberOfLines:0 lineBreakMode:UILineBreakModeWordWrap];
+  desiredSize = [UILabel sizeForText:comment.message width:textWidth font:NORMAL_FONT numberOfLines:0 lineBreakMode:UILineBreakModeWordWrap];
   desiredHeight += desiredSize.height;
   
   desiredHeight += MARGIN_Y;

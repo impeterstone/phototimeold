@@ -11,9 +11,6 @@
 #define ALBUM_CELL_HEIGHT 120.0
 #define ALBUM_CELL_HEIGHT_ZOOMED 144.0 // 120 * 1.2
 
-#define NAME_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0]
-#define CAPTION_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
-#define SMALL_ITALIC_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
 #define RIBBON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0]
 
 static UIImage *_ribbonImage = nil;
@@ -50,10 +47,10 @@ static UIImage *_overlayImage = nil;
     _countLabel.backgroundColor = [UIColor clearColor];
     
     // Font
-    _nameLabel.font = NAME_FONT;
+    _nameLabel.font = TITLE_FONT;
     _captionLabel.font = CAPTION_FONT;
-    _fromLabel.font = SMALL_ITALIC_FONT;
-    _locationLabel.font = SMALL_ITALIC_FONT;
+    _fromLabel.font = SUBTITLE_FONT;
+    _locationLabel.font = SUBTITLE_FONT;
     _countLabel.font = RIBBON_FONT;
     
     // Text Color
@@ -174,14 +171,14 @@ static UIImage *_overlayImage = nil;
   
   // From/Author
   desiredSize = [UILabel sizeForText:_fromLabel.text width:(textWidth - 2) font:_fromLabel.font numberOfLines:1 lineBreakMode:_fromLabel.lineBreakMode];
-  _fromLabel.top = top - 2;
+  _fromLabel.top = top - 3;
   _fromLabel.left = left + 1;
   _fromLabel.width = desiredSize.width;
   _fromLabel.height = desiredSize.height;
   
   // Location
   desiredSize = [UILabel sizeForText:_locationLabel.text width:(textWidth - _fromLabel.width - MARGIN_X - 2) font:_locationLabel.font numberOfLines:1 lineBreakMode:_locationLabel.lineBreakMode];
-  _locationLabel.top = top - 2;
+  _locationLabel.top = top - 3;
   _locationLabel.left = self.contentView.width - desiredSize.width - MARGIN_X - 1;
   _locationLabel.width = desiredSize.width;
   _locationLabel.height = desiredSize.height;

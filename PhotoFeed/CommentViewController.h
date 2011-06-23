@@ -12,6 +12,7 @@
 
 @class CommentDataCenter;
 @class Photo;
+@class RollupView;
 
 @interface CommentViewController : CardCoreDataTableViewController <ComposeDelegate> {
   CommentDataCenter *_commentDataCenter;
@@ -19,6 +20,7 @@
   UIView *_commentHeaderView;
   UIImage *_photoImage;
   UIImageView *_photoHeaderView;
+  RollupView *_taggedFriendsView;
   
   CGFloat _headerHeight;
   CGFloat _headerOffset;
@@ -29,6 +31,7 @@
 @property (nonatomic, assign) Photo *photo;
 @property (nonatomic, assign) UIImage *photoImage;
 
+- (void)getTaggedFriends;
 - (void)newComment;
 - (void)setupHeader;
 - (void)setupFooter;

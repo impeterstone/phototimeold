@@ -13,6 +13,7 @@
 #import "Photo.h"
 #import "ComposeViewController.h"
 #import "PhotoDataCenter.h" // for insert
+#import "RollupView.h"
 
 @implementation CommentViewController
 
@@ -154,6 +155,43 @@
   [self setupFooterWithView:footerView];
 }
 
+#pragma mark - Tagged Friends
+- (void)getTaggedFriends {
+  if (!_taggedFriendsView) {
+    NSSet *tags = _photo.tags;
+    NSArray *taggedFriendIds = [[tags valueForKeyPath:@"@distinctUnionOfObjects.fromId"] allObjects];
+    NSArray *taggedFriendNames = [[tags valueForKeyPath:@"@distinctUnionOfObjects.fromName"] allObjects];
+    
+    // For testing lots of pictures
+    //    NSMutableArray *testArray = [NSMutableArray array];
+    //    [testArray addObjectsFromArray:taggedFriendIds];
+    //    [testArray addObjectsFromArray:taggedFriendIds];
+    //    [testArray addObjectsFromArray:taggedFriendIds];
+    //    [testArray addObjectsFromArray:taggedFriendIds];
+    //    [testArray addObjectsFromArray:taggedFriendIds];
+    
+    if ([taggedFriendIds count] > 0) {
+      NSMutableArray *taggedFriendPictures = [NSMutableArray array];
+      for (NSString *friendId in taggedFriendIds) {
+        [taggedFriendPictures addObject:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", friendId]];
+      }
+      
+      // Create Rollup
+      _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
+      [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"photo-caption-overlay.png" withLeftCapWidth:0 topCapWidth:0]];
+      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
+      [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
+      self.tableView.tableHeaderView = _taggedFriendsView;
+    }
+  }
+}
+
+#pragma mark - State Machine
+- (void)updateState {
+  [super updateState];
+//  [self getTaggedFriends]; // disabled
+}
+
 - (void)reloadCardController {
   [super reloadCardController];
 }
@@ -232,15 +270,20 @@
   [selectedBackgroundView release];
 }
 
-#pragma mark -
-#pragma mark FetchRequest
+#pragma mark - FetchRequest
 - (NSFetchRequest *)getFetchRequest {
-  return [_commentDataCenter fetchCommentsForPhoto:_photo];
+  NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES] autorelease];
+  NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptor, nil] autorelease];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getCommentsForPhoto" substitutionVariables:[NSDictionary dictionaryWithObject:_photo forKey:@"desiredPhoto"]];
+  [fetchRequest setSortDescriptors:sortDescriptors];
+  [fetchRequest setFetchBatchSize:10];
+  return fetchRequest;
 }
 
 - (void)dealloc {
   _commentDataCenter.delegate = nil;
   RELEASE_SAFELY(_commentDataCenter);
+  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }
 

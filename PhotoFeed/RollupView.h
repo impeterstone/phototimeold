@@ -16,10 +16,13 @@
   UILabel *_footerLabel;
   UIScrollView *_pictureScrollView;
   NSArray *_pictureURLArray;
+  
+  CGFloat _desiredHeight;
 }
 
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, retain) NSArray *pictureURLArray;
+@property (nonatomic, readonly) CGFloat desiredHeight;
 
 - (void)setHeaderText:(NSString *)headerText;
 - (void)setFooterText:(NSString *)footerText;

@@ -15,6 +15,4 @@
   
 }
 
-- (NSFetchRequest *)fetchCommentsForPhoto:(Photo *)photo;
-
 @end

@@ -25,7 +25,6 @@
 @property (nonatomic, assign) Album *album;
 
 - (void)getTaggedFriends;
-- (void)setupTaggedFriendsView;
 - (void)zoomPhotoForCell:(id)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

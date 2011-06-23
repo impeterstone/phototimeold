@@ -16,29 +16,40 @@
 
 @synthesize backgroundImage = _backgroundImage;
 @synthesize pictureURLArray = _pictureURLArray;
+@synthesize desiredHeight = _desiredHeight;
 
 - (id)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
     // Initialization code
-    _headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, self.width - MARGIN * 2, 20)];
-    _headerLabel.backgroundColor = [UIColor clearColor];
-    _headerLabel.font = NORMAL_FONT;
-    _headerLabel.textColor = [UIColor whiteColor];
+    _desiredHeight = 0.0;
     
-    _pictureScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(MARGIN, _headerLabel.bottom + MARGIN, self.width - MARGIN * 2, PICTURE_SIZE)];
+    _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _headerLabel.backgroundColor = [UIColor clearColor];
+    _headerLabel.font = SUBTITLE_FONT;
+    _headerLabel.textColor = [UIColor whiteColor];
+    _headerLabel.numberOfLines = 0;
+    _headerLabel.shadowColor = [UIColor blackColor];
+    _headerLabel.shadowOffset = CGSizeMake(0, 1);
+    
+    _pictureScrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
     _pictureScrollView.scrollsToTop = NO;
     _pictureScrollView.scrollEnabled = YES;
+    _pictureScrollView.bounces = YES;
     _pictureScrollView.showsHorizontalScrollIndicator = NO;
     _pictureScrollView.showsVerticalScrollIndicator = NO;
     
-    _footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(MARGIN, _pictureScrollView.bottom + MARGIN, self.width - MARGIN * 2, 20)];
+    _footerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _footerLabel.backgroundColor = [UIColor clearColor];
     _footerLabel.font = SUBTITLE_FONT;
     _footerLabel.textColor = [UIColor whiteColor];
+    _footerLabel.numberOfLines = 1;
+    _footerLabel.shadowColor = [UIColor blackColor];
+    _footerLabel.shadowOffset = CGSizeMake(0, 1);
     
     // Background Image
     _backgroundView = [[UIImageView alloc] initWithFrame:self.bounds];
+    _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_backgroundView];
     
     [self addSubview:_headerLabel];
@@ -51,7 +62,44 @@
 - (void)layoutSubviews {
   [super layoutSubviews];
   
+  CGFloat top = MARGIN;
+  CGFloat left = MARGIN;
+  CGFloat textWidth = self.width - MARGIN * 2;
+  CGSize desiredSize = CGSizeZero;
   
+  // Header
+  if ([_headerLabel.text length] > 0) {
+    desiredSize = [UILabel sizeForText:_headerLabel.text width:textWidth font:_headerLabel.font numberOfLines:_headerLabel.numberOfLines lineBreakMode:_headerLabel.lineBreakMode];
+    _headerLabel.width = desiredSize.width;
+    _headerLabel.height = desiredSize.height;
+    _headerLabel.top = top;
+    _headerLabel.left = left;
+    
+    top = _headerLabel.bottom + MARGIN;
+  }
+  
+  // Pictures
+  if ([_pictureURLArray count] > 0) {
+    _pictureScrollView.frame = CGRectMake(left, top, textWidth, PICTURE_SIZE);
+    top = _pictureScrollView.bottom + MARGIN;
+  }
+  
+  // Footer
+  if ([_footerLabel.text length] > 0) {
+    desiredSize = [UILabel sizeForText:_footerLabel.text width:textWidth font:_footerLabel.font numberOfLines:_footerLabel.numberOfLines lineBreakMode:_footerLabel.lineBreakMode];
+    _footerLabel.width = desiredSize.width;
+    _footerLabel.height = desiredSize.height;
+    _footerLabel.top = top;
+    _footerLabel.left = left;
+    
+    top = _footerLabel.bottom + MARGIN;
+  }
+  
+  // Extra padding at bottom
+//  top += MARGIN;
+  
+  _desiredHeight = top;
+  self.height = top;
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage {
@@ -59,15 +107,19 @@
   _backgroundImage = [backgroundImage retain];
   
   [_backgroundView setImage:_backgroundImage];
+  [self setNeedsLayout];
 }
 
 - (void)setHeaderText:(NSString *)headerText {
   _headerLabel.text = headerText;
   // resize
+  [self setNeedsLayout];
 }
 
 - (void)setFooterText:(NSString *)footerText {
   _footerLabel.text = footerText;
+  
+  [self setNeedsLayout];
 }
 
 - (void)setPictureURLArray:(NSArray *)pictureURLArray {
@@ -89,6 +141,8 @@
   
   NSInteger numPictures = [pictureURLArray count];
   _pictureScrollView.contentSize = CGSizeMake(numPictures * PICTURE_SIZE + numPictures * MARGIN - MARGIN, _pictureScrollView.height);
+  
+  [self setNeedsLayout];
 }
 
 - (void)dealloc {
