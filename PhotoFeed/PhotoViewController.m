@@ -180,7 +180,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   PhotoCell *cell = (PhotoCell *)[tableView cellForRowAtIndexPath:indexPath];
-  [self zoomPhotoForCell:cell atIndexPath:indexPath];
+  if (!cell.photoView.image) return;
+  
+  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  CommentViewController *cvc = [[CommentViewController alloc] init];
+  cvc.photo = photo;
+  cvc.photoImage = cell.photoView.image; // assign
+  [self.navigationController pushViewController:cvc animated:YES];
+  [cvc release];
+  
+
+//  [self zoomPhotoForCell:cell atIndexPath:indexPath];
 }
 
 - (void)zoomPhotoForCell:(PhotoCell *)cell atIndexPath:(NSIndexPath *)indexPath {

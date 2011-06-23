@@ -14,10 +14,8 @@
 
 @interface PhotoCell : PSCell {
   PSURLCacheImageView *_photoView; // optional
-  UIView *_captionView;
   UILabel *_captionLabel;
-  UIButton *_commentView;
-  UILabel *_commentLabel;
+  UIImageView *_vignetteView;
   
   CGFloat _photoWidth;
   CGFloat _photoHeight;
@@ -32,7 +30,6 @@
 
 - (void)pinchZoom:(UIPinchGestureRecognizer *)gesture;
 - (void)triggerPinch;
-- (void)commentsSelected;
 - (void)loadPhoto;
 
 @end

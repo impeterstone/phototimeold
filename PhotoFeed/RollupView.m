@@ -27,6 +27,7 @@
     _headerLabel.textColor = [UIColor whiteColor];
     
     _pictureScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(MARGIN, _headerLabel.bottom + MARGIN, self.width - MARGIN * 2, PICTURE_SIZE)];
+    _pictureScrollView.scrollsToTop = NO;
     _pictureScrollView.scrollEnabled = YES;
     _pictureScrollView.showsHorizontalScrollIndicator = NO;
     _pictureScrollView.showsVerticalScrollIndicator = NO;
