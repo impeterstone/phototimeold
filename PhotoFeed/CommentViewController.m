@@ -12,6 +12,7 @@
 #import "CommentCell.h"
 #import "Photo.h"
 #import "ComposeViewController.h"
+#import "PhotoDataCenter.h" // for insert
 
 @implementation CommentViewController
 
@@ -27,7 +28,7 @@
     self.hidesBottomBarWhenPushed = YES;
     _fetchLimit = 100;
     _fetchTotal = _fetchLimit;
-    _frcDelegate = nil;
+    _frcDelegate = self;
   }
   return self;
 }
@@ -176,10 +177,18 @@
 - (void)newComment {
   ComposeViewController *cvc = [[ComposeViewController alloc] init];
   cvc.photoId = _photo.id;
+  cvc.pickedImage = self.photoImage;
   cvc.delegate = self;
   cvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self presentModalViewController:cvc animated:YES];
   [cvc release];
+}
+
+#pragma mark - Compose Delegate
+- (void)composeDidSendWithUserInfo:(NSDictionary *)userInfo {
+  [[PhotoDataCenter defaultCenter] insertCommentWithDictionary:userInfo forPhoto:_photo inContext:[_photo managedObjectContext]];
+  
+  // Reload
 }
 
 #pragma mark -

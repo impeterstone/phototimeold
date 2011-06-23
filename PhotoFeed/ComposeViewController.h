@@ -34,9 +34,9 @@
 }
 
 @property (nonatomic, copy) NSString *photoId;
+@property (nonatomic, assign) UIImage *pickedImage;
 @property (nonatomic, assign) id <ComposeDelegate> delegate;
 
-- (void)attachPhoto;
 - (void)send;
 - (void)cancel;
 

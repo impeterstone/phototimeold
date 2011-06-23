@@ -15,7 +15,7 @@
 
 + (ComposeDataCenter *)defaultCenter;
 
-// Create a new snap
-- (void)sendPhotoWithAlbumId:(NSString *)albumId andMessage:(NSString *)message andPhoto:(UIImage *)photo shouldShare:(BOOL)shouldShare;
+// Create a new comment
+- (void)sendCommentForPhotoId:(NSString *)photoId withMessage:(NSString *)message;
 
 @end

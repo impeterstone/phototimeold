@@ -20,36 +20,10 @@
 static UIImage *_paperclipImage = nil;
 static UIImage *_imageBorderImage = nil;
 
-@implementation ComposeViewController (PickerDelegateMethods)
-
-// For responding to the user tapping Cancel.
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-  [[picker parentViewController] dismissModalViewControllerAnimated:YES];
-  [picker release];
-}
-
-// For responding to the user accepting a newly-captured picture or movie
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-  NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-  
-  // Handle a still image capture
-  if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo) {
-    UIImage *originalImage = (UIImage *) [info objectForKey:UIImagePickerControllerOriginalImage];
-    
-    _pickedImage = [originalImage scaleProportionalToSize:CGSizeMake(640, 640)];
-    [_pickedImage retain];
-    [_attachPhoto setImage:[_pickedImage cropProportionalToSize:CGSizeMake(66, 66) withRuleOfThirds:NO] forState:UIControlStateNormal];
-  }
-
-  [[picker parentViewController] dismissModalViewControllerAnimated:YES];
-  [picker release];
-}
-
-@end
-
 @implementation ComposeViewController
 
 @synthesize photoId = _photoId;
+@synthesize pickedImage = _pickedImage;
 @synthesize delegate = _delegate;
 
 + (void)initialize {
@@ -143,7 +117,8 @@ static UIImage *_imageBorderImage = nil;
   
   // Attach Photo
   _attachPhoto = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-  [_attachPhoto addTarget:self action:@selector(attachPhoto) forControlEvents:UIControlEventTouchUpInside];
+  _attachPhoto.userInteractionEnabled = NO;
+//  [_attachPhoto addTarget:self action:@selector(attachPhoto) forControlEvents:UIControlEventTouchUpInside];
   _attachPhoto.frame = CGRectMake(0, 0, _imageBorderImage.size.width, _imageBorderImage.size.height);
   _attachPhoto.left = _composeView.width - 5 - _attachPhoto.width;
   _attachPhoto.top = _headerView.bottom + 13;
@@ -156,6 +131,9 @@ static UIImage *_imageBorderImage = nil;
   _paperclipView.top = _headerView.bottom + 3;
   _paperclipView.alpha = 0.0;
   
+  // Set thumbnail
+  [_attachPhoto setImage:[_pickedImage cropProportionalToSize:CGSizeMake(66, 66) withRuleOfThirds:NO] forState:UIControlStateNormal];
+  
   [_composeView addSubview:_headerView];
   [_composeView addSubview:_message];
   [_composeView addSubview:_attachPhoto];
@@ -164,7 +142,7 @@ static UIImage *_imageBorderImage = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-//  [[ComposeDataCenter sharedInstance] setDelegate:self];
+  [[ComposeDataCenter defaultCenter] setDelegate:self];
   
   // Subclass should implement
   [_message becomeFirstResponder];
@@ -172,24 +150,7 @@ static UIImage *_imageBorderImage = nil;
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-//  [[ComposeDataCenter sharedInstance] setDelegate:nil];
-}
-
-- (void)attachPhoto {
-  UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-  imagePicker.allowsEditing = NO;
-  imagePicker.delegate = self;
-  imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-  
-  // Source Type
-  imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-  
-  // Media Types
-  //  imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
-  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-  //  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
-  
-  [self presentModalViewController:imagePicker animated:YES];
+  [[ComposeDataCenter defaultCenter] setDelegate:nil];
 }
 
 - (void)send {
@@ -200,17 +161,35 @@ static UIImage *_imageBorderImage = nil;
   
   _send.enabled = NO;
   
+  // Send comment to FB
+  [[ComposeDataCenter defaultCenter] sendCommentForPhotoId:_photoId withMessage:_message.text];
+}
+
+- (void)cancel {
+  [_message resignFirstResponder];
+}
+
+#pragma mark - PSDataCenterDelegate
+- (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {
+  NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+  NSInteger currentTimestampInteger = floor(currentTimestamp);
   
+  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+  [userInfo setObject:[response objectForKey:@"id"] forKey:@"id"];
+  [userInfo setObject:_message.text forKey:@"message"];
+  [userInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"], @"id", [[NSUserDefaults standardUserDefaults] stringForKey:@"facebookName"], @"name", nil] forKey:@"from"];
+  [userInfo setObject:[NSNumber numberWithInteger:currentTimestampInteger] forKey:@"created_time"];
   
   if (self.delegate && [self.delegate respondsToSelector:@selector(composeDidSendWithUserInfo:)]) {
-    [self.delegate performSelector:@selector(composeDidSendWithUserInfo:) withObject:nil];
+    [self.delegate performSelector:@selector(composeDidSendWithUserInfo:) withObject:userInfo];
   }
   
   [self cancel];
 }
 
-- (void)cancel {
-  [_message resignFirstResponder];
+- (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
+  [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Oh Noes!" andMessage:@"Something happened while sending your comment, please try again..." andDelegate:nil];
+  _send.enabled = YES;
 }
 
 #pragma mark -
@@ -314,7 +293,6 @@ static UIImage *_imageBorderImage = nil;
   RELEASE_SAFELY(_attachPhoto);
   RELEASE_SAFELY(_paperclipView);
   RELEASE_SAFELY(_message);
-  RELEASE_SAFELY(_pickedImage);
   [super dealloc];
 }
 

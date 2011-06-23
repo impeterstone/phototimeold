@@ -22,6 +22,14 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   _coreDataSerializationQueue = dispatch_queue_create("com.sevenminutelabs.photoCoreDataSerializationQueue", NULL);
 }
 
++ (PhotoDataCenter *)defaultCenter {
+  static PhotoDataCenter *defaultCenter = nil;
+  if (!defaultCenter) {
+    defaultCenter = [[self alloc] init];
+  }
+  return defaultCenter;
+}
+
 - (id)init {
   self = [super init];
   if (self) {
@@ -148,6 +156,14 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   if ([tags count] > 0) {
     [photo performSelector:@selector(addTags:) withObject:tags];
   }
+}
+
+- (void)insertCommentWithDictionary:(NSDictionary *)dictionary forPhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context {
+  Comment *newComment = [Comment addCommentWithDictionary:dictionary inContext:context];
+  NSSet *newComments = [NSSet setWithObject:newComment];
+  
+  [photo performSelector:@selector(addComments:) withObject:newComments];
+  [PSCoreDataStack saveInContext:context];
 }
 
 #pragma mark -

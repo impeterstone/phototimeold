@@ -14,6 +14,8 @@
 @interface PhotoDataCenter : PSDataCenter {
 }
 
++ (PhotoDataCenter *)defaultCenter;
+
 /**
  Get photos from Server
  */
@@ -34,5 +36,10 @@
  Serialize Tags
  */
 - (void)serializeTagsWithDictionary:(NSDictionary *)dictionary forPhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context;
+
+/**
+ Insert a comment (user-generated)
+ */
+- (void)insertCommentWithDictionary:(NSDictionary *)dictionary forPhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context;
 
 @end
