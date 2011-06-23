@@ -29,7 +29,7 @@
     self.hidesBottomBarWhenPushed = YES;
     _fetchLimit = 100;
     _fetchTotal = _fetchLimit;
-    _frcDelegate = self;
+    _frcDelegate = nil;
   }
   return self;
 }

@@ -203,6 +203,22 @@
   });
 }
 
+- (void)executeFetchOnMainThread {
+  NSError *frcError = nil;
+  if ([self.fetchedResultsController performFetch:&frcError]) {
+    VLog(@"Main Thread Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
+  } else {
+    VLog(@"Main Thread Fetch failed with error: %@", [error localizedDescription]);
+  }
+  
+  if (self.searchDisplayController.active) {
+    [self.searchDisplayController.searchResultsTableView reloadData];
+  } else {
+    [_tableView reloadData];
+  }
+  [self updateState];
+}
+
 - (NSFetchRequest *)getFetchRequest {
   // Subclass MUST implement
   return nil;
@@ -276,14 +292,15 @@
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
   [super searchDisplayControllerWillBeginSearch:controller];
-  [self executeFetch:FetchTypeCold];
+//  [self executeFetch:FetchTypeCold];
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
   [super searchDisplayControllerWillEndSearch:controller];
   _searchPredicate = nil;
   [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-  [self executeFetch:FetchTypeCold];
+  [self executeFetchOnMainThread];
+//  [self executeFetch:FetchTypeCold];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {

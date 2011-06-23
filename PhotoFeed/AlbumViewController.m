@@ -22,7 +22,7 @@
     _albumType = AlbumTypeMe;
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
-    _frcDelegate = self;
+    _frcDelegate = nil;
   }
   return self;
 }
