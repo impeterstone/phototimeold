@@ -13,17 +13,19 @@
 @class PhotoDataCenter;
 @class Album;
 @class PSZoomView;
+@class RollupView;
 
 @interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate> {
   PhotoDataCenter *_photoDataCenter;
   Album *_album;
-  
-  NSMutableDictionary *_headerCellCache;
+  RollupView *_taggedFriendsView;
   PSZoomView *_zoomView;
 }
 
 @property (nonatomic, assign) Album *album;
 
+- (void)getTaggedFriends;
+- (void)setupTaggedFriendsView;
 - (void)zoomPhotoForCell:(id)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

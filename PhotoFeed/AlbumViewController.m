@@ -186,9 +186,9 @@
   
   PhotoViewController *svc = [[PhotoViewController alloc] init];
   svc.album = album;
-  if (self.albumType == AlbumTypeWall) {
-    svc.sectionNameKeyPathForFetchedResultsController = @"timestamp";
-  }
+//  if (self.albumType == AlbumTypeWall) {
+//    svc.sectionNameKeyPathForFetchedResultsController = @"timestamp";
+//  }
   [self.navigationController pushViewController:svc animated:YES];
   [svc release];
 }

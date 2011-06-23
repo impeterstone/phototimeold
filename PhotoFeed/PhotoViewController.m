@@ -10,10 +10,12 @@
 #import "PhotoDataCenter.h"
 #import "Album.h"
 #import "Photo.h"
+#import "Tag.h"
 #import "HeaderCell.h"
 #import "PhotoCell.h"
 #import "PSZoomView.h"
 #import "CommentViewController.h"
+#import "RollupView.h"
 
 @implementation PhotoViewController
 
@@ -24,8 +26,7 @@
   if (self) {
     _photoDataCenter = [[PhotoDataCenter alloc] init];
     _photoDataCenter.delegate = self;
-    _sectionNameKeyPathForFetchedResultsController = [@"position" retain];
-    _headerCellCache = [[NSMutableDictionary alloc] init];
+    _sectionNameKeyPathForFetchedResultsController = nil;
     self.hidesBottomBarWhenPushed = YES;
     _fetchLimit = 10;
     _fetchTotal = _fetchLimit;
@@ -37,12 +38,12 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 //  [self.navigationController setNavigationBarHidden:NO animated:YES];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadController object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadPhotoController object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadController object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadPhotoController object:nil];
 }
 
 - (void)loadView {
@@ -61,12 +62,10 @@
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
   // Search
-  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Tagged Friends..."];
+//  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Tagged Friends..."];
   
   // Pull Refresh
   [self setupPullRefresh];
-  
-//  [self setupLoadMoreView];
   
   [self executeFetch:FetchTypeCold];
   
@@ -74,9 +73,53 @@
   [self reloadCardController];
 }
 
+- (void)getTaggedFriends {
+  if (!_taggedFriendsView) {
+    NSArray *taggedFriendIds = [[_fetchedResultsController fetchedObjects] valueForKeyPath:@"@distinctUnionOfArrays.tags.fromId"];
+    NSArray *taggedFriendNames = [[_fetchedResultsController fetchedObjects] valueForKeyPath:@"@distinctUnionOfArrays.tags.fromName"];
+
+    // For testing lots of pictures
+//    NSMutableArray *testArray = [NSMutableArray array];
+//    [testArray addObjectsFromArray:taggedFriendIds];
+//    [testArray addObjectsFromArray:taggedFriendIds];
+//    [testArray addObjectsFromArray:taggedFriendIds];
+//    [testArray addObjectsFromArray:taggedFriendIds];
+//    [testArray addObjectsFromArray:taggedFriendIds];
+    
+    if ([taggedFriendIds count] > 0) {
+      NSMutableArray *taggedFriendPictures = [NSMutableArray array];
+      for (NSString *friendId in taggedFriendIds) {
+        [taggedFriendPictures addObject:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", friendId]];
+      }
+      [self setupTaggedFriendsView];
+      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"%d friends were tagged in this album.", [taggedFriendIds count]]];
+      [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
+      [_taggedFriendsView setFooterText:[NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]];
+    }
+  }
+}
+
+- (void)setupTaggedFriendsView {
+  [UIView beginAnimations:nil context:nil];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+  [UIView setAnimationDuration:0.4];
+  
+  // Header
+  _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 90)];
+//  [taggedFriendsView setPictureURLArray:[NSArray arrayWithObjects:@"http://graph.facebook.com/ptshih/picture?type=square", @"http://graph.facebook.com/ptshih/picture?type=square", @"http://graph.facebook.com/ptshih/picture?type=square", nil]];
+  [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"search_background.png" withLeftCapWidth:0 topCapWidth:22]];
+  self.tableView.tableHeaderView = _taggedFriendsView;
+  [UIView commitAnimations];
+}
+
+- (void)updateState {
+  [super updateState];
+  [self getTaggedFriends];
+}
+
 - (void)reloadCardController {
   [super reloadCardController];
-  
+
   [_photoDataCenter getPhotosForAlbumId:_album.id];
 }
 
@@ -109,20 +152,6 @@
 
 #pragma mark -
 #pragma mark TableView
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-  Photo *photo = [[self.fetchedResultsController fetchedObjects] objectAtIndex:section];
-  
-  HeaderCell *headerCell = [[[HeaderCell alloc] initWithFrame:CGRectMake(0, 0, 320, 26)] autorelease];
-  [headerCell fillCellWithObject:photo];
-  //  [headerCell loadImage];
-  [_headerCellCache setObject:headerCell forKey:[NSString stringWithFormat:@"%d", section]];
-  return headerCell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-  return 26.0;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
   return [PhotoCell rowHeightForObject:photo forInterfaceOrientation:[self interfaceOrientation]];
@@ -214,9 +243,10 @@
 #pragma mark -
 #pragma mark FetchRequest
 - (NSFetchRequest *)getFetchRequest {
-  BOOL ascending = ([self.sectionNameKeyPathForFetchedResultsController isEqualToString:@"position"]) ? YES : NO;
+//  BOOL ascending = ([self.sectionNameKeyPathForFetchedResultsController isEqualToString:@"position"]) ? YES : NO;
+  BOOL ascending = YES;
 
-  NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:self.sectionNameKeyPathForFetchedResultsController ascending:ascending] autorelease];
+  NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"position" ascending:ascending] autorelease];
   NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptor, nil] autorelease];
   NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getPhotosForAlbum" substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
   [fetchRequest setSortDescriptors:sortDescriptors];
@@ -228,8 +258,8 @@
 - (void)dealloc {
   _photoDataCenter.delegate = nil;
   RELEASE_SAFELY(_photoDataCenter);
-  RELEASE_SAFELY(_headerCellCache);
   RELEASE_SAFELY(_zoomView);
+  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }
 

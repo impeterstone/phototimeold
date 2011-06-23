@@ -188,6 +188,7 @@
             [_tableView reloadData];
           }
         }
+        [self updateState];
       } else {
         VLog(@"Fetch failed with error: %@", [error localizedDescription]);
       }

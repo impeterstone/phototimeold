@@ -22,7 +22,7 @@
 #define USER_LOCALE [[NSLocale autoupdatingCurrentLocale] localeIdentifier]
 
 // Notifications
-#define kReloadController @"ReloadController"
+#define kReloadPhotoController @"ReloadPhotoController"
 #define kReloadAlbumController @"ReloadAlbumController"
 #define kLocationAcquired @"LocationAcquired"
 #define kLogoutRequested @"LogoutRequested"
@@ -54,6 +54,12 @@
 // ERROR STRINGS
 #define LOGOUT_ALERT @"Are you sure you want to logout?"
 #define FM_NETWORK_ERROR @"PhotoFeed has encountered a network error. Please check your network connection and try again."
+
+// FONTS
+#define TITLE_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0]
+#define NORMAL_FONT [UIFont fontWithName:@"HelveticaNeue" size:14.0]
+#define SUBTITLE_FONT [UIFont fontWithName:@"HelveticaNeue" size:12.0]
+#define TIMESTAMP_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
 
 // Colors
 // CELLS
