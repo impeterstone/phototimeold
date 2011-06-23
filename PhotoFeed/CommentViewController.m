@@ -61,7 +61,7 @@
 //  [self setupPullRefresh];
   
   [self setupHeader];
-  [self setupTableFooter];
+//  [self setupTableFooter];
   
   [self setupFooter];
   
@@ -70,6 +70,13 @@
   // Get new from server
   // Comments don't need to fetch from server immediately, only after a new post
 //  [self reloadCardController];
+}
+
+- (void)setupTableFooter {
+  // subclass should implement
+  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
+  _tableView.tableFooterView = footerImage;
+  [footerImage release];
 }
 
 - (void)setupHeader {
@@ -144,7 +151,9 @@
   [footerView addSubview:commentButton];
   [commentButton release];
   
-  footerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_bg.png"]];
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-compose-bubble.png"]] autorelease];
+  bg.top = -14;
+  [footerView insertSubview:bg atIndex:0];
   
   [self setupFooterWithView:footerView];
 }

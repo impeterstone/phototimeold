@@ -82,9 +82,10 @@
   //  [segmentedControl setTintColor:[UIColor blueColor]];
   
   // Add new background
-  UIImageView *searchBackground = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_background.png"]] autorelease];
+  UIImageView *searchBackground = [[[UIImageView alloc] initWithImage:[UIImage stretchableImageNamed:@"bg-searchbar.png" withLeftCapWidth:0 topCapWidth:0]] autorelease];
   searchBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   searchBackground.top -= 1;
+  searchBackground.width = _searchBar.width;
   [_searchBar addSubview:searchBackground];
   [_searchBar addSubview:searchBarTextField];
 }
@@ -133,9 +134,9 @@
 // Optional table footer
 - (void)setupTableFooter {
   // subclass should implement
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
+//  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
+//  _tableView.tableFooterView = footerImage;
+//  [footerImage release];
 }
 
 // Optional Header View
