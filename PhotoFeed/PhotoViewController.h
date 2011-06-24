@@ -13,12 +13,12 @@
 @class PhotoDataCenter;
 @class Album;
 @class PSZoomView;
-@class RollupView;
+@class PSRollupView;
 
 @interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate> {
   PhotoDataCenter *_photoDataCenter;
   Album *_album;
-  RollupView *_taggedFriendsView;
+  PSRollupView *_taggedFriendsView;
   PSZoomView *_zoomView;
 }
 

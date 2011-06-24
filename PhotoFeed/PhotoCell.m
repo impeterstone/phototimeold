@@ -8,7 +8,7 @@
 
 #import "PhotoCell.h"
 #import "Comment.h"
-#import "RollupView.h"
+#import "PSRollupView.h"
 
 static UIImage *_vignette = nil;
 static UIImage *_vignetteInverted = nil;
@@ -65,7 +65,7 @@ static UIImage *_vignetteInverted = nil;
     _vignetteInvertedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     // Rollup
-    _taggedFriendsView = [[RollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
+    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
 //    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
     _taggedFriendsView.hidden = YES;
 

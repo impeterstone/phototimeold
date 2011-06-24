@@ -12,14 +12,14 @@
 #import "PhotoCellDelegate.h"
 #import "PSURLCacheImageView.h"
 
-@class RollupView;
+@class PSRollupView;
 
 @interface PhotoCell : PSCell {
   PSURLCacheImageView *_photoView; // optional
   UILabel *_captionLabel;
   UIImageView *_vignetteView;
   UIImageView *_vignetteInvertedView;
-  RollupView *_taggedFriendsView;
+  PSRollupView *_taggedFriendsView;
   
   CGFloat _photoWidth;
   CGFloat _photoHeight;

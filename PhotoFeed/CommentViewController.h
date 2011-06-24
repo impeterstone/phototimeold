@@ -12,7 +12,7 @@
 
 @class CommentDataCenter;
 @class Photo;
-@class RollupView;
+@class PSRollupView;
 
 @interface CommentViewController : CardCoreDataTableViewController <ComposeDelegate> {
   CommentDataCenter *_commentDataCenter;
@@ -20,7 +20,7 @@
   UIView *_commentHeaderView;
   UIImage *_photoImage;
   UIImageView *_photoHeaderView;
-  RollupView *_taggedFriendsView;
+  PSRollupView *_taggedFriendsView;
   
   CGFloat _headerHeight;
   CGFloat _headerOffset;
