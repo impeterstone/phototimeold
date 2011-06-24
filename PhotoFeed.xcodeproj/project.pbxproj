@@ -100,6 +100,39 @@
 		256493AC13986697005B7459 /* 121-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 256493AA13986697005B7459 /* 121-landscape.png */; };
 		256493AD13986697005B7459 /* 121-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256493AB13986697005B7459 /* 121-landscape@2x.png */; };
 		256B53F0138863FD00BAE074 /* lnkd.png in Resources */ = {isa = PBXBuildFile; fileRef = 256B53EF138863FD00BAE074 /* lnkd.png */; };
+		2570A4C013B490F4006CBCFE /* NSArray+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A47C13B490F4006CBCFE /* NSArray+SML.m */; };
+		2570A4C113B490F4006CBCFE /* NSData+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A47E13B490F4006CBCFE /* NSData+SML.m */; };
+		2570A4C213B490F4006CBCFE /* NSDate+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48013B490F4006CBCFE /* NSDate+Helper.m */; };
+		2570A4C313B490F4006CBCFE /* NSDate+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48213B490F4006CBCFE /* NSDate+SML.m */; };
+		2570A4C413B490F4006CBCFE /* NSObject+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48413B490F4006CBCFE /* NSObject+SML.m */; };
+		2570A4C513B490F4006CBCFE /* NSString+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48613B490F4006CBCFE /* NSString+SML.m */; };
+		2570A4C613B490F4006CBCFE /* NSURL+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48813B490F4006CBCFE /* NSURL+SML.m */; };
+		2570A4C713B490F4006CBCFE /* PSAlertCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48A13B490F4006CBCFE /* PSAlertCenter.m */; };
+		2570A4C813B490F4006CBCFE /* PSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48C13B490F4006CBCFE /* PSCell.m */; };
+		2570A4C913B490F4006CBCFE /* PSCoreDataImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A48E13B490F4006CBCFE /* PSCoreDataImageCache.m */; };
+		2570A4CA13B490F4006CBCFE /* PSCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49013B490F4006CBCFE /* PSCoreDataStack.m */; };
+		2570A4CB13B490F4006CBCFE /* PSImageArrayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49213B490F4006CBCFE /* PSImageArrayView.m */; };
+		2570A4CC13B490F4006CBCFE /* PSImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49413B490F4006CBCFE /* PSImageCache.m */; };
+		2570A4CD13B490F4006CBCFE /* PSImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49713B490F4006CBCFE /* PSImageCell.m */; };
+		2570A4CE13B490F4006CBCFE /* PSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49913B490F4006CBCFE /* PSImageView.m */; };
+		2570A4CF13B490F4006CBCFE /* PSNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49C13B490F4006CBCFE /* PSNetworkOperation.m */; };
+		2570A4D013B490F4006CBCFE /* PSNetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A49F13B490F4006CBCFE /* PSNetworkQueue.m */; };
+		2570A4D113B490F4006CBCFE /* PSNullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4A113B490F4006CBCFE /* PSNullView.m */; };
+		2570A4D213B490F4006CBCFE /* PSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4A313B490F4006CBCFE /* PSObject.m */; };
+		2570A4D313B490F4006CBCFE /* PSParserStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4A513B490F4006CBCFE /* PSParserStack.m */; };
+		2570A4D413B490F4006CBCFE /* PSRandomSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4A713B490F4006CBCFE /* PSRandomSortDescriptor.m */; };
+		2570A4D513B490F4006CBCFE /* PSRollupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4A913B490F4006CBCFE /* PSRollupView.m */; };
+		2570A4D613B490F4006CBCFE /* PSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4AB13B490F4006CBCFE /* PSTextView.m */; };
+		2570A4D713B490F4006CBCFE /* PSURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4AD13B490F4006CBCFE /* PSURLCache.m */; };
+		2570A4D813B490F4006CBCFE /* PSURLCacheImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4AF13B490F4006CBCFE /* PSURLCacheImageView.m */; };
+		2570A4D913B490F4006CBCFE /* PSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4B113B490F4006CBCFE /* PSView.m */; };
+		2570A4DA13B490F4006CBCFE /* PSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4B313B490F4006CBCFE /* PSViewController.m */; };
+		2570A4DB13B490F4006CBCFE /* PSZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4B513B490F4006CBCFE /* PSZoomView.m */; };
+		2570A4DC13B490F4006CBCFE /* UIButton+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4B713B490F4006CBCFE /* UIButton+SML.m */; };
+		2570A4DD13B490F4006CBCFE /* UIImage+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4B913B490F4006CBCFE /* UIImage+SML.m */; };
+		2570A4DE13B490F4006CBCFE /* UILabel+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4BB13B490F4006CBCFE /* UILabel+SML.m */; };
+		2570A4DF13B490F4006CBCFE /* UIScreen+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4BD13B490F4006CBCFE /* UIScreen+SML.m */; };
+		2570A4E013B490F4006CBCFE /* UIView+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570A4BF13B490F4006CBCFE /* UIView+SML.m */; };
 		25711AE21395F03900DD20E0 /* vignette-album.png in Resources */ = {isa = PBXBuildFile; fileRef = 25711AE11395F03900DD20E0 /* vignette-album.png */; };
 		2578373F139968ED00712B8B /* Tag+Serialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2578373E139968ED00712B8B /* Tag+Serialize.m */; };
 		259AD52413668FE000FA2B8D /* AlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259AD52313668FE000FA2B8D /* AlbumCell.m */; };
@@ -370,6 +403,75 @@
 		256493AA13986697005B7459 /* 121-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "121-landscape.png"; sourceTree = "<group>"; };
 		256493AB13986697005B7459 /* 121-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "121-landscape@2x.png"; sourceTree = "<group>"; };
 		256B53EF138863FD00BAE074 /* lnkd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lnkd.png; sourceTree = "<group>"; };
+		2570A47B13B490F4006CBCFE /* NSArray+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SML.h"; sourceTree = "<group>"; };
+		2570A47C13B490F4006CBCFE /* NSArray+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SML.m"; sourceTree = "<group>"; };
+		2570A47D13B490F4006CBCFE /* NSData+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SML.h"; sourceTree = "<group>"; };
+		2570A47E13B490F4006CBCFE /* NSData+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SML.m"; sourceTree = "<group>"; };
+		2570A47F13B490F4006CBCFE /* NSDate+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helper.h"; sourceTree = "<group>"; };
+		2570A48013B490F4006CBCFE /* NSDate+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helper.m"; sourceTree = "<group>"; };
+		2570A48113B490F4006CBCFE /* NSDate+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SML.h"; sourceTree = "<group>"; };
+		2570A48213B490F4006CBCFE /* NSDate+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+SML.m"; sourceTree = "<group>"; };
+		2570A48313B490F4006CBCFE /* NSObject+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SML.h"; sourceTree = "<group>"; };
+		2570A48413B490F4006CBCFE /* NSObject+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SML.m"; sourceTree = "<group>"; };
+		2570A48513B490F4006CBCFE /* NSString+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SML.h"; sourceTree = "<group>"; };
+		2570A48613B490F4006CBCFE /* NSString+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SML.m"; sourceTree = "<group>"; };
+		2570A48713B490F4006CBCFE /* NSURL+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SML.h"; sourceTree = "<group>"; };
+		2570A48813B490F4006CBCFE /* NSURL+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SML.m"; sourceTree = "<group>"; };
+		2570A48913B490F4006CBCFE /* PSAlertCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSAlertCenter.h; sourceTree = "<group>"; };
+		2570A48A13B490F4006CBCFE /* PSAlertCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSAlertCenter.m; sourceTree = "<group>"; };
+		2570A48B13B490F4006CBCFE /* PSCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSCell.h; sourceTree = "<group>"; };
+		2570A48C13B490F4006CBCFE /* PSCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSCell.m; sourceTree = "<group>"; };
+		2570A48D13B490F4006CBCFE /* PSCoreDataImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSCoreDataImageCache.h; sourceTree = "<group>"; };
+		2570A48E13B490F4006CBCFE /* PSCoreDataImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSCoreDataImageCache.m; sourceTree = "<group>"; };
+		2570A48F13B490F4006CBCFE /* PSCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSCoreDataStack.h; sourceTree = "<group>"; };
+		2570A49013B490F4006CBCFE /* PSCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSCoreDataStack.m; sourceTree = "<group>"; };
+		2570A49113B490F4006CBCFE /* PSImageArrayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSImageArrayView.h; sourceTree = "<group>"; };
+		2570A49213B490F4006CBCFE /* PSImageArrayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSImageArrayView.m; sourceTree = "<group>"; };
+		2570A49313B490F4006CBCFE /* PSImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSImageCache.h; sourceTree = "<group>"; };
+		2570A49413B490F4006CBCFE /* PSImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSImageCache.m; sourceTree = "<group>"; };
+		2570A49513B490F4006CBCFE /* PSImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSImageCacheDelegate.h; sourceTree = "<group>"; };
+		2570A49613B490F4006CBCFE /* PSImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSImageCell.h; sourceTree = "<group>"; };
+		2570A49713B490F4006CBCFE /* PSImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSImageCell.m; sourceTree = "<group>"; };
+		2570A49813B490F4006CBCFE /* PSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSImageView.h; sourceTree = "<group>"; };
+		2570A49913B490F4006CBCFE /* PSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSImageView.m; sourceTree = "<group>"; };
+		2570A49A13B490F4006CBCFE /* PSImageViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSImageViewDelegate.h; sourceTree = "<group>"; };
+		2570A49B13B490F4006CBCFE /* PSNetworkOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSNetworkOperation.h; sourceTree = "<group>"; };
+		2570A49C13B490F4006CBCFE /* PSNetworkOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSNetworkOperation.m; sourceTree = "<group>"; };
+		2570A49D13B490F4006CBCFE /* PSNetworkOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSNetworkOperationDelegate.h; sourceTree = "<group>"; };
+		2570A49E13B490F4006CBCFE /* PSNetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSNetworkQueue.h; sourceTree = "<group>"; };
+		2570A49F13B490F4006CBCFE /* PSNetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSNetworkQueue.m; sourceTree = "<group>"; };
+		2570A4A013B490F4006CBCFE /* PSNullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSNullView.h; sourceTree = "<group>"; };
+		2570A4A113B490F4006CBCFE /* PSNullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSNullView.m; sourceTree = "<group>"; };
+		2570A4A213B490F4006CBCFE /* PSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSObject.h; sourceTree = "<group>"; };
+		2570A4A313B490F4006CBCFE /* PSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSObject.m; sourceTree = "<group>"; };
+		2570A4A413B490F4006CBCFE /* PSParserStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSParserStack.h; sourceTree = "<group>"; };
+		2570A4A513B490F4006CBCFE /* PSParserStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSParserStack.m; sourceTree = "<group>"; };
+		2570A4A613B490F4006CBCFE /* PSRandomSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSRandomSortDescriptor.h; sourceTree = "<group>"; };
+		2570A4A713B490F4006CBCFE /* PSRandomSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSRandomSortDescriptor.m; sourceTree = "<group>"; };
+		2570A4A813B490F4006CBCFE /* PSRollupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSRollupView.h; sourceTree = "<group>"; };
+		2570A4A913B490F4006CBCFE /* PSRollupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSRollupView.m; sourceTree = "<group>"; };
+		2570A4AA13B490F4006CBCFE /* PSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTextView.h; sourceTree = "<group>"; };
+		2570A4AB13B490F4006CBCFE /* PSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTextView.m; sourceTree = "<group>"; };
+		2570A4AC13B490F4006CBCFE /* PSURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSURLCache.h; sourceTree = "<group>"; };
+		2570A4AD13B490F4006CBCFE /* PSURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSURLCache.m; sourceTree = "<group>"; };
+		2570A4AE13B490F4006CBCFE /* PSURLCacheImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSURLCacheImageView.h; sourceTree = "<group>"; };
+		2570A4AF13B490F4006CBCFE /* PSURLCacheImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSURLCacheImageView.m; sourceTree = "<group>"; };
+		2570A4B013B490F4006CBCFE /* PSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSView.h; sourceTree = "<group>"; };
+		2570A4B113B490F4006CBCFE /* PSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSView.m; sourceTree = "<group>"; };
+		2570A4B213B490F4006CBCFE /* PSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSViewController.h; sourceTree = "<group>"; };
+		2570A4B313B490F4006CBCFE /* PSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSViewController.m; sourceTree = "<group>"; };
+		2570A4B413B490F4006CBCFE /* PSZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSZoomView.h; sourceTree = "<group>"; };
+		2570A4B513B490F4006CBCFE /* PSZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSZoomView.m; sourceTree = "<group>"; };
+		2570A4B613B490F4006CBCFE /* UIButton+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SML.h"; sourceTree = "<group>"; };
+		2570A4B713B490F4006CBCFE /* UIButton+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SML.m"; sourceTree = "<group>"; };
+		2570A4B813B490F4006CBCFE /* UIImage+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SML.h"; sourceTree = "<group>"; };
+		2570A4B913B490F4006CBCFE /* UIImage+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SML.m"; sourceTree = "<group>"; };
+		2570A4BA13B490F4006CBCFE /* UILabel+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SML.h"; sourceTree = "<group>"; };
+		2570A4BB13B490F4006CBCFE /* UILabel+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SML.m"; sourceTree = "<group>"; };
+		2570A4BC13B490F4006CBCFE /* UIScreen+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+SML.h"; sourceTree = "<group>"; };
+		2570A4BD13B490F4006CBCFE /* UIScreen+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+SML.m"; sourceTree = "<group>"; };
+		2570A4BE13B490F4006CBCFE /* UIView+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SML.h"; sourceTree = "<group>"; };
+		2570A4BF13B490F4006CBCFE /* UIView+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SML.m"; sourceTree = "<group>"; };
 		25711AE11395F03900DD20E0 /* vignette-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vignette-album.png"; sourceTree = "<group>"; };
 		25733C26138F282400660556 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = SOURCE_ROOT; };
 		2578373D139968ED00712B8B /* Tag+Serialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tag+Serialize.h"; sourceTree = "<group>"; };
@@ -681,6 +783,83 @@
 			name = JSONKit;
 			sourceTree = "<group>";
 		};
+		2570A47A13B490DD006CBCFE /* SevenMinuteLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				2570A47B13B490F4006CBCFE /* NSArray+SML.h */,
+				2570A47C13B490F4006CBCFE /* NSArray+SML.m */,
+				2570A47D13B490F4006CBCFE /* NSData+SML.h */,
+				2570A47E13B490F4006CBCFE /* NSData+SML.m */,
+				2570A47F13B490F4006CBCFE /* NSDate+Helper.h */,
+				2570A48013B490F4006CBCFE /* NSDate+Helper.m */,
+				2570A48113B490F4006CBCFE /* NSDate+SML.h */,
+				2570A48213B490F4006CBCFE /* NSDate+SML.m */,
+				2570A48313B490F4006CBCFE /* NSObject+SML.h */,
+				2570A48413B490F4006CBCFE /* NSObject+SML.m */,
+				2570A48513B490F4006CBCFE /* NSString+SML.h */,
+				2570A48613B490F4006CBCFE /* NSString+SML.m */,
+				2570A48713B490F4006CBCFE /* NSURL+SML.h */,
+				2570A48813B490F4006CBCFE /* NSURL+SML.m */,
+				2570A48913B490F4006CBCFE /* PSAlertCenter.h */,
+				2570A48A13B490F4006CBCFE /* PSAlertCenter.m */,
+				2570A48B13B490F4006CBCFE /* PSCell.h */,
+				2570A48C13B490F4006CBCFE /* PSCell.m */,
+				2570A48D13B490F4006CBCFE /* PSCoreDataImageCache.h */,
+				2570A48E13B490F4006CBCFE /* PSCoreDataImageCache.m */,
+				2570A48F13B490F4006CBCFE /* PSCoreDataStack.h */,
+				2570A49013B490F4006CBCFE /* PSCoreDataStack.m */,
+				2570A49113B490F4006CBCFE /* PSImageArrayView.h */,
+				2570A49213B490F4006CBCFE /* PSImageArrayView.m */,
+				2570A49313B490F4006CBCFE /* PSImageCache.h */,
+				2570A49413B490F4006CBCFE /* PSImageCache.m */,
+				2570A49513B490F4006CBCFE /* PSImageCacheDelegate.h */,
+				2570A49613B490F4006CBCFE /* PSImageCell.h */,
+				2570A49713B490F4006CBCFE /* PSImageCell.m */,
+				2570A49813B490F4006CBCFE /* PSImageView.h */,
+				2570A49913B490F4006CBCFE /* PSImageView.m */,
+				2570A49A13B490F4006CBCFE /* PSImageViewDelegate.h */,
+				2570A49B13B490F4006CBCFE /* PSNetworkOperation.h */,
+				2570A49C13B490F4006CBCFE /* PSNetworkOperation.m */,
+				2570A49D13B490F4006CBCFE /* PSNetworkOperationDelegate.h */,
+				2570A49E13B490F4006CBCFE /* PSNetworkQueue.h */,
+				2570A49F13B490F4006CBCFE /* PSNetworkQueue.m */,
+				2570A4A013B490F4006CBCFE /* PSNullView.h */,
+				2570A4A113B490F4006CBCFE /* PSNullView.m */,
+				2570A4A213B490F4006CBCFE /* PSObject.h */,
+				2570A4A313B490F4006CBCFE /* PSObject.m */,
+				2570A4A413B490F4006CBCFE /* PSParserStack.h */,
+				2570A4A513B490F4006CBCFE /* PSParserStack.m */,
+				2570A4A613B490F4006CBCFE /* PSRandomSortDescriptor.h */,
+				2570A4A713B490F4006CBCFE /* PSRandomSortDescriptor.m */,
+				2570A4A813B490F4006CBCFE /* PSRollupView.h */,
+				2570A4A913B490F4006CBCFE /* PSRollupView.m */,
+				2570A4AA13B490F4006CBCFE /* PSTextView.h */,
+				2570A4AB13B490F4006CBCFE /* PSTextView.m */,
+				2570A4AC13B490F4006CBCFE /* PSURLCache.h */,
+				2570A4AD13B490F4006CBCFE /* PSURLCache.m */,
+				2570A4AE13B490F4006CBCFE /* PSURLCacheImageView.h */,
+				2570A4AF13B490F4006CBCFE /* PSURLCacheImageView.m */,
+				2570A4B013B490F4006CBCFE /* PSView.h */,
+				2570A4B113B490F4006CBCFE /* PSView.m */,
+				2570A4B213B490F4006CBCFE /* PSViewController.h */,
+				2570A4B313B490F4006CBCFE /* PSViewController.m */,
+				2570A4B413B490F4006CBCFE /* PSZoomView.h */,
+				2570A4B513B490F4006CBCFE /* PSZoomView.m */,
+				2570A4B613B490F4006CBCFE /* UIButton+SML.h */,
+				2570A4B713B490F4006CBCFE /* UIButton+SML.m */,
+				2570A4B813B490F4006CBCFE /* UIImage+SML.h */,
+				2570A4B913B490F4006CBCFE /* UIImage+SML.m */,
+				2570A4BA13B490F4006CBCFE /* UILabel+SML.h */,
+				2570A4BB13B490F4006CBCFE /* UILabel+SML.m */,
+				2570A4BC13B490F4006CBCFE /* UIScreen+SML.h */,
+				2570A4BD13B490F4006CBCFE /* UIScreen+SML.m */,
+				2570A4BE13B490F4006CBCFE /* UIView+SML.h */,
+				2570A4BF13B490F4006CBCFE /* UIView+SML.m */,
+			);
+			name = SevenMinuteLibrary;
+			path = Submodules/sevenminutelibrary/src;
+			sourceTree = "<group>";
+		};
 		258B143E1351293C00091A85 /* MapKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -709,6 +888,7 @@
 		25CEF7F71339F278006F23A7 = {
 			isa = PBXGroup;
 			children = (
+				2570A47A13B490DD006CBCFE /* SevenMinuteLibrary */,
 				25CEF80E1339F278006F23A7 /* PhotoFeed */,
 				25CEF8FE133A000C006F23A7 /* Resources */,
 				25CEF90B133A0219006F23A7 /* Facebook */,
@@ -1485,6 +1665,39 @@
 				25D4D2AF13B084D400A21C4C /* UITabBarController+Autorotate.m in Sources */,
 				2547ADB413B1535F00167F9E /* PSDataCenter.m in Sources */,
 				25235BB813B2CBE700B2C3DF /* RollupView.m in Sources */,
+				2570A4C013B490F4006CBCFE /* NSArray+SML.m in Sources */,
+				2570A4C113B490F4006CBCFE /* NSData+SML.m in Sources */,
+				2570A4C213B490F4006CBCFE /* NSDate+Helper.m in Sources */,
+				2570A4C313B490F4006CBCFE /* NSDate+SML.m in Sources */,
+				2570A4C413B490F4006CBCFE /* NSObject+SML.m in Sources */,
+				2570A4C513B490F4006CBCFE /* NSString+SML.m in Sources */,
+				2570A4C613B490F4006CBCFE /* NSURL+SML.m in Sources */,
+				2570A4C713B490F4006CBCFE /* PSAlertCenter.m in Sources */,
+				2570A4C813B490F4006CBCFE /* PSCell.m in Sources */,
+				2570A4C913B490F4006CBCFE /* PSCoreDataImageCache.m in Sources */,
+				2570A4CA13B490F4006CBCFE /* PSCoreDataStack.m in Sources */,
+				2570A4CB13B490F4006CBCFE /* PSImageArrayView.m in Sources */,
+				2570A4CC13B490F4006CBCFE /* PSImageCache.m in Sources */,
+				2570A4CD13B490F4006CBCFE /* PSImageCell.m in Sources */,
+				2570A4CE13B490F4006CBCFE /* PSImageView.m in Sources */,
+				2570A4CF13B490F4006CBCFE /* PSNetworkOperation.m in Sources */,
+				2570A4D013B490F4006CBCFE /* PSNetworkQueue.m in Sources */,
+				2570A4D113B490F4006CBCFE /* PSNullView.m in Sources */,
+				2570A4D213B490F4006CBCFE /* PSObject.m in Sources */,
+				2570A4D313B490F4006CBCFE /* PSParserStack.m in Sources */,
+				2570A4D413B490F4006CBCFE /* PSRandomSortDescriptor.m in Sources */,
+				2570A4D513B490F4006CBCFE /* PSRollupView.m in Sources */,
+				2570A4D613B490F4006CBCFE /* PSTextView.m in Sources */,
+				2570A4D713B490F4006CBCFE /* PSURLCache.m in Sources */,
+				2570A4D813B490F4006CBCFE /* PSURLCacheImageView.m in Sources */,
+				2570A4D913B490F4006CBCFE /* PSView.m in Sources */,
+				2570A4DA13B490F4006CBCFE /* PSViewController.m in Sources */,
+				2570A4DB13B490F4006CBCFE /* PSZoomView.m in Sources */,
+				2570A4DC13B490F4006CBCFE /* UIButton+SML.m in Sources */,
+				2570A4DD13B490F4006CBCFE /* UIImage+SML.m in Sources */,
+				2570A4DE13B490F4006CBCFE /* UILabel+SML.m in Sources */,
+				2570A4DF13B490F4006CBCFE /* UIScreen+SML.m in Sources */,
+				2570A4E013B490F4006CBCFE /* UIView+SML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
