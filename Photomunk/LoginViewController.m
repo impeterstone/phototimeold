@@ -74,7 +74,6 @@
 }
 
 - (void)updateLoginProgress:(NSNotification *)notification {
-  NSLog(@"update progress: %@", [[notification userInfo] objectForKey:@"progress"]);
   [self performSelectorOnMainThread:@selector(updateLoginProgressOnMainThread:) withObject:[[notification userInfo] objectForKey:@"progress"] waitUntilDone:NO];
 }
 

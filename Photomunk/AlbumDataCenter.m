@@ -30,7 +30,10 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 - (id)init {
   self = [super init];
   if (self) {
+    _parseIndex = 0;
+    _totalAlbumsToParse = 0;
     _pendingRequestsToParse = 0;
+    _pendingResponses = [[NSMutableArray alloc] initWithCapacity:1];
   }
   return self;
 }
@@ -122,20 +125,6 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 
 #pragma mark -
 #pragma mark Serialization
-- (void)serializeAlbumsWithRequest:(ASIHTTPRequest *)request {
-  NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
-  
-  // Parse the JSON
-  id response = [[request responseData] JSONValue];
-  
-  // Process the Response for Albums
-  if ([response isKindOfClass:[NSArray class]]) {
-    [self serializeAlbumsWithArray:response inContext:context];
-  }
-  
-  // Release context
-  [context release];
-}
 
 #pragma mark Core Data Serialization
 - (void)serializeAlbumsWithArray:(NSArray *)array inContext:(NSManagedObjectContext *)context {
@@ -158,7 +147,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   }
   
   // Number of albums in this array
-  NSInteger resultCount = [albumArray count];
+//  NSInteger resultCount = [albumArray count];
 
   // Create a dictionary of all new covers
   NSMutableDictionary *covers = [NSMutableDictionary dictionary];
@@ -197,44 +186,86 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
       [Album addAlbumWithDictionary:newEntity andCover:coverSrcBig inContext:context];
     }
     i++;
+    _parseIndex++;
     
-    if (i % 1000 == 0) {
+    if (_parseIndex % 100 == 0) {
+      NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)_parseIndex / (CGFloat)_totalAlbumsToParse)];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObject:progress forKey:@"progress"]];
+      NSLog(@"update progress index: %d, total: %d, percent: %@", _parseIndex, _totalAlbumsToParse, progress);
+    }
+    
+    // Perform batch core data saves
+    if (_parseIndex % 1000 == 0) {
       [PSCoreDataStack saveInContext:context];
       [PSCoreDataStack resetInContext:context];
       
       [pool drain];
       pool = [[NSAutoreleasePool alloc] init];
-      
-      NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)i / (CGFloat)resultCount)];
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObject:progress forKey:@"progress"]];
     }
-  }
-  
-  if (i % 1000 != 0) {
-    [PSCoreDataStack saveInContext:context];
-//    [PSCoreDataStack resetInContext:context];
   }
   
   [pool drain];
 }
 
-#pragma mark -
-#pragma mark PSDataCenterDelegate
-- (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
+- (void)parsePendingResponses {
   // Process the batched results using GCD  
   dispatch_async(_coreDataSerializationQueue, ^{
-    [self serializeAlbumsWithRequest:request];
+    
+    NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
+    
+    for (NSArray *response in _pendingResponses) {
+      [self serializeAlbumsWithArray:response inContext:context];
+    }
+    [_pendingResponses removeAllObjects];
+    
+    // Save the context
+    [PSCoreDataStack saveInContext:context];
+    
+    // Release context
+    [context release];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-      // Inform Delegate if all responses are parsed
-      _pendingRequestsToParse--;
+      // reset counters
+      _parseIndex = 0;
+      _totalAlbumsToParse = 0;
       
       // Inform Delegate if all responses are parsed
-      if (_pendingRequestsToParse == 0 && _delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:request withObject:nil];
+      if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
       }
     });
   });
+}
+
+#pragma mark -
+#pragma mark PSDataCenterDelegate
+- (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
+  // Put the responses into a parse pending array
+  id response = [[request responseData] JSONValue];
+  
+  // Lets tally up all the counts
+  // Special multiquery treatment
+  NSArray *albumArray = nil;
+  for (NSDictionary *fqlResult in response) {
+    if ([[fqlResult valueForKey:@"name"] isEqualToString:@"query1"]) {
+      albumArray = [fqlResult valueForKey:@"fql_result_set"];
+    } else {
+      // ignore
+    }
+  }
+  _totalAlbumsToParse += [albumArray count];
+  
+  if ([response isKindOfClass:[NSArray class]]) {
+    [_pendingResponses addObject:response];
+  }
+  
+  _pendingRequestsToParse--;
+  
+  // If we have reached the last request, let's flush the pendingResponses
+  if (_pendingRequestsToParse == 0) {
+    [self parsePendingResponses];
+  }
 }
 
 - (void)dataCenterRequestFailed:(ASIHTTPRequest *)request {
@@ -245,6 +276,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 }
 
 - (void)dealloc {
+  RELEASE_SAFELY(_pendingResponses);
   [super dealloc];
 }
 
