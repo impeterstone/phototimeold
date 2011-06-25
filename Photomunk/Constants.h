@@ -9,6 +9,7 @@
 
 #import "PhotomunkAppDelegate.h"
 #import "NetworkConstants.h"
+#import "UINavigationBar+Custom.h"
 
 #ifdef __APPLE__
   #include "TargetConditionals.h"

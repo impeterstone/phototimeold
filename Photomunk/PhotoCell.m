@@ -38,10 +38,10 @@ static UIImage *_vignetteInverted = nil;
     _captionLabel.backgroundColor = [UIColor clearColor];
     
     // Font
-    _captionLabel.font = TITLE_FONT;
+    _captionLabel.font = NORMAL_FONT;
     
     // Text Color
-    _captionLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
+    _captionLabel.textColor = [UIColor whiteColor];
     
     // Line Break Mode
     _captionLabel.lineBreakMode = UILineBreakModeWordWrap;

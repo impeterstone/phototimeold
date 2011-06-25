@@ -11,10 +11,10 @@
 
 @implementation UINavigationBar (Custom)
 
-- (void)drawRect:(CGRect)rect {
-  UIImage *image = [[UIImage imageNamed:@"bg-navigation.png"] retain];
-	[image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height + 14)];
-}
+//- (void)drawRect:(CGRect)rect {
+//  UIImage *image = [[UIImage imageNamed:@"bg-navigation.png"] retain];
+//	[image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height + 14)];
+//}
 
 -(void)willMoveToWindow:(UIWindow *)newWindow{
   [super willMoveToWindow:newWindow];

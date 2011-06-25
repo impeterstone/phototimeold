@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "PSViewController.h"
 #import "CardStateMachine.h"
-#import "UINavigationBar+Custom.h"
-//#import "UISearchBar+Custom.h"
 #import "PSDataCenterDelegate.h"
 #import "HeaderTabView.h"
 #import "HeaderTabViewDelegate.h"

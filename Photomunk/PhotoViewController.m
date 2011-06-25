@@ -58,7 +58,7 @@
   [self addButtonWithTitle:@"Favorite" andSelector:@selector(favorite) isLeft:NO];
   
   // Table
-  CGRect tableFrame = CGRectMake(0, 0, CARD_WIDTH, CARD_HEIGHT);
+  CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
   // Search
@@ -84,6 +84,11 @@
     NSArray *taggedFriendIds = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromId"];
     NSArray *taggedFriendNames = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromName"];
     
+    NSRange excerptRange;
+    excerptRange.location = 0;
+    excerptRange.length = 3;
+    NSArray *excerptTaggedFriendNames = [taggedFriendNames subarrayWithRange:excerptRange];
+    
     if ([taggedFriendIds count] > 0) {
       NSMutableArray *taggedFriendPictures = [NSMutableArray array];
       for (NSString *friendId in taggedFriendIds) {
@@ -93,7 +98,9 @@
       // Create Rollup
       _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
       [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
-      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this album: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
+//      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this album: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
+      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"%@ and %d more friends are tagged in this album.", [excerptTaggedFriendNames componentsJoinedByString:@", "], [taggedFriendIds count]]];
+      
       [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
       [_taggedFriendsView layoutIfNeeded];
       self.tableView.tableHeaderView = _taggedFriendsView;

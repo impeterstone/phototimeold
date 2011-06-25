@@ -8,7 +8,6 @@
 
 #import "LauncherViewController.h"
 #import "AlbumViewController.h"
-#import "SearchViewController.h"
 #import "MoreViewController.h"
 
 static UIImage *_actionImage = nil;

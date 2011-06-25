@@ -16,7 +16,6 @@
 
 // Tabs
 #import "AlbumViewController.h"
-#import "SearchViewController.h"
 #import "MoreViewController.h"
 
 @implementation PhotomunkAppDelegate
