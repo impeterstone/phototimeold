@@ -84,26 +84,29 @@
     NSArray *taggedFriendIds = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromId"];
     NSArray *taggedFriendNames = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromName"];
     
-    NSRange excerptRange;
-    excerptRange.location = 0;
-    excerptRange.length = 3;
-    NSArray *excerptTaggedFriendNames = [taggedFriendNames subarrayWithRange:excerptRange];
-    
-    if ([taggedFriendIds count] > 0) {
-      NSMutableArray *taggedFriendPictures = [NSMutableArray array];
-      for (NSString *friendId in taggedFriendIds) {
-        [taggedFriendPictures addObject:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", friendId]];
+    // Only create a rollup if there are more than 0 friends tagged
+    if ([taggedFriendIds count] > 0) {    
+      NSRange excerptRange;
+      excerptRange.location = 0;
+      excerptRange.length = 3;
+      NSArray *excerptTaggedFriendNames = [taggedFriendNames subarrayWithRange:excerptRange];
+      
+      if ([taggedFriendIds count] > 0) {
+        NSMutableArray *taggedFriendPictures = [NSMutableArray array];
+        for (NSString *friendId in taggedFriendIds) {
+          [taggedFriendPictures addObject:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", friendId]];
+        }
+        
+        // Create Rollup
+        _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
+        [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
+  //      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this album: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
+        [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"%@ and %d more friends are tagged in this album.", [excerptTaggedFriendNames componentsJoinedByString:@", "], [taggedFriendIds count]]];
+        
+        [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
+        [_taggedFriendsView layoutIfNeeded];
+        self.tableView.tableHeaderView = _taggedFriendsView;
       }
-      
-      // Create Rollup
-      _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
-      [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
-//      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this album: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
-      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"%@ and %d more friends are tagged in this album.", [excerptTaggedFriendNames componentsJoinedByString:@", "], [taggedFriendIds count]]];
-      
-      [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
-      [_taggedFriendsView layoutIfNeeded];
-      self.tableView.tableHeaderView = _taggedFriendsView;
     }
   }
 }
