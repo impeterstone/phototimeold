@@ -45,10 +45,10 @@
   [self resetFetchedResultsController];
   
   // Table
-  CGRect tableFrame = CGRectMake(0, 0, CARD_WIDTH, CARD_HEIGHT);
+  CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  self.tableView.rowHeight = 120.0;
+//  self.tableView.rowHeight = 120.0;
   
   // Album Type
   NSArray *scopeArray = nil;
@@ -143,10 +143,17 @@
 
 #pragma mark -
 #pragma mark TableView
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//  Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//  return [AlbumCell rowHeightForObject:album forInterfaceOrientation:[self interfaceOrientation]];
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  
+  // Preload all album covers
+  NSString *urlPath = album.coverPhoto;
+  if (urlPath) {
+    [[PSImageCache sharedCache] cacheImageForURLPath:urlPath withDelegate:nil];
+  }
+  
+  return 120.0;
+}
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 //  return [[[self.fetchedResultsController sections] objectAtIndex:section] name];

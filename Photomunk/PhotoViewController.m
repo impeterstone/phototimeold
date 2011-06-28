@@ -16,6 +16,7 @@
 #import "PSZoomView.h"
 #import "CommentViewController.h"
 #import "PSRollupView.h"
+#import "PSToastCenter.h"
 
 @implementation PhotoViewController
 
@@ -142,18 +143,25 @@
 - (void)favorite {
   if ([_album.isFavorite boolValue]) {
     _album.isFavorite = [NSNumber numberWithBool:NO];
+    [[PSToastCenter defaultCenter] showToastWithMessage:@"Favorite Removed" toastType:PSToastTypeAlert toastDuration:1.0];
   } else {
     _album.isFavorite = [NSNumber numberWithBool:YES];
+    [[PSToastCenter defaultCenter] showToastWithMessage:@"Favorite Added" toastType:PSToastTypeAlert toastDuration:1.0];
   }
   [PSCoreDataStack saveInContext:[_album managedObjectContext]];
-  
-  // Show a Toast
 }
 
 #pragma mark -
 #pragma mark TableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  
+  // Preload all photos
+  NSString *urlPath = photo.source;
+  if (urlPath) {
+    [[PSImageCache sharedCache] cacheImageForURLPath:urlPath withDelegate:nil];
+  }
+
   return [PhotoCell rowHeightForObject:photo forInterfaceOrientation:[self interfaceOrientation]];
 }
 
