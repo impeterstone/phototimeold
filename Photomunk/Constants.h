@@ -15,6 +15,7 @@
   #include "TargetConditionals.h"
 #endif
 
+#define CORE_DATA_SQL_FILE @"photomunk.sqlite"
 #define CORE_DATA_MOM @"Photomunk"
 
 //#define CLEAR_ALL_CACHED_DATA_ON_WARNING

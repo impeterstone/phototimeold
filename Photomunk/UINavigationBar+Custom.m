@@ -16,7 +16,7 @@
 //	[image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height + 14)];
 //}
 
--(void)willMoveToWindow:(UIWindow *)newWindow{
+- (void)willMoveToWindow:(UIWindow *)newWindow{
   [super willMoveToWindow:newWindow];
   [self applyDropShadow];
 }
