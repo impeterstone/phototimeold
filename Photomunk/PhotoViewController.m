@@ -88,7 +88,7 @@
     if ([taggedFriendIds count] > 0) {    
       NSRange excerptRange;
       excerptRange.location = 0;
-      excerptRange.length = 3;
+      excerptRange.length = [taggedFriendNames count] < 5 ? [taggedFriendNames count] : 5;
       NSArray *excerptTaggedFriendNames = [taggedFriendNames subarrayWithRange:excerptRange];
       
       if ([taggedFriendIds count] > 0) {
