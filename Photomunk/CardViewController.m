@@ -28,7 +28,7 @@
 - (void)loadView {
   [super loadView];
   
-  self.view.backgroundColor = [UIColor clearColor];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
   
   // Background View
   //  UIImageView *backgroundView = [[UIImageView alloc] initWithImage:_backgroundImage];
@@ -101,7 +101,7 @@
   self.navigationItem.leftBarButtonItem = backButton;
 }
 
-- (void)addButtonWithTitle:(NSString *)title andSelector:(SEL)selector isLeft:(BOOL)isLeft {
+- (void)addButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft {
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
   button.frame = CGRectMake(0, 0, 60, self.navigationController.navigationBar.height - 14);
   [button setTitle:title forState:UIControlStateNormal];
@@ -110,7 +110,7 @@
   button.titleLabel.shadowOffset = CGSizeMake(0, 1);
   [button setBackgroundImage:[[UIImage imageNamed:@"navbar_normal_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
   [button setBackgroundImage:[[UIImage imageNamed:@"navbar_normal_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
-  [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];  
+  [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];  
   UIBarButtonItem *navButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
   if (isLeft) {
     self.navigationItem.leftBarButtonItem = navButton;
@@ -119,12 +119,12 @@
   }
 }
 
-- (void)addButtonWithImage:(UIImage *)image andSelector:(SEL)selector isLeft:(BOOL)isLeft {
+- (void)addButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft {
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
   button.autoresizingMask = UIViewAutoresizingFlexibleHeight;
   button.frame = CGRectMake(0, 0, 60, 30);
   [button setBackgroundImage:image forState:UIControlStateNormal];
-  [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];  
+  [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];  
   UIBarButtonItem *navButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
   if (isLeft) {
     self.navigationItem.leftBarButtonItem = navButton;

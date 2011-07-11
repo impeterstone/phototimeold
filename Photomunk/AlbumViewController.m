@@ -9,6 +9,7 @@
 #import "AlbumViewController.h"
 #import "AlbumDataCenter.h"
 #import "PhotoViewController.h"
+#import "FilterViewController.h"
 #import "AlbumCell.h"
 #import "Album.h"
 
@@ -29,7 +30,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-//  [self.navigationController setNavigationBarHidden:YES animated:YES];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
   [self reloadCardController];
 }
@@ -97,25 +97,20 @@
       scopeArray = nil;
       _sectionNameKeyPathForFetchedResultsController = nil;
       break;
-    case AlbumTypeTimeline:
-      navTitle = @"Timeline";
-      placeholder = @"Album, Friend, Location...";
-      scopeArray = nil;
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
     default:
       break;
   }
   
   // Search Scope
-  if (placeholder) {
-    [self setupSearchDisplayControllerWithScopeButtonTitles:scopeArray andPlaceholder:placeholder];
-  }
+//  if (placeholder) {
+//    [self setupSearchDisplayControllerWithScopeButtonTitles:scopeArray andPlaceholder:placeholder];
+//  }
   
   // Title and Buttons
-  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
-//  [self addButtonWithTitle:@"Search" andSelector:@selector(search) isLeft:NO];
-//  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] andSelector:@selector(search) isLeft:NO];
+//  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
+  
+  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
+  [self addButtonWithTitle:@"Filter" withTarget:self action:@selector(filter) isLeft:NO];
   _navTitleLabel.text = navTitle;
   
   
@@ -136,6 +131,12 @@
 
 - (void)unloadCardController {
   [super unloadCardController];
+}
+
+- (void)filter {
+  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
+  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
+  [self presentModalViewController:fnc animated:YES];
 }
 
 - (void)search {
@@ -305,11 +306,6 @@
       fetchTemplate = @"getHistory";
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"lastViewed" ascending:NO]];
-      break;
-    case AlbumTypeTimeline:
-      fetchTemplate = @"getTimeline";
-      substitutionVariables = [NSDictionary dictionary];
-      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
     default:
       break;

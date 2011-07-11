@@ -19,7 +19,7 @@
   UIWindow *_window;
   Facebook *_facebook;
   LoginViewController *_loginViewController;
-  UITabBarController *_tabBarController;
+  UINavigationController *_navController;
   
   AlbumDataCenter *_albumDataCenter;
   
@@ -38,8 +38,6 @@
 - (void)startDownloadAlbums;
 - (void)tryLogin;
 - (void)resetSessionKey;
-
-- (void)setupTabBar;
 
 - (void)getMe;
 - (void)serializeMeWithResponse:(id)response;

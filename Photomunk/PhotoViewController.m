@@ -56,7 +56,7 @@
   _navTitleLabel.text = _album.name;
   
   [self addBackButton];
-  [self addButtonWithTitle:@"Favorite" andSelector:@selector(favorite) isLeft:NO];
+  [self addButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) isLeft:NO];
   
   // Table
   CGRect tableFrame = self.view.bounds;

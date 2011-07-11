@@ -61,13 +61,13 @@ static UIImage *_vignetteInverted = nil;
     // Vignette
     _vignetteView = [[UIImageView alloc] initWithImage:_vignette];
     _vignetteView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _vignetteInvertedView = [[UIImageView alloc] initWithImage:_vignetteInverted];
-    _vignetteInvertedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    _vignetteInvertedView = [[UIImageView alloc] initWithImage:_vignetteInverted];
+//    _vignetteInvertedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     // Rollup
-    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
+//    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
 //    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
-    _taggedFriendsView.hidden = YES;
+//    _taggedFriendsView.hidden = YES;
 
 //    _photoView.placeholderImage = [UIImage imageNamed:@"photos-large.png"];
     //    _photoView.shouldScale = YES;
@@ -77,8 +77,8 @@ static UIImage *_vignetteInverted = nil;
     // Add to contentView
     [self.contentView addSubview:_photoView];
     [self.contentView addSubview:_vignetteView];
-    [self.contentView addSubview:_vignetteInvertedView];
-    [self.contentView addSubview:_taggedFriendsView];
+//    [self.contentView addSubview:_vignetteInvertedView];
+//    [self.contentView addSubview:_taggedFriendsView];
     
     // Add labels
     [self.contentView addSubview:_captionLabel];
@@ -119,7 +119,7 @@ static UIImage *_vignetteInverted = nil;
   _photoView.image = nil;
   _photoWidth = 0;
   _photoHeight = 0;
-  _taggedFriendsView.hidden = YES;
+//  _taggedFriendsView.hidden = YES;
 }
 
 - (void)layoutSubviews {
@@ -128,7 +128,7 @@ static UIImage *_vignetteInverted = nil;
   // Photo
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, floor(_photoHeight / (_photoWidth / self.contentView.width)));
   _vignetteView.frame = CGRectMake(0, _photoView.bottom - _vignetteView.height, _vignetteView.width, _vignetteView.height);
-  _vignetteInvertedView.frame = CGRectMake(0, 0, _vignetteInvertedView.width, _vignetteInvertedView.height);
+//  _vignetteInvertedView.frame = CGRectMake(0, 0, _vignetteInvertedView.width, _vignetteInvertedView.height);
   
   CGFloat bottom = _photoView.bottom;
   CGFloat left = MARGIN_X;
@@ -136,16 +136,16 @@ static UIImage *_vignetteInverted = nil;
   CGSize desiredSize = CGSizeZero;
   
   // Rollup
-  if ([_photo.tags count] > 0) {
-    _taggedFriendsView.hidden = NO;
-    NSArray *taggedFriendNames = [[_photo.tags valueForKeyPath:@"@distinctUnionOfObjects.fromName"] allObjects];
-    
-    [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@", [taggedFriendNames componentsJoinedByString:@", "]]];
-    [_taggedFriendsView layoutIfNeeded];
-    _taggedFriendsView.top = 0;
-  } else {
-    _taggedFriendsView.hidden = YES;
-  }
+//  if ([_photo.tags count] > 0) {
+//    _taggedFriendsView.hidden = NO;
+//    NSArray *taggedFriendNames = [[_photo.tags valueForKeyPath:@"@distinctUnionOfObjects.fromName"] allObjects];
+//    
+//    [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@", [taggedFriendNames componentsJoinedByString:@", "]]];
+//    [_taggedFriendsView layoutIfNeeded];
+//    _taggedFriendsView.top = 0;
+//  } else {
+//    _taggedFriendsView.hidden = YES;
+//  }
   
   // Caption Label
   if ([_captionLabel.text length] > 0) {    
@@ -212,8 +212,8 @@ static UIImage *_vignetteInverted = nil;
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_captionLabel);
   RELEASE_SAFELY(_vignetteView);
-  RELEASE_SAFELY(_vignetteInvertedView);
-  RELEASE_SAFELY(_taggedFriendsView);
+//  RELEASE_SAFELY(_vignetteInvertedView);
+//  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }
 
