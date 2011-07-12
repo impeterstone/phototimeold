@@ -17,8 +17,7 @@
 @interface PhotoCell : PSCell {
   PSURLCacheImageView *_photoView; // optional
   UILabel *_captionLabel;
-  UIImageView *_vignetteView;
-  UIImageView *_vignetteInvertedView;
+  UIImageView *_overlayView;
   PSRollupView *_taggedFriendsView;
   
   CGFloat _photoWidth;

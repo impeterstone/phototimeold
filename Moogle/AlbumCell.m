@@ -20,7 +20,7 @@ static UIImage *_overlayImage = nil;
 
 + (void)initialize {
   _ribbonImage = [[[UIImage imageNamed:@"ribbon.png"] stretchableImageWithLeftCapWidth:30 topCapHeight:0] retain];
-  _overlayImage = [[UIImage imageNamed:@"vignette-album.png"] retain];
+  _overlayImage = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {

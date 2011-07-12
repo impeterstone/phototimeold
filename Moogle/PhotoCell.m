@@ -10,8 +10,7 @@
 #import "Comment.h"
 #import "PSRollupView.h"
 
-static UIImage *_vignette = nil;
-static UIImage *_vignetteInverted = nil;
+static UIImage *_overlay = nil;
 
 @implementation PhotoCell
 
@@ -20,8 +19,7 @@ static UIImage *_vignetteInverted = nil;
 @synthesize delegate = _delegate;
 
 + (void)initialize {
-  _vignette = [[UIImage imageNamed:@"vignette-caption.png"] retain];
-  _vignetteInverted = [[UIImage imageNamed:@"vignette-caption-inverted.png"] retain];
+  _overlay = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -38,7 +36,7 @@ static UIImage *_vignetteInverted = nil;
     _captionLabel.backgroundColor = [UIColor clearColor];
     
     // Font
-    _captionLabel.font = NORMAL_FONT;
+    _captionLabel.font = CAPTION_FONT;
     
     // Text Color
     _captionLabel.textColor = [UIColor whiteColor];
@@ -58,11 +56,9 @@ static UIImage *_vignetteInverted = nil;
     _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _photoView.shouldAnimate = YES;
     
-    // Vignette
-    _vignetteView = [[UIImageView alloc] initWithImage:_vignette];
-    _vignetteView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    _vignetteInvertedView = [[UIImageView alloc] initWithImage:_vignetteInverted];
-//    _vignetteInvertedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    // Overlay Gradient
+    _overlayView = [[UIImageView alloc] initWithImage:_overlay];
+    _overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     // Rollup
 //    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
@@ -76,8 +72,7 @@ static UIImage *_vignetteInverted = nil;
     
     // Add to contentView
     [self.contentView addSubview:_photoView];
-    [self.contentView addSubview:_vignetteView];
-//    [self.contentView addSubview:_vignetteInvertedView];
+    [self.contentView addSubview:_overlayView];
 //    [self.contentView addSubview:_taggedFriendsView];
     
     // Add labels
@@ -127,8 +122,7 @@ static UIImage *_vignetteInverted = nil;
   
   // Photo
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, floor(_photoHeight / (_photoWidth / self.contentView.width)));
-  _vignetteView.frame = CGRectMake(0, _photoView.bottom - _vignetteView.height, _vignetteView.width, _vignetteView.height);
-//  _vignetteInvertedView.frame = CGRectMake(0, 0, _vignetteInvertedView.width, _vignetteInvertedView.height);
+  _overlayView.frame = CGRectMake(0, _photoView.bottom - _overlayView.height, _overlayView.width, _overlayView.height);
   
   CGFloat bottom = _photoView.bottom;
   CGFloat left = MARGIN_X;
@@ -211,8 +205,7 @@ static UIImage *_vignetteInverted = nil;
 - (void)dealloc {
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_captionLabel);
-  RELEASE_SAFELY(_vignetteView);
-//  RELEASE_SAFELY(_vignetteInvertedView);
+  RELEASE_SAFELY(_overlayView);
 //  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }

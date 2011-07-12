@@ -27,12 +27,19 @@
 - (void)loadView {
   [super loadView];
   
-  [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
+  [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
   self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:)];
   
   _navTitleLabel.text = @"Photos";
   
+}
+
+- (void)setupTableFooter {
+  // subclass should implement
+  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
+  _tableView.tableFooterView = footerImage;
+  [footerImage release];
 }
 
 - (void)setupDataSource {
@@ -55,6 +62,21 @@
 }
 
 #pragma mark - Table
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (tableView.style == UITableViewStylePlain) {
+    UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+    backgroundView.backgroundColor = LIGHT_GRAY;
+    cell.backgroundView = backgroundView;
+    
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+    selectedBackgroundView.backgroundColor = CELL_SELECTED_COLOR;
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
+    [backgroundView release];
+    [selectedBackgroundView release];
+  }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = nil;
   NSString *reuseIdentifier = @"filterCell";
