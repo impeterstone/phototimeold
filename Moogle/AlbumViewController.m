@@ -120,6 +120,8 @@
 
 - (void)reloadCardController {
   [super reloadCardController];
+  _hasMore = YES;
+  _fetchTotal = _fetchLimit;
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     [self dataSourceDidLoad];
   }
@@ -153,6 +155,8 @@
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+  _hasMore = YES;
+  _fetchTotal = _fetchLimit;
   self.navigationItem.rightBarButtonItem = _cancelButton;
   
   [UIView beginAnimations:nil context:NULL];
@@ -165,6 +169,8 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
+  _hasMore = YES;
+  _fetchTotal = _fetchLimit;
   [UIView beginAnimations:nil context:NULL];
   _searchEmptyView.alpha = 0.0;
   [UIView setAnimationDuration:0.4];
