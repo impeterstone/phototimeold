@@ -65,6 +65,13 @@
   _searchField.background = [UIImage stretchableImageNamed:@"searchbar_textfield_background.png" withLeftCapWidth:30 topCapWidth:0];
   _searchField.placeholder = @"Search for photos...";
   
+  _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
+//  _searchEmptyView.height -= 44; // nav bar
+//  _searchEmptyView.height -= 216; // minus keyboard
+  _searchEmptyView.backgroundColor = VERY_LIGHT_GRAY;
+  _searchEmptyView.alpha = 0.0;
+  [self.view addSubview:_searchEmptyView];
+  
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
 //  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
   
@@ -139,6 +146,7 @@
   
   [UIView beginAnimations:nil context:NULL];
   _searchField.width = 240;
+  _searchEmptyView.alpha = 1.0;
   [UIView setAnimationDuration:0.4];
   [UIView commitAnimations];
   
@@ -146,10 +154,15 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
+  [UIView beginAnimations:nil context:NULL];
+  _searchEmptyView.alpha = 0.0;
+  [UIView setAnimationDuration:0.4];
+  [UIView commitAnimations];
   return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
   [self searchWithText:textField.text];
   [textField resignFirstResponder];
   return YES;
@@ -190,7 +203,8 @@
   }
   _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
   
-  [self executeFetch:FetchTypeRefresh];
+  [self executeSearchOnMainThread];
+//  [self executeFetch:FetchTypeRefresh];
 }
 
 #pragma mark -
@@ -377,6 +391,7 @@
   RELEASE_SAFELY(_searchField);
   RELEASE_SAFELY(_filterButton);
   RELEASE_SAFELY(_cancelButton);
+  RELEASE_SAFELY(_searchEmptyView);
   [super dealloc];
 }
 

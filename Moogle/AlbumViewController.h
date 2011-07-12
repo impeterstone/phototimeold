@@ -27,6 +27,7 @@ typedef enum {
   PSTextField *_searchField;
   UIBarButtonItem *_filterButton;
   UIBarButtonItem *_cancelButton;
+  UIView *_searchEmptyView;
 }
 
 @property (nonatomic, assign) AlbumType albumType;

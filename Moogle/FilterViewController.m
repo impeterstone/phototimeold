@@ -80,6 +80,7 @@
   AlbumViewController *parent = (AlbumViewController *)[(UINavigationController *)[[self navigationController] parentViewController] topViewController];
   
   parent.albumType = [[rowData objectForKey:@"albumType"] integerValue];
+  [parent.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
   
   [self dismissModalViewControllerAnimated:YES];
 }

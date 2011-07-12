@@ -139,7 +139,8 @@
     NSPredicate *combinedPredicate = nil;
     if (_searchPredicate) {
       if (predicate) {
-        combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:predicate, _searchPredicate, nil]];
+//        combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:predicate, _searchPredicate, nil]];
+        combinedPredicate = _searchPredicate;
       } else {
         combinedPredicate = _searchPredicate;
       }
@@ -222,6 +223,20 @@
   } else {
     [_tableView reloadData];
   }
+  [self updateState];
+}
+
+- (void)executeSearchOnMainThread {
+  [self.fetchedResultsController.fetchRequest setPredicate:_searchPredicate];
+  
+  NSError *frcError = nil;
+  if ([self.fetchedResultsController performFetch:&frcError]) {
+    VLog(@"Main Thread Search Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
+  } else {
+    VLog(@"Main Thread Search Fetch failed with error: %@", [error localizedDescription]);
+  }
+  
+  [_tableView reloadData];
   [self updateState];
 }
 
