@@ -68,8 +68,19 @@
   _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
 //  _searchEmptyView.height -= 44; // nav bar
 //  _searchEmptyView.height -= 216; // minus keyboard
-  _searchEmptyView.backgroundColor = VERY_LIGHT_GRAY;
+  _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
   _searchEmptyView.alpha = 0.0;
+  
+  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 200)] autorelease];
+  searchLabel.numberOfLines = 8;
+  searchLabel.text = @"Search for keywords, people, or places.\n\nTypeahead table view here";
+  searchLabel.textAlignment = UITextAlignmentCenter;
+  searchLabel.textColor = [UIColor whiteColor];
+  searchLabel.shadowColor = [UIColor blackColor];
+  searchLabel.shadowOffset = CGSizeMake(0, 1);
+  searchLabel.backgroundColor = [UIColor clearColor];
+  
+  [_searchEmptyView addSubview:searchLabel];
   [self.view addSubview:_searchEmptyView];
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
@@ -162,9 +173,15 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-  [self searchWithText:textField.text];
-  [textField resignFirstResponder];
+  if ([textField.text length] == 0) {
+    // Empty search
+    [self cancelSearch];
+  } else {
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self searchWithText:textField.text];
+    [textField resignFirstResponder];
+  }
+  
   return YES;
 }
 
