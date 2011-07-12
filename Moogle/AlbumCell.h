@@ -24,6 +24,7 @@
   UILabel *_fromLabel;
   UILabel *_locationLabel;
   UILabel *_countLabel;
+  UILabel *_dateLabel;
   
   CGFloat _photoWidth;
   CGFloat _photoHeight;

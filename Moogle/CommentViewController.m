@@ -277,7 +277,7 @@
 - (NSFetchRequest *)getFetchRequest {
   NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES] autorelease];
   NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptor, nil] autorelease];
-  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getCommentsForPhoto" substitutionVariables:[NSDictionary dictionaryWithObject:_photo forKey:@"desiredPhoto"]];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_COMMENTS substitutionVariables:[NSDictionary dictionaryWithObject:_photo forKey:@"desiredPhoto"]];
   [fetchRequest setSortDescriptors:sortDescriptors];
   [fetchRequest setFetchBatchSize:10];
   return fetchRequest;

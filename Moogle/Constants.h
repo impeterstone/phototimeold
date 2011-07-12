@@ -37,6 +37,19 @@
 #define kUpdateLoginProgress @"UpdateLoginProgress"
 #define kPSImageCacheDidCacheImage @"PSImageCacheDidCacheImage"
 
+// Fetch Templates
+#define FETCH_ME @"fetchMe"
+#define FETCH_FRIENDS @"fetchFriendsFiltered"
+#define FETCH_FRIENDS_FILTERED @"fetchFriendsFiltered"
+#define FETCH_MOBILE @"fetchMobile"
+#define FETCH_WALL @"fetchWall"
+#define FETCH_PROFILE @"fetchProfile"
+#define FETCH_FAVORITES @"fetchFavorites"
+
+#define FETCH_COMMENTS @"fetchComments"
+
+#define FETCH_PHOTOS @"fetchPhotos"
+
 // Cards
 #define NUM_CARDS 2
 #define CARD_WIDTH 320.0
@@ -101,6 +114,7 @@
 #define LIGHT_GRAY RGBCOLOR(247.0,247.0,247.0)
 #define VERY_LIGHT_GRAY RGBCOLOR(226.0,231.0,237.0)
 #define GRAY_COLOR RGBCOLOR(87.0,108.0,137.0)
+#define SECTION_HEADER_COLOR RGBCOLOR(50,50,50)
 
 #define SEPARATOR_COLOR RGBCOLOR(200.0,200.0,200.0)
 

@@ -24,6 +24,7 @@
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
+//    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
   }
   return self;
 }
@@ -230,8 +231,7 @@
 //  [self executeFetch:FetchTypeRefresh];
 }
 
-#pragma mark -
-#pragma mark TableView
+#pragma mark - TableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
@@ -248,24 +248,26 @@
 //  return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
 //}
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-  if ([[self.fetchedResultsController sections] count] == 1) return nil;
-  
-  NSString *sectionName = [[[self.fetchedResultsController sections] objectAtIndex:section] name];
-  
-  UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 26)] autorelease];
-  sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-table-header.png"]];
-  
-  UILabel *sectionHeaderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(5, 0, 310, 26)] autorelease];
-  sectionHeaderLabel.backgroundColor = [UIColor clearColor];
-  sectionHeaderLabel.text = sectionName;
-  sectionHeaderLabel.textColor = [UIColor whiteColor];
-  sectionHeaderLabel.shadowColor = [UIColor blackColor];
-  sectionHeaderLabel.shadowOffset = CGSizeMake(0, 1);
-  sectionHeaderLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0];
-  [sectionHeaderView addSubview:sectionHeaderLabel];
-  return sectionHeaderView;
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//  if ([[self.fetchedResultsController sections] count] == 1) return nil;
+//  
+//  NSString *sectionName = [[[self.fetchedResultsController sections] objectAtIndex:section] name];
+//  
+//  UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 26)] autorelease];
+////  sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-table-header.png"]];
+//  sectionHeaderView.backgroundColor = SECTION_HEADER_COLOR;
+//  
+//  UILabel *sectionHeaderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(5, 0, 310, 24)] autorelease];
+//  sectionHeaderLabel.backgroundColor = [UIColor clearColor];
+//  sectionHeaderLabel.text = sectionName;
+//  sectionHeaderLabel.textColor = [UIColor whiteColor];
+//  sectionHeaderLabel.shadowColor = [UIColor blackColor];
+//  sectionHeaderLabel.shadowOffset = CGSizeMake(0, 1);
+//  sectionHeaderLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0];
+//  [sectionHeaderView addSubview:sectionHeaderLabel];
+//  
+//  return sectionHeaderView;
+//}
 
 - (void)tableView:(UITableView *)tableView configureCell:(id)cell atIndexPath:(NSIndexPath *)indexPath {
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -280,13 +282,16 @@
   album.lastViewed = [NSDate date];
   [PSCoreDataStack saveInContext:[album managedObjectContext]];
   
-  PhotoViewController *svc = [[PhotoViewController alloc] init];
-  svc.album = album;
-//  if (self.albumType == AlbumTypeWall) {
-//    svc.sectionNameKeyPathForFetchedResultsController = @"timestamp";
-//  }
-  [self.navigationController pushViewController:svc animated:YES];
-  [svc release];
+  PhotoViewController *pvc = [[PhotoViewController alloc] init];
+  pvc.album = album;
+  
+  // If this album is WALL, sort by timestamp instead
+  if (self.albumType == AlbumTypeWall) {
+    pvc.sortKey = @"timestamp";
+  }
+  
+  [self.navigationController pushViewController:pvc animated:YES];
+  [pvc release];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -361,27 +366,32 @@
   
   switch (self.albumType) {
     case AlbumTypeMe:
-      fetchTemplate = @"getMyAlbums";
+      fetchTemplate = FETCH_ME;
       substitutionVariables = [NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
     case AlbumTypeFriends:
-      fetchTemplate = @"getFriendsAlbums";
+      fetchTemplate = FETCH_FRIENDS;
       substitutionVariables = [NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
-    case AlbumTypeWall:
-      fetchTemplate = @"getWallAlbums";
+    case AlbumTypeMobile:
+      fetchTemplate = FETCH_MOBILE;
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
-    case AlbumTypeMobile:
-      fetchTemplate = @"getMobileAlbums";
+    case AlbumTypeWall:
+      fetchTemplate = FETCH_WALL;
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
     case AlbumTypeProfile:
-      fetchTemplate = @"getProfileAlbums";
+      fetchTemplate = FETCH_PROFILE;
+      substitutionVariables = [NSDictionary dictionary];
+      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
+      break;
+    case AlbumTypeFavorites:
+      fetchTemplate = FETCH_FAVORITES;
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;

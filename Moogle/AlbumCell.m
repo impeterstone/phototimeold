@@ -38,6 +38,7 @@ static UIImage *_overlayImage = nil;
     _fromLabel = [[UILabel alloc] init];
     _locationLabel = [[UILabel alloc] init];
     _countLabel = [[UILabel alloc] init];
+    _dateLabel = [[UILabel alloc] init];
     
     // Background Color
     _nameLabel.backgroundColor = [UIColor clearColor];
@@ -45,6 +46,7 @@ static UIImage *_overlayImage = nil;
     _fromLabel.backgroundColor = [UIColor clearColor];
     _locationLabel.backgroundColor = [UIColor clearColor];
     _countLabel.backgroundColor = [UIColor clearColor];
+    _dateLabel.backgroundColor = [UIColor clearColor];
     
     // Font
     _nameLabel.font = TITLE_FONT;
@@ -52,6 +54,7 @@ static UIImage *_overlayImage = nil;
     _fromLabel.font = SUBTITLE_FONT;
     _locationLabel.font = SUBTITLE_FONT;
     _countLabel.font = RIBBON_FONT;
+    _dateLabel.font = TIMESTAMP_FONT;
     
     // Text Color
     _nameLabel.textColor = [UIColor whiteColor];
@@ -59,11 +62,13 @@ static UIImage *_overlayImage = nil;
     _fromLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
     _locationLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
     _countLabel.textColor = [UIColor whiteColor];
+    _dateLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
     
     // Text Alignment
     _fromLabel.textAlignment = UITextAlignmentRight;
     _locationLabel.textAlignment = UITextAlignmentRight;
     _countLabel.textAlignment = UITextAlignmentRight;
+    _dateLabel.textAlignment = UITextAlignmentRight;
     
     // Line Break Mode
     _nameLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -71,6 +76,7 @@ static UIImage *_overlayImage = nil;
     _fromLabel.lineBreakMode = UILineBreakModeTailTruncation;
     _locationLabel.lineBreakMode = UILineBreakModeTailTruncation;
     _countLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    _dateLabel.lineBreakMode = UILineBreakModeTailTruncation;
     
     // Number of Lines
     _nameLabel.numberOfLines = 1;
@@ -78,6 +84,7 @@ static UIImage *_overlayImage = nil;
     _fromLabel.numberOfLines = 1;
     _locationLabel.numberOfLines = 1;
     _countLabel.numberOfLines = 1;
+    _dateLabel.numberOfLines = 1;
     
     // Shadows
     _nameLabel.shadowColor = [UIColor blackColor];
@@ -125,6 +132,7 @@ static UIImage *_overlayImage = nil;
 //    [self.contentView addSubview:_captionLabel];
     [self.contentView addSubview:_fromLabel];
     [self.contentView addSubview:_locationLabel];
+    [self.contentView addSubview:_dateLabel];
   }
   return self;
 }
@@ -135,6 +143,7 @@ static UIImage *_overlayImage = nil;
 //  _captionLabel.text = nil;
   _fromLabel.text = nil;
   _locationLabel.text = nil;
+  _dateLabel.text = nil;
   _photoView.frame = CGRectMake(0, 0, 320, ALBUM_CELL_HEIGHT);
   _photoView.image = nil;
   _photoView.urlPath = nil;
@@ -176,12 +185,12 @@ static UIImage *_overlayImage = nil;
   _fromLabel.width = desiredSize.width;
   _fromLabel.height = desiredSize.height;
   
-  // Location
-  desiredSize = [UILabel sizeForText:_locationLabel.text width:(textWidth - _fromLabel.width - MARGIN_X - 2) font:_locationLabel.font numberOfLines:1 lineBreakMode:_locationLabel.lineBreakMode];
-  _locationLabel.top = top - 3;
-  _locationLabel.left = self.contentView.width - desiredSize.width - MARGIN_X - 1;
-  _locationLabel.width = desiredSize.width;
-  _locationLabel.height = desiredSize.height;
+  // Date
+  desiredSize = [UILabel sizeForText:_dateLabel.text width:(textWidth - _dateLabel.width - MARGIN_X - 2) font:_dateLabel.font numberOfLines:1 lineBreakMode:_dateLabel.lineBreakMode];
+  _dateLabel.top = top - 3;
+  _dateLabel.left = self.contentView.width - desiredSize.width - MARGIN_X - 1;
+  _dateLabel.width = desiredSize.width;
+  _dateLabel.height = desiredSize.height;
   
 //  if ([_captionLabel.text length] > 0) {    
 //    // Caption
@@ -280,7 +289,8 @@ static UIImage *_overlayImage = nil;
   _nameLabel.text = album.name;
   _captionLabel.text = album.caption;
   _fromLabel.text = [NSString stringWithFormat:@"by %@", album.fromName];
-  _locationLabel.text = [NSString stringWithFormat:@"%@", album.location];
+//  _locationLabel.text = [NSString stringWithFormat:@"%@", album.location];
+  _dateLabel.text = [NSDate stringForDisplayFromDate:album.timestamp];
   _countLabel.text = [NSString stringWithFormat:@"%@ photos ", album.count];
 }
 
@@ -326,6 +336,7 @@ static UIImage *_overlayImage = nil;
   RELEASE_SAFELY(_fromLabel);
   RELEASE_SAFELY(_locationLabel);
   RELEASE_SAFELY(_countLabel);
+  RELEASE_SAFELY(_dateLabel);
   [super dealloc];
 }
 

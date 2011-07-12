@@ -46,15 +46,45 @@
   // Create all the rows
   NSMutableArray *rows = [NSMutableArray array];
   NSDictionary *rowData = nil;
+  NSFetchRequest *countFetchRequest = nil;
+  NSUInteger count = 0;
+  NSString *facebookId = [[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"];
   
   // My Photos
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Photos", @"title", @"icon_my_photos.png", @"icon", @"23", @"count", [NSNumber numberWithInteger:AlbumTypeMe], @"albumType", nil];
+  countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_ME substitutionVariables:[NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"]];
+  count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Photos", @"title", @"icon_filter_me.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMe], @"albumType", nil];
   [rows addObject:rowData];
   
   // My Friends
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Friends", @"title", @"icon_my_friends.png", @"icon", @"1337", @"count", [NSNumber numberWithInteger:AlbumTypeFriends], @"albumType", nil];
+  countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_FRIENDS substitutionVariables:[NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"]];
+  count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Friends", @"title", @"icon_filter_friends.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFriends], @"albumType", nil];
   [rows addObject:rowData];
   
+  // Mobile Albums
+  countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_MOBILE substitutionVariables:[NSDictionary dictionary]];
+  count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Mobile Albums", @"title", @"icon_filter_mobile.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMobile], @"albumType", nil];
+  [rows addObject:rowData];
+  
+  // Profile Pictures
+  countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_PROFILE substitutionVariables:[NSDictionary dictionary]];
+  count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Profile Pictures", @"title", @"icon_filter_profile.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeProfile], @"albumType", nil];
+  [rows addObject:rowData];
+  
+  // Wall
+  countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_WALL substitutionVariables:[NSDictionary dictionary]];
+  count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Wall Photos", @"title", @"icon_filter_wall.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeWall], @"albumType", nil];
+  [rows addObject:rowData];
+  
+  // Favorites
+  countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_FAVORITES substitutionVariables:[NSDictionary dictionary]];
+  count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Favorites", @"title", @"icon_filter_favorites.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFavorites], @"albumType", nil];
+  [rows addObject:rowData];
   
   // Add rows to data source
   [self.items addObject:rows];
@@ -89,7 +119,7 @@
   NSDictionary *rowData = [[self.items objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
   
   cell.textLabel.text = [rowData objectForKey:@"title"];
-  cell.detailTextLabel.text = [rowData objectForKey:@"count"];
+  cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [rowData objectForKey:@"count"]];
   
   return cell;
 }

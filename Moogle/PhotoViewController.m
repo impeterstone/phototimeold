@@ -21,6 +21,7 @@
 @implementation PhotoViewController
 
 @synthesize album = _album;
+@synthesize sortKey = _sortKey;
 
 - (id)init {
   self = [super init];
@@ -32,6 +33,7 @@
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
+    _sortKey = [@"position" retain];
   }
   return self;
 }
@@ -61,8 +63,7 @@
   CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  // Search
-//  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Tagged Friends..."];
+  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite)];
   
   // Pull Refresh
   [self setupPullRefresh];
@@ -75,7 +76,7 @@
 
 #pragma mark - Tagged Friends
 - (void)getTaggedFriends {
-  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getPhotosForAlbum" substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_PHOTOS substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
   [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"tags"]];
   
   NSArray *allPhotos = [self.context executeFetchRequest:fetchRequest error:NULL];
@@ -260,12 +261,12 @@
 #pragma mark -
 #pragma mark FetchRequest
 - (NSFetchRequest *)getFetchRequest {
-//  BOOL ascending = ([self.sectionNameKeyPathForFetchedResultsController isEqualToString:@"position"]) ? YES : NO;
-  BOOL ascending = YES;
+  BOOL ascending = ([self.sortKey isEqualToString:@"position"]) ? YES : NO;
+//  BOOL ascending = YES;
 
-  NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"position" ascending:ascending] autorelease];
+  NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:self.sortKey ascending:ascending] autorelease];
   NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptor, nil] autorelease];
-  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:@"getPhotosForAlbum" substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
+  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_PHOTOS substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
   [fetchRequest setSortDescriptors:sortDescriptors];
   [fetchRequest setFetchBatchSize:5];
   [fetchRequest setFetchLimit:_fetchTotal];
@@ -277,6 +278,7 @@
   RELEASE_SAFELY(_photoDataCenter);
   RELEASE_SAFELY(_zoomView);
   RELEASE_SAFELY(_taggedFriendsView);
+  RELEASE_SAFELY(_sortKey);
   [super dealloc];
 }
 

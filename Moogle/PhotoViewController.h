@@ -20,9 +20,11 @@
   Album *_album;
   PSRollupView *_taggedFriendsView;
   PSZoomView *_zoomView;
+  NSString *_sortKey;
 }
 
 @property (nonatomic, assign) Album *album;
+@property (nonatomic, retain) NSString *sortKey;
 
 - (void)getTaggedFriends;
 - (void)zoomPhotoForCell:(id)cell atIndexPath:(NSIndexPath *)indexPath;
