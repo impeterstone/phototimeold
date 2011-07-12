@@ -30,12 +30,18 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
   [self reloadCardController];
+  
+  [self.navigationController.navigationBar addSubview:_searchField];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
+  
+  [_searchField removeFromSuperview];
+  
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
 }
 
@@ -50,19 +56,16 @@
   
 //  self.tableView.rowHeight = 120.0;
   
-  // Title and Buttons
-
-  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(6, 6, 60, 30) withInset:CGSizeMake(30, 7)];
+  // Custom Search
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 7)];
   _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
   _searchField.font = NORMAL_FONT;
   _searchField.delegate = self;
   _searchField.returnKeyType = UIReturnKeySearch;
   _searchField.background = [UIImage stretchableImageNamed:@"searchbar_textfield_background.png" withLeftCapWidth:30 topCapWidth:0];
-  _searchField.placeholder = @"Search for Photos...";
-  [self.navigationController.navigationBar addSubview:_searchField];
+  _searchField.placeholder = @"Search for photos...";
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
-  
 //  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
   
   _filterButton = [[self navButtonWithTitle:@"Filter" withTarget:self action:@selector(filter)] retain];
@@ -93,6 +96,8 @@
     default:
       break;
   }
+  
+  [self.navigationController.navigationBar bringSubviewToFront:_searchField];
 }
 
 - (void)reloadCardController {
@@ -121,6 +126,10 @@
   [UIView setAnimationDuration:0.4];
   [UIView commitAnimations];
   
+  _searchPredicate = nil;
+  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+  [self executeFetchOnMainThread];
+  self.navigationItem.rightBarButtonItem = _filterButton;
   [_searchField resignFirstResponder];
 }
 
@@ -136,15 +145,52 @@
   return YES;
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-  self.navigationItem.rightBarButtonItem = _filterButton;
-  
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
   return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  [self cancelSearch];
+  [self searchWithText:textField.text];
+  [textField resignFirstResponder];
   return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//  if (_searchTimer && [_searchTimer isValid]) {
+//    INVALIDATE_TIMER(_searchTimer);
+//  }
+//  NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:textField.text, @"searchText", nil];
+//  _searchTimer = [[NSTimer timerWithTimeInterval:0.3 target:self selector:@selector(delayedFilterContentWithTimer:) userInfo:userInfo repeats:NO] retain];
+//  [[NSRunLoop currentRunLoop] addTimer:_searchTimer forMode:NSDefaultRunLoopMode];
+  
+  return YES;
+}
+
+- (void)searchWithText:(NSString *)searchText {
+  static NSCharacterSet *separatorCharacterSet = nil;
+  if (!separatorCharacterSet) {
+    separatorCharacterSet = [[[NSCharacterSet alphanumericCharacterSet] invertedSet] retain];
+  }
+
+  NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
+  //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];
+  
+  NSString *tmp = [[searchText componentsSeparatedByCharactersInSet:separatorCharacterSet] componentsJoinedByString:@" "];
+  NSArray *searchTerms = [tmp componentsSeparatedByString:@" "];
+  
+  for (NSString *searchTerm in searchTerms) {
+    if ([searchTerm length] == 0) continue;
+    NSString *searchValue = searchTerm;
+    // search any
+    [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
+  }
+  
+  if (_searchPredicate) {
+    RELEASE_SAFELY(_searchPredicate);
+  }
+  _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
+  
+  [self executeFetch:FetchTypeRefresh];
 }
 
 #pragma mark -

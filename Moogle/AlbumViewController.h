@@ -34,5 +34,6 @@ typedef enum {
 - (void)filter;
 - (void)search;
 - (void)cancelSearch;
+- (void)searchWithText:(NSString *)searchText;
 
 @end

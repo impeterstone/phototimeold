@@ -204,6 +204,12 @@
 }
 
 - (void)executeFetchOnMainThread {
+  NSFetchRequest *newFetch = [[self getFetchRequest] copy];
+  
+  NSPredicate *predicate = [newFetch predicate];
+  [self.fetchedResultsController.fetchRequest setPredicate:predicate];
+  [newFetch release];
+  
   NSError *frcError = nil;
   if ([self.fetchedResultsController performFetch:&frcError]) {
     VLog(@"Main Thread Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
