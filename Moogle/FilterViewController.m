@@ -29,7 +29,7 @@
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
-  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:)];
+  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:) buttonType:NavButtonTypeRed];
   
   _navTitleLabel.text = @"Photos";
   
@@ -133,6 +133,10 @@
   
   parent.albumType = [[rowData objectForKey:@"albumType"] integerValue];
   [parent.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+  
+  // Set userDefaults
+  [[NSUserDefaults standardUserDefaults] setInteger:parent.albumType forKey:@"lastAlbumType"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
   
   [self dismissModalViewControllerAnimated:YES];
 }

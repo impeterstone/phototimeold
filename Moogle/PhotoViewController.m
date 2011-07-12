@@ -63,7 +63,7 @@
   CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite)];
+  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
   
   // Pull Refresh
   [self setupPullRefresh];

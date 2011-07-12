@@ -20,7 +20,7 @@
 - (id)init {
   self = [super init];
   if (self) {
-    _albumType = AlbumTypeMe;
+    _albumType = [[NSUserDefaults standardUserDefaults] integerForKey:@"lastAlbumType"];
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
@@ -87,8 +87,8 @@
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
 //  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
   
-  _filterButton = [[self navButtonWithTitle:@"Filter" withTarget:self action:@selector(filter)] retain];
-  _cancelButton = [[self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch)] retain];
+  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
+  _cancelButton = [[self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
   self.navigationItem.rightBarButtonItem = _filterButton;
   
 //  _navTitleLabel.text = @"Moogle";
@@ -111,6 +111,18 @@
       break;
     case AlbumTypeFriends:
       _navTitleLabel.text = @"My Friends";
+      break;
+    case AlbumTypeMobile:
+      _navTitleLabel.text = @"Mobile Albums";
+      break;
+    case AlbumTypeProfile:
+      _navTitleLabel.text = @"Profile Pictures";
+      break;
+    case AlbumTypeWall:
+      _navTitleLabel.text = @"Wall Photos";
+      break;
+    case AlbumTypeFavorites:
+      _navTitleLabel.text = @"Favorites";
       break;
     default:
       break;

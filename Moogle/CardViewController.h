@@ -13,6 +13,14 @@
 #import "HeaderTabView.h"
 #import "HeaderTabViewDelegate.h"
 
+enum {
+  NavButtonTypeNormal = 0,
+  NavButtonTypeBlue = 1,
+  NavButtonTypeRed = 2,
+  NavButtonTypeSilver = 3
+};
+typedef uint32_t NavButtonType;
+
 @class PSNullView;
 
 @interface CardViewController : PSViewController <CardStateMachine, PSDataCenterDelegate, HeaderTabViewDelegate> {
@@ -33,8 +41,8 @@
 
 // Nav buttons
 - (void)addBackButton;
-- (UIBarButtonItem *)navButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action;
-- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft;
+- (UIBarButtonItem *)navButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action buttonType:(NavButtonType)buttonType;
+- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action;
 
 // Orientation
 - (void)orientationChangedFromNotification:(NSNotification *)notification;
