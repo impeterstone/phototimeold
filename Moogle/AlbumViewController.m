@@ -50,69 +50,13 @@
   
 //  self.tableView.rowHeight = 120.0;
   
-  // Album Type
-  NSArray *scopeArray = nil;
-  NSString *placeholder = nil;
-  NSString *navTitle = nil;
-  switch (self.albumType) {
-    case AlbumTypeMe:
-      navTitle = @"My Albums";
-      placeholder = @"i.e. Thanksgiving 2011";
-      scopeArray = nil;
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
-    case AlbumTypeFriends:
-      navTitle = @"Friends Albums";
-      placeholder = @"i.e. Mark, Wedding";
-      scopeArray = nil;
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
-    case AlbumTypeWall:
-      navTitle = @"Wall Photos";
-      placeholder = @"Search by Author Name";
-      scopeArray = [NSArray arrayWithObjects:@"Author", nil];
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
-    case AlbumTypeMobile:
-      navTitle = @"Mobile Uploads";
-      placeholder = @"Search by Author Name";
-      scopeArray = [NSArray arrayWithObjects:@"Author", nil];
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
-    case AlbumTypeProfile:
-      navTitle = @"Profile Pictures";
-      placeholder = @"Search by Author Name";
-      scopeArray = [NSArray arrayWithObjects:@"Author", nil];
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
-    case AlbumTypeFavorites:
-      navTitle = @"Favorites";
-      placeholder = @"i.e. Las Vegas";
-      scopeArray = nil;
-      _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-      break;
-    case AlbumTypeHistory:
-      navTitle = @"Recently Viewed";
-      placeholder = @"i.e. Techcrunch Disrupt NYC";
-      scopeArray = nil;
-      _sectionNameKeyPathForFetchedResultsController = nil;
-      break;
-    default:
-      break;
-  }
-  
-  // Search Scope
-//  if (placeholder) {
-//    [self setupSearchDisplayControllerWithScopeButtonTitles:scopeArray andPlaceholder:placeholder];
-//  }
-  
   // Title and Buttons
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
   
   [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
   [self addButtonWithTitle:@"Filter" withTarget:self action:@selector(filter) isLeft:NO];
-  _navTitleLabel.text = navTitle;
   
+  _navTitleLabel.text = @"Moogle";
   
   // Pull Refresh
 //  [self setupPullRefresh];
@@ -296,16 +240,6 @@
       fetchTemplate = @"getProfileAlbums";
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-      break;
-    case AlbumTypeFavorites:
-      fetchTemplate = @"getFavorites";
-      substitutionVariables = [NSDictionary dictionary];
-      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-      break;
-    case AlbumTypeHistory:
-      fetchTemplate = @"getHistory";
-      substitutionVariables = [NSDictionary dictionary];
-      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"lastViewed" ascending:NO]];
       break;
     default:
       break;

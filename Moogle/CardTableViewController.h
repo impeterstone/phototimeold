@@ -43,6 +43,8 @@
 - (void)setupSearchDisplayControllerWithScopeButtonTitles:(NSArray *)scopeButtonTitles;
 - (void)setupSearchDisplayControllerWithScopeButtonTitles:(NSArray *)scopeButtonTitles andPlaceholder:(NSString *)placeholder;
 
+- (void)setupDataSource;
+
 - (void)showLoadMoreView;
 - (void)hideLoadMoreView;
 

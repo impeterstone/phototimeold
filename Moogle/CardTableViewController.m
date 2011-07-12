@@ -33,6 +33,10 @@
 
 - (void)loadView {
   [super loadView];
+  
+  // Setup Data Source if implmeneted
+  [self setupDataSource];
+  [self updateState];
 }
 
 // SUBCLASS CAN OPTIONALLY IMPLEMENT IF THEY WANT A SEARCH BAR
@@ -112,6 +116,11 @@
   _activeScrollView = _tableView;
   
   [_tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+// SUBCLASS SHOULD IMPLEMENT
+- (void)setupDataSource {
+  
 }
 
 // SUBCLASS CAN OPTIONALLY CALL
