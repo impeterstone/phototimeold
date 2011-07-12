@@ -132,6 +132,7 @@
 		25711AE21395F03900DD20E0 /* vignette-album.png in Resources */ = {isa = PBXBuildFile; fileRef = 25711AE11395F03900DD20E0 /* vignette-album.png */; };
 		2578373F139968ED00712B8B /* Tag+Serialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2578373E139968ED00712B8B /* Tag+Serialize.m */; };
 		258777CC13CBDBFB00990C71 /* FilterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258777CB13CBDBFB00990C71 /* FilterCell.m */; };
+		258777D013CBF6DA00990C71 /* PSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 258777CF13CBF6DA00990C71 /* PSTextField.m */; };
 		258F02F313BA8C1B00516DDA /* PSToastCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 258F02F213BA8C1A00516DDA /* PSToastCenter.m */; };
 		259AD52413668FE000FA2B8D /* AlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259AD52313668FE000FA2B8D /* AlbumCell.m */; };
 		259AD52913668FED00FA2B8D /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259AD52813668FED00FA2B8D /* PhotoCell.m */; };
@@ -470,6 +471,8 @@
 		2578373E139968ED00712B8B /* Tag+Serialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tag+Serialize.m"; sourceTree = "<group>"; };
 		258777CA13CBDBFB00990C71 /* FilterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterCell.h; sourceTree = "<group>"; };
 		258777CB13CBDBFB00990C71 /* FilterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterCell.m; sourceTree = "<group>"; };
+		258777CE13CBF6DA00990C71 /* PSTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTextField.h; sourceTree = "<group>"; };
+		258777CF13CBF6DA00990C71 /* PSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTextField.m; sourceTree = "<group>"; };
 		258F02F113BA8C1A00516DDA /* PSToastCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSToastCenter.h; sourceTree = "<group>"; };
 		258F02F213BA8C1A00516DDA /* PSToastCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSToastCenter.m; sourceTree = "<group>"; };
 		25961C9E134D46CD00A3D4CD /* MeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeDelegate.h; sourceTree = "<group>"; };
@@ -830,6 +833,8 @@
 				2570A4A913B490F4006CBCFE /* PSRollupView.m */,
 				2570A4AA13B490F4006CBCFE /* PSTextView.h */,
 				2570A4AB13B490F4006CBCFE /* PSTextView.m */,
+				258777CE13CBF6DA00990C71 /* PSTextField.h */,
+				258777CF13CBF6DA00990C71 /* PSTextField.m */,
 				2570A4AC13B490F4006CBCFE /* PSURLCache.h */,
 				2570A4AD13B490F4006CBCFE /* PSURLCache.m */,
 				2570A4AE13B490F4006CBCFE /* PSURLCacheImageView.h */,
@@ -1668,6 +1673,7 @@
 				25E353ED13CA648F00734BB5 /* FilterViewController.m in Sources */,
 				25E353F013CBAE2A00734BB5 /* Moogle.xcdatamodeld in Sources */,
 				258777CC13CBDBFB00990C71 /* FilterCell.m in Sources */,
+				258777D013CBF6DA00990C71 /* PSTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,7 +29,7 @@
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  [self addButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:) isLeft:NO];
+  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:)];
   
   _navTitleLabel.text = @"Photos";
   

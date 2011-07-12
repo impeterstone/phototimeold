@@ -33,8 +33,8 @@
 
 // Nav buttons
 - (void)addBackButton;
-- (void)addButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft;
-- (void)addButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft;
+- (UIBarButtonItem *)navButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action;
+- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft;
 
 // Orientation
 - (void)orientationChangedFromNotification:(NSNotification *)notification;

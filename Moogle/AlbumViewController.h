@@ -22,13 +22,17 @@ typedef enum {
   AlbumTypeClassmates = 9
 } AlbumType;
 
-@interface AlbumViewController : CardCoreDataTableViewController {
+@interface AlbumViewController : CardCoreDataTableViewController <UITextFieldDelegate> {
   AlbumType _albumType;
+  PSTextField *_searchField;
+  UIBarButtonItem *_filterButton;
+  UIBarButtonItem *_cancelButton;
 }
 
 @property (nonatomic, assign) AlbumType albumType;
 
 - (void)filter;
 - (void)search;
+- (void)cancelSearch;
 
 @end

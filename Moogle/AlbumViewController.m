@@ -51,12 +51,25 @@
 //  self.tableView.rowHeight = 120.0;
   
   // Title and Buttons
+
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(6, 6, 60, 30) withInset:CGSizeMake(30, 7)];
+  _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
+  _searchField.font = NORMAL_FONT;
+  _searchField.delegate = self;
+  _searchField.returnKeyType = UIReturnKeySearch;
+  _searchField.background = [UIImage stretchableImageNamed:@"searchbar_textfield_background.png" withLeftCapWidth:30 topCapWidth:0];
+  _searchField.placeholder = @"Search for Photos...";
+  [self.navigationController.navigationBar addSubview:_searchField];
+  
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
   
-  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
-  [self addButtonWithTitle:@"Filter" withTarget:self action:@selector(filter) isLeft:NO];
+//  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
   
-  _navTitleLabel.text = @"Moogle";
+  _filterButton = [[self navButtonWithTitle:@"Filter" withTarget:self action:@selector(filter)] retain];
+  _cancelButton = [[self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch)] retain];
+  self.navigationItem.rightBarButtonItem = _filterButton;
+  
+//  _navTitleLabel.text = @"Moogle";
   
   // Pull Refresh
 //  [self setupPullRefresh];
@@ -64,6 +77,22 @@
 //  [self setupLoadMoreView];
   
   [self executeFetch:FetchTypeCold];
+}
+
+- (void)updateState {
+  [super updateState];
+  
+  // Update Nav Title
+  switch (self.albumType) {
+    case AlbumTypeMe:
+      _navTitleLabel.text = @"My Photos";
+      break;
+    case AlbumTypeFriends:
+      _navTitleLabel.text = @"My Friends";
+      break;
+    default:
+      break;
+  }
 }
 
 - (void)reloadCardController {
@@ -83,7 +112,39 @@
   [self presentModalViewController:fnc animated:YES];
 }
 
-- (void)search {
+- (void)search {  
+}
+
+- (void)cancelSearch {
+  [UIView beginAnimations:nil context:NULL];
+  _searchField.width = 60;
+  [UIView setAnimationDuration:0.4];
+  [UIView commitAnimations];
+  
+  [_searchField resignFirstResponder];
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+  self.navigationItem.rightBarButtonItem = _cancelButton;
+  
+  [UIView beginAnimations:nil context:NULL];
+  _searchField.width = 240;
+  [UIView setAnimationDuration:0.4];
+  [UIView commitAnimations];
+  
+  return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+  self.navigationItem.rightBarButtonItem = _filterButton;
+  
+  return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [self cancelSearch];
+  return YES;
 }
 
 #pragma mark -
@@ -267,6 +328,9 @@
 }
 
 - (void)dealloc {
+  RELEASE_SAFELY(_searchField);
+  RELEASE_SAFELY(_filterButton);
+  RELEASE_SAFELY(_cancelButton);
   [super dealloc];
 }
 

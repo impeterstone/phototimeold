@@ -101,7 +101,7 @@
   self.navigationItem.leftBarButtonItem = backButton;
 }
 
-- (void)addButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft {
+- (UIBarButtonItem *)navButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action {
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
   button.frame = CGRectMake(0, 0, 60, self.navigationController.navigationBar.height - 14);
   [button setTitle:title forState:UIControlStateNormal];
@@ -112,25 +112,17 @@
   [button setBackgroundImage:[[UIImage imageNamed:@"navbar_normal_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
   [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];  
   UIBarButtonItem *navButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-  if (isLeft) {
-    self.navigationItem.leftBarButtonItem = navButton;
-  } else {
-    self.navigationItem.rightBarButtonItem = navButton;
-  }
+  return navButton;
 }
 
-- (void)addButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft {
+- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action isLeft:(BOOL)isLeft {
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-  button.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+  button.autoresizingMask = UIViewAutoresizingFlexibleHeight |UIViewAutoresizingFlexibleWidth;
   button.frame = CGRectMake(0, 0, 60, 30);
   [button setBackgroundImage:image forState:UIControlStateNormal];
   [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];  
   UIBarButtonItem *navButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-  if (isLeft) {
-    self.navigationItem.leftBarButtonItem = navButton;
-  } else {
-    self.navigationItem.rightBarButtonItem = navButton;
-  }
+  return  navButton;
 }
 
 // Subclasses may implement
