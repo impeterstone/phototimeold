@@ -56,7 +56,7 @@ static UIImage *_comment = nil;
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _photoView.shouldAnimate = YES;
+    _photoView.shouldAnimate = NO;
     
     // Overlay Gradient
     _overlayView = [[UIImageView alloc] initWithImage:_overlay];
@@ -126,7 +126,7 @@ static UIImage *_comment = nil;
 - (void)prepareForReuse {
   [super prepareForReuse];
   _captionLabel.text = nil;
-  _photoView.image = nil;
+//  _photoView.image = nil;
   _photoWidth = 0;
   _photoHeight = 0;
 //  _taggedFriendsView.hidden = YES;
