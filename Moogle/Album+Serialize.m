@@ -63,7 +63,8 @@
     return facebookName;
   } else {
     // This does a facebook id => name lookup in the local friends dict
-    NSString *friendName = [facebookFriends valueForKey:fromId];
+    NSString *friendName = [facebookFriends valueForKeyPath:[NSString stringWithFormat:@"%K.name", fromId]];
+//    NSString *friendName = [facebookFriends valueForKey:fromId];
     return friendName ? friendName : @"Anonymous";
   }
 }

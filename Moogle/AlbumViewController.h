@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CardCoreDataTableViewController.h"
+#import "SearchTermDelegate.h"
 
 typedef enum {
   AlbumTypeMe = 0,
@@ -24,7 +25,7 @@ typedef enum {
 
 @class SearchTermController;
 
-@interface AlbumViewController : CardCoreDataTableViewController <UITextFieldDelegate> {
+@interface AlbumViewController : CardCoreDataTableViewController <UITextFieldDelegate, SearchTermDelegate> {
   AlbumType _albumType;
   PSTextField *_searchField;
   UIBarButtonItem *_filterButton;

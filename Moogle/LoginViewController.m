@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "LoginDataCenter.h"
 #import "DDProgressView.h"
+#import "PSWelcomeView.h"
 
 @implementation LoginViewController
 
@@ -31,12 +32,11 @@
   self.view.backgroundColor = FB_BLUE_COLOR;
   self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   
-  // Setup Logo
-  UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
-  logo.center = self.view.center;
-  logo.top = logo.top - 80.0;
-  [self.view addSubview:logo];
-  [logo release];
+  // Setup Welcome
+  PSWelcomeView *welcomeView = [[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 340)];
+  NSArray *views = [NSArray arrayWithObjects:[[UIView alloc] initWithFrame:welcomeView.bounds], [[UIView alloc] initWithFrame:welcomeView.bounds], nil];
+  [welcomeView setViewArray:views];
+  [self.view addSubview:welcomeView];
   
   // Setup Login Buttons
   _loginButton = [[UIButton alloc] initWithFrame:CGRectZero];

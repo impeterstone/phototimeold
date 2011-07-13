@@ -156,24 +156,19 @@
 - (void)serializeMeWithResponse:(id)response {
   NSString *facebookId = [response valueForKey:@"id"];
   NSString *facebookName = [response valueForKey:@"name"];
-  NSArray *facebookFriends = [response valueForKey:@"friends"] ? [[response valueForKey:@"friends"] valueForKey:@"data"] : [NSArray array];
   
-  NSMutableDictionary *friendsDict = [NSMutableDictionary dictionary];
-  for (NSDictionary *friend in facebookFriends) {
-    [friendsDict setValue:[friend valueForKey:@"name"] forKey:[friend valueForKey:@"id"]];
-  }
+  [self serializeFriendsWithResponse:[response valueForKey:@"friends"] shouldDownload:NO];
   
   // Set UserDefaults
   [[NSUserDefaults standardUserDefaults] setObject:facebookId forKey:@"facebookId"];
   [[NSUserDefaults standardUserDefaults] setObject:facebookName forKey:@"facebookName"];
-  [[NSUserDefaults standardUserDefaults] setObject:friendsDict forKey:@"facebookFriends"];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)getFriends {
   // This is called subsequent app launches when already logged in
-  NSURL *friendsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me/friends?access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
+  NSURL *friendsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me/friends?fields=name,gender&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
   
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:friendsUrl];
   request.requestMethod = @"GET";
@@ -181,7 +176,7 @@
   
   // Request Completion Block
   [request setCompletionBlock:^{
-    [self serializeFriendsWithResponse:[[request responseData] JSONValue]];
+    [self serializeFriendsWithResponse:[[request responseData] JSONValue] shouldDownload:YES];
     [self startDownloadAlbums];
   }];
   [request setFailedBlock:^{
@@ -192,7 +187,7 @@
   [request startAsynchronous];
 }
 
-- (void)serializeFriendsWithResponse:(id)response {
+- (void)serializeFriendsWithResponse:(id)response shouldDownload:(BOOL)shouldDownload {
   NSArray *facebookFriends = [response valueForKey:@"data"] ? [response valueForKey:@"data"] : [NSArray array];
   
   NSDictionary *existingFriends = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"facebookFriends"];
@@ -201,18 +196,26 @@
   NSMutableArray *newFriendIds = [NSMutableArray array];
   
   for (NSDictionary *friend in facebookFriends) {
-    NSString *friendId = [friend valueForKey:@"id"];
-    if (![friendsDict valueForKey:friendId]) {
+    NSString *friendId = [friend objectForKey:@"id"];
+    if (![friendsDict objectForKey:friendId]) {
       [newFriendIds addObject:friendId];
+      
+      NSMutableDictionary *friendDict = [NSMutableDictionary dictionaryWithCapacity:2];
+      if ([friend objectForKey:@"gender"]) {
+        [friendDict setObject:[friend objectForKey:@"gender"] forKey:@"gender"];
+      }
+      [friendDict setObject:[friend objectForKey:@"name"] forKey:@"name"];
+      [friendsDict setObject:friendDict forKey:friendId];
     }
-    [friendsDict setValue:[friend valueForKey:@"name"] forKey:friendId];
   }
   
   [[NSUserDefaults standardUserDefaults] setObject:friendsDict forKey:@"facebookFriends"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
-  if ([newFriendIds count] > 0) {
-    [[AlbumDataCenter defaultCenter] getAlbumsForFriendIds:newFriendIds];
+  if (shouldDownload) {
+    if ([newFriendIds count] > 0) {
+      [[AlbumDataCenter defaultCenter] getAlbumsForFriendIds:newFriendIds];
+    }
   }
 }
 

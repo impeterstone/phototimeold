@@ -42,6 +42,6 @@
 - (void)getMe;
 - (void)serializeMeWithResponse:(id)response;
 - (void)getFriends;
-- (void)serializeFriendsWithResponse:(id)response;
+- (void)serializeFriendsWithResponse:(id)response shouldDownload:(BOOL)shouldDownload;
 
 @end

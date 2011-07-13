@@ -61,7 +61,7 @@
 //  self.tableView.rowHeight = 120.0;
   
   // Custom Search
-  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 7)];
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 6)];
   _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
   _searchField.font = NORMAL_FONT;
   _searchField.delegate = self;
@@ -92,8 +92,6 @@
   _searchTermController.delegate = self;
   _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216));
   _searchTermController.view.alpha = 0.0;
-  
-  [self.view addSubview:_searchTermController.view];
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
 //  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
@@ -165,10 +163,12 @@
 }
 
 - (void)cancelSearch {
-  [UIView beginAnimations:nil context:NULL];
-  _searchField.width = 60;
-  [UIView setAnimationDuration:0.4];
-  [UIView commitAnimations];
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _searchField.width = 60;
+                   }
+                   completion:^(BOOL finished) {
+                   }];
   
   _searchPredicate = nil;
   [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -183,11 +183,15 @@
   _fetchTotal = _fetchLimit;
   self.navigationItem.rightBarButtonItem = _cancelButton;
   
-  [UIView beginAnimations:nil context:NULL];
-  _searchField.width = self.view.width - 80;
-  _searchTermController.view.alpha = 1.0;
-  [UIView setAnimationDuration:0.4];
-  [UIView commitAnimations];
+  [self.view addSubview:_searchTermController.view];
+  
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _searchField.width = self.view.width - 80;
+                     _searchTermController.view.alpha = 1.0;
+                   }
+                   completion:^(BOOL finished) {
+                   }];
   
   return YES;
 }
@@ -195,10 +199,15 @@
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
   _hasMore = YES;
   _fetchTotal = _fetchLimit;
-  [UIView beginAnimations:nil context:NULL];
-  _searchTermController.view.alpha = 0.0;
-  [UIView setAnimationDuration:0.4];
-  [UIView commitAnimations];
+  
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _searchTermController.view.alpha = 0.0;
+                   }
+                   completion:^(BOOL finished) {
+                     [_searchTermController.view removeFromSuperview];
+                   }];
+  
   return YES;
 }
 
