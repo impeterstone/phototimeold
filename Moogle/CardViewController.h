@@ -42,7 +42,7 @@ typedef uint32_t NavButtonType;
 // Nav buttons
 - (void)addBackButton;
 - (UIBarButtonItem *)navButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action buttonType:(NavButtonType)buttonType;
-- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action;
+- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action buttonType:(NavButtonType)buttonType;
 
 // Orientation
 - (void)orientationChangedFromNotification:(NSNotification *)notification;

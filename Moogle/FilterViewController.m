@@ -29,12 +29,19 @@
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
+  self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(settings) buttonType:NavButtonTypeNormal];
   self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:) buttonType:NavButtonTypeRed];
   
   _navTitleLabel.text = @"Photos";
   
 }
 
+#pragma mark - Actions
+- (void)settings {
+  
+}
+
+#pragma mark - Setup
 - (void)setupTableFooter {
   // subclass should implement
   UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];

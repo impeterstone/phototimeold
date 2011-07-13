@@ -11,6 +11,7 @@
 #import "PSRollupView.h"
 
 static UIImage *_overlay = nil;
+static UIImage *_comment = nil;
 
 @implementation PhotoCell
 
@@ -20,6 +21,7 @@ static UIImage *_overlay = nil;
 
 + (void)initialize {
   _overlay = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
+  _comment = [[UIImage imageNamed:@"button-comment.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -60,6 +62,18 @@ static UIImage *_overlay = nil;
     _overlayView = [[UIImageView alloc] initWithImage:_overlay];
     _overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
+    // Comment Button
+    _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
+    [_commentButton setBackgroundImage:_comment forState:UIControlStateNormal];
+    _commentButton.titleLabel.font = CAPTION_FONT;
+    _commentButton.titleLabel.shadowColor = [UIColor blackColor];
+    _commentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    _commentButton.titleEdgeInsets = UIEdgeInsetsMake(-5, 2, 0, 0);
+    
+    _commentButton.width = _comment.size.width;
+    _commentButton.height = _comment.size.height;
+    
     // Rollup
 //    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
 //    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
@@ -73,6 +87,7 @@ static UIImage *_overlay = nil;
     // Add to contentView
     [self.contentView addSubview:_photoView];
     [self.contentView addSubview:_overlayView];
+    [self.contentView addSubview:_commentButton];
 //    [self.contentView addSubview:_taggedFriendsView];
     
     // Add labels
@@ -141,6 +156,10 @@ static UIImage *_overlay = nil;
 //    _taggedFriendsView.hidden = YES;
 //  }
   
+  // Comment Button
+  _commentButton.top = MARGIN_Y;
+  _commentButton.left = self.contentView.width - _commentButton.width - MARGIN_X;
+  
   // Caption Label
   if ([_captionLabel.text length] > 0) {    
     _captionLabel.hidden = NO;
@@ -194,6 +213,10 @@ static UIImage *_overlay = nil;
 //    _photoView.image = nil;
 //  }
   
+  // Comments
+  NSString *comments = [photo.comments count] > 0 ? [NSString stringWithFormat:@"%d",[photo.comments count]] : @"+";
+  [_commentButton setTitle:comments forState:UIControlStateNormal];
+  
   // Caption
   _captionLabel.text = photo.name;
 }
@@ -202,10 +225,17 @@ static UIImage *_overlay = nil;
   [_photoView loadImageAndDownload:YES];
 }
 
+- (void)showComments {
+  if (self.delegate && [self.delegate respondsToSelector:@selector(commentsSelectedForCell:)]) {
+    [self.delegate commentsSelectedForCell:self];
+  }
+}
+
 - (void)dealloc {
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_captionLabel);
   RELEASE_SAFELY(_overlayView);
+  RELEASE_SAFELY(_commentButton);
 //  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }

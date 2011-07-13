@@ -18,6 +18,7 @@
   PSURLCacheImageView *_photoView; // optional
   UILabel *_captionLabel;
   UIImageView *_overlayView;
+  UIButton *_commentButton;
   PSRollupView *_taggedFriendsView;
   
   CGFloat _photoWidth;
@@ -34,5 +35,6 @@
 - (void)pinchZoom:(UIPinchGestureRecognizer *)gesture;
 - (void)triggerPinch;
 - (void)loadPhoto;
+- (void)showComments;
 
 @end
