@@ -42,7 +42,7 @@
   _loginButton = [[UIButton alloc] initWithFrame:CGRectZero];
   _loginButton.width = 280;
   _loginButton.height = 36;
-  _loginButton.left = 20.0;
+  _loginButton.left = floor((self.view.width - _loginButton.width) / 2);
   _loginButton.top = self.view.height - _loginButton.height - 20.0;
   [_loginButton setBackgroundImage:[[UIImage imageNamed:@"facebook-connect.png"] stretchableImageWithLeftCapWidth:36 topCapHeight:0] forState:UIControlStateNormal];
   [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(0, 36, 0, 0)];

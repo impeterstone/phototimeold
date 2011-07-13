@@ -12,6 +12,9 @@
 #import "FilterViewController.h"
 #import "AlbumCell.h"
 #import "Album.h"
+#import "SearchTermController.h"
+#import "SearchTermDelegate.h"
+#import "PSSearchCenter.h"
 
 @implementation AlbumViewController
 
@@ -65,24 +68,32 @@
   _searchField.returnKeyType = UIReturnKeySearch;
   _searchField.background = [UIImage stretchableImageNamed:@"searchbar_textfield_background.png" withLeftCapWidth:30 topCapWidth:0];
   _searchField.placeholder = @"Search for photos...";
+  [_searchField addTarget:self action:@selector(searchTermChanged:) forControlEvents:UIControlEventEditingChanged];
   
-  _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
-//  _searchEmptyView.height -= 44; // nav bar
-//  _searchEmptyView.height -= 216; // minus keyboard ipad: 352
-  _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
-  _searchEmptyView.alpha = 0.0;
+//  _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
+////  _searchEmptyView.height -= 44; // nav bar
+////  _searchEmptyView.height -= 216; // minus keyboard ipad: 352
+//  _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
+//  _searchEmptyView.alpha = 0.0;
   
-  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
-  searchLabel.numberOfLines = 8;
-  searchLabel.text = @"Search for keywords, people, or places.\n\nTypeahead table view here";
-  searchLabel.textAlignment = UITextAlignmentCenter;
-  searchLabel.textColor = [UIColor whiteColor];
-  searchLabel.shadowColor = [UIColor blackColor];
-  searchLabel.shadowOffset = CGSizeMake(0, 1);
-  searchLabel.backgroundColor = [UIColor clearColor];
+//  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
+//  searchLabel.numberOfLines = 8;
+//  searchLabel.text = @"Search for keywords, people, or places.\n\nTypeahead table view here";
+//  searchLabel.textAlignment = UITextAlignmentCenter;
+//  searchLabel.textColor = [UIColor whiteColor];
+//  searchLabel.shadowColor = [UIColor blackColor];
+//  searchLabel.shadowOffset = CGSizeMake(0, 1);
+//  searchLabel.backgroundColor = [UIColor clearColor];
   
-  [_searchEmptyView addSubview:searchLabel];
-  [self.view addSubview:_searchEmptyView];
+//  [_searchEmptyView addSubview:searchLabel];
+//  [self.view addSubview:_searchEmptyView];
+  
+  _searchTermController = [[SearchTermController alloc] init];
+  _searchTermController.delegate = self;
+  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216));
+  _searchTermController.view.alpha = 0.0;
+  
+  [self.view addSubview:_searchTermController.view];
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
 //  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
@@ -174,7 +185,7 @@
   
   [UIView beginAnimations:nil context:NULL];
   _searchField.width = self.view.width - 80;
-  _searchEmptyView.alpha = 1.0;
+  _searchTermController.view.alpha = 1.0;
   [UIView setAnimationDuration:0.4];
   [UIView commitAnimations];
   
@@ -185,7 +196,7 @@
   _hasMore = YES;
   _fetchTotal = _fetchLimit;
   [UIView beginAnimations:nil context:NULL];
-  _searchEmptyView.alpha = 0.0;
+  _searchTermController.view.alpha = 0.0;
   [UIView setAnimationDuration:0.4];
   [UIView commitAnimations];
   return YES;
@@ -204,18 +215,18 @@
   return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-//  if (_searchTimer && [_searchTimer isValid]) {
-//    INVALIDATE_TIMER(_searchTimer);
-//  }
-//  NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:textField.text, @"searchText", nil];
-//  _searchTimer = [[NSTimer timerWithTimeInterval:0.3 target:self selector:@selector(delayedFilterContentWithTimer:) userInfo:userInfo repeats:NO] retain];
-//  [[NSRunLoop currentRunLoop] addTimer:_searchTimer forMode:NSDefaultRunLoopMode];
-  
-  return YES;
+- (void)searchTermChanged:(UITextField *)textField {
+  [_searchTermController searchWithTerm:textField.text];
 }
 
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//  return YES;
+//}
+
 - (void)searchWithText:(NSString *)searchText {
+  // Store search term
+  [[PSSearchCenter defaultCenter] addTerm:searchText];
+  
   static NSCharacterSet *separatorCharacterSet = nil;
   if (!separatorCharacterSet) {
     separatorCharacterSet = [[[NSCharacterSet alphanumericCharacterSet] invertedSet] retain];
@@ -241,6 +252,14 @@
   
   [self executeSearchOnMainThread];
 //  [self executeFetch:FetchTypeRefresh];
+}
+
+#pragma mark - SearchTermDelegate
+- (void)searchTermSelected:(NSString *)searchTerm {
+  _searchField.text = searchTerm;
+  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+  [self searchWithText:_searchField.text];
+  [_searchField resignFirstResponder];
 }
 
 #pragma mark - TableView
@@ -415,7 +434,7 @@
   RELEASE_SAFELY(_searchField);
   RELEASE_SAFELY(_filterButton);
   RELEASE_SAFELY(_cancelButton);
-  RELEASE_SAFELY(_searchEmptyView);
+  RELEASE_SAFELY(_searchTermController);
   [super dealloc];
 }
 
