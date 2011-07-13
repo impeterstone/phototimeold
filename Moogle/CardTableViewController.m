@@ -165,7 +165,7 @@
 
 // This is the button load more style
 //- (void)setupLoadMoreView {
-//  _loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//  _loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)];
 //  _loadMoreView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 //  _loadMoreView.backgroundColor = FB_COLOR_VERY_LIGHT_BLUE;
 //  
@@ -196,9 +196,7 @@
 
 // This is the automatic load more style
 - (void)setupLoadMoreView {
-
-  
-  _loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+  _loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)];
   _loadMoreView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   _loadMoreView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-darkgray-320x44.png"]];
   UILabel *loadMoreLabel = [[[UILabel alloc] initWithFrame:_loadMoreView.bounds] autorelease];

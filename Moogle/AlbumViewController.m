@@ -68,11 +68,11 @@
   
   _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
 //  _searchEmptyView.height -= 44; // nav bar
-//  _searchEmptyView.height -= 216; // minus keyboard
+//  _searchEmptyView.height -= 216; // minus keyboard ipad: 352
   _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
   _searchEmptyView.alpha = 0.0;
   
-  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 200)] autorelease];
+  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
   searchLabel.numberOfLines = 8;
   searchLabel.text = @"Search for keywords, people, or places.\n\nTypeahead table view here";
   searchLabel.textAlignment = UITextAlignmentCenter;
@@ -173,7 +173,7 @@
   self.navigationItem.rightBarButtonItem = _cancelButton;
   
   [UIView beginAnimations:nil context:NULL];
-  _searchField.width = 240;
+  _searchField.width = self.view.width - 80;
   _searchEmptyView.alpha = 1.0;
   [UIView setAnimationDuration:0.4];
   [UIView commitAnimations];
@@ -253,33 +253,12 @@
     [[PSImageCache sharedCache] cacheImageForURLPath:urlPath withDelegate:nil];
   }
   
-  return 120.0;
+  if (isDeviceIPad()) {
+    return 288.0;
+  } else {
+    return 120.0;
+  }
 }
-
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//  return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
-//}
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//  if ([[self.fetchedResultsController sections] count] == 1) return nil;
-//  
-//  NSString *sectionName = [[[self.fetchedResultsController sections] objectAtIndex:section] name];
-//  
-//  UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 26)] autorelease];
-////  sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-table-header.png"]];
-//  sectionHeaderView.backgroundColor = SECTION_HEADER_COLOR;
-//  
-//  UILabel *sectionHeaderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(5, 0, 310, 24)] autorelease];
-//  sectionHeaderLabel.backgroundColor = [UIColor clearColor];
-//  sectionHeaderLabel.text = sectionName;
-//  sectionHeaderLabel.textColor = [UIColor whiteColor];
-//  sectionHeaderLabel.shadowColor = [UIColor blackColor];
-//  sectionHeaderLabel.shadowOffset = CGSizeMake(0, 1);
-//  sectionHeaderLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0];
-//  [sectionHeaderView addSubview:sectionHeaderLabel];
-//  
-//  return sectionHeaderView;
-//}
 
 - (void)tableView:(UITableView *)tableView configureCell:(id)cell atIndexPath:(NSIndexPath *)indexPath {
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];

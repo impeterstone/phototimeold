@@ -54,8 +54,7 @@
 //  [self addButtonWithTitle:@"New" andSelector:@selector(newComment) isLeft:NO];
   
   // Table
-  CGRect tableFrame = CGRectMake(0, 0, CARD_WIDTH, CARD_HEIGHT);
-  [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+  [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
   // Pull Refresh
 //  [self setupPullRefresh];
@@ -85,14 +84,14 @@
   _photoHeight = 0.0;
   
   _photoHeaderView = [[[UIImageView alloc] initWithImage:_photoImage] autorelease];
-  _photoHeaderView.width = 320;
-  _photoHeight = floor((320 / _photoImage.size.width) * _photoImage.size.height);
+  _photoHeaderView.width = self.view.width;
+  _photoHeight = floor((self.view.width / _photoImage.size.width) * _photoImage.size.height);
   _photoHeaderView.height = _photoHeight;
   
   _headerHeight = (_photoHeight >= 120) ? 120 : _photoHeight;
   _headerOffset = floor((_photoHeight - _headerHeight) / 2);
   
-  _commentHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, _headerHeight)] autorelease];
+  _commentHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, _headerHeight)] autorelease];
   _commentHeaderView.clipsToBounds = YES;
   _photoHeaderView.top = 0 - _headerOffset;
   [_commentHeaderView addSubview:_photoHeaderView];
@@ -127,6 +126,7 @@
 
 - (void)setupFooter {
   UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)] autorelease];
+  footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   
   // Setup the fake image view
   PSURLCacheImageView *profileImage = [[PSURLCacheImageView alloc] initWithFrame:CGRectMake(10, 7, 30, 30)];
@@ -138,7 +138,7 @@
   [profileImage release];
   
   // Setup the fake comment button
-  UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(45, 7, 265, 30)];
+  UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(45, 7, self.view.width - 55, 30)];
   commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   commentButton.titleLabel.font = [UIFont systemFontOfSize:14];
   [commentButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];

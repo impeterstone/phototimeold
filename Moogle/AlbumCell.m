@@ -102,7 +102,14 @@ static UIImage *_overlayImage = nil;
 //    _captionView.layer.opacity = 0.0;
     
     // Photo
-    _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectMake(0, 0, 320, ALBUM_CELL_HEIGHT)];
+    CGFloat cellHeight = 0.0;
+    if (isDeviceIPad()) {
+      cellHeight = 288.0;
+    } else {
+      cellHeight = 120.0;
+    }
+    
+    _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.shouldScale = YES;
     _photoView.shouldAnimate = NO;
     _photoView.delegate = self;
@@ -111,10 +118,9 @@ static UIImage *_overlayImage = nil;
     
     // Overlay
     _overlayView = [[UIImageView alloc] initWithImage:_overlayImage];
-    _overlayView.frame = CGRectMake(0, 0, 320, ALBUM_CELL_HEIGHT);
 
     // Ribbon
-    _ribbonView = [[UIView alloc] initWithFrame:CGRectMake(320 - 68, 10, 68, 24)];
+    _ribbonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 68, 24)];
     UIImageView *ribbonImageView = [[[UIImageView alloc] initWithImage:_ribbonImage] autorelease];
     ribbonImageView.frame = _ribbonView.bounds;
     [_ribbonView addSubview:ribbonImageView];
@@ -139,12 +145,20 @@ static UIImage *_overlayImage = nil;
 
 - (void)prepareForReuse {
   [super prepareForReuse];
+  
+  CGFloat cellHeight = 0.0;
+  if (isDeviceIPad()) {
+    cellHeight = 288.0;
+  } else {
+    cellHeight = 120.0;
+  }
+  
   _nameLabel.text = nil;
 //  _captionLabel.text = nil;
   _fromLabel.text = nil;
   _locationLabel.text = nil;
   _dateLabel.text = nil;
-  _photoView.frame = CGRectMake(0, 0, 320, ALBUM_CELL_HEIGHT);
+  _photoView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
   _photoView.image = nil;
   _photoView.urlPath = nil;
   _photoWidth = 0;
@@ -154,17 +168,19 @@ static UIImage *_overlayImage = nil;
 - (void)layoutSubviews {
   [super layoutSubviews];
   
-  // Photo
+  CGFloat cellHeight = 0.0;
+  if (isDeviceIPad()) {
+    cellHeight = 288.0;
+  } else {
+    cellHeight = 120.0;
+  }
   
-  // Check to see if there is a caption
-//  if ([_captionLabel.text length] > 0) {
-//    _captionView.frame = CGRectMake(0, ALBUM_CELL_HEIGHT - 34, 320, 34);
-//  } else {
-//    _captionView.frame = CGRectMake(0, ALBUM_CELL_HEIGHT - 22, 320, 22);
-//  }
-//  _captionView.frame = CGRectMake(0, ALBUM_CELL_HEIGHT - 34, 320, 34);
+  // Set Frames
+  _photoView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
+  _overlayView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
+  _ribbonView.frame = CGRectMake(self.contentView.width - 68, 10, 68, 24);
   
-  CGFloat top = ALBUM_CELL_HEIGHT - 34;
+  CGFloat top = cellHeight - 34;
   CGFloat left = MARGIN_X;
   CGFloat textWidth = self.contentView.width - MARGIN_X * 2;
   CGSize desiredSize = CGSizeZero;
@@ -210,6 +226,13 @@ static UIImage *_overlayImage = nil;
     return;
   }
   
+  CGFloat cellHeight = 0.0;
+  if (isDeviceIPad()) {
+    cellHeight = 288.0;
+  } else {
+    cellHeight = 120.0;
+  }
+  
 //  NSLog(@"photoView: %@", NSStringFromCGRect(_photoView.frame));
 //  NSLog(@"layer: %@", NSStringFromCGRect(_photoView.layer.frame));
 //  NSLog(@"actual w: %f, h: %f", _photoWidth, _photoHeight);
@@ -228,33 +251,12 @@ static UIImage *_overlayImage = nil;
     zoomAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(floor(width * 1.2), floor(height * 1.2))];
   }
   
-//  zoomAnimation.fillMode = kCAFillModeForwards;
-//  resizeAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//  zoomAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-//  zoomAnimation.repeatCount = HUGE_VALF;
-//  zoomAnimation.autoreverses = YES;
-//  zoomAnimation.duration = 10.0;
-  
   // Move/Position
   CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
-  CGPoint startPt = CGPointMake(160, floor(height / 2));
-  CGPoint endPt = CGPointMake(160, floor(height / 3));
+  CGPoint startPt = CGPointMake(self.contentView.width / 2, floor(height / 2));
+  CGPoint endPt = CGPointMake(self.contentView.width / 2, floor(height / 3));
   moveAnimation.fromValue = [NSValue valueWithCGPoint:startPt];
   moveAnimation.toValue = [NSValue valueWithCGPoint:endPt];
-  
-//  NSLog(@"start: %@, end: %@", NSStringFromCGPoint(startPt), NSStringFromCGPoint(endPt));
-  
-//  
-//  CGPoint startPt = CGPointMake(320 / 2, 0);
-//  CGPoint endPt = CGPointMake(320 / 2, 120);
-//  CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
-//  anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-//  anim.fromValue = [NSValue valueWithCGPoint:startPt];
-//  anim.toValue = [NSValue valueWithCGPoint:endPt];
-//  anim.repeatCount = HUGE_VALF;
-//  anim.autoreverses = YES;
-//  anim.duration = 8.0;
-//  [_photoView.layer addAnimation:anim forKey:@"position"];
   
   // Animation Group
   CAAnimationGroup *group = [CAAnimationGroup animation]; 
@@ -278,7 +280,14 @@ static UIImage *_overlayImage = nil;
 #pragma mark -
 #pragma mark Fill and Height
 + (CGFloat)rowHeightForObject:(id)object forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  return ALBUM_CELL_HEIGHT;
+  CGFloat cellHeight = 0.0;
+  if (isDeviceIPad()) {
+    cellHeight = 288.0;
+  } else {
+    cellHeight = 120.0;
+  }
+  
+  return cellHeight;
 }
 
 - (void)fillCellWithObject:(id)object {
@@ -311,13 +320,20 @@ static UIImage *_overlayImage = nil;
 }
 
 - (void)imageDidLoad:(UIImage *)image {
+  CGFloat cellHeight = 0.0;
+  if (isDeviceIPad()) {
+    cellHeight = 288.0;
+  } else {
+    cellHeight = 120.0;
+  }
+  
   // this is divided by 2 because we are using retina @2x dimensions
   _photoWidth = image.size.width;
   _photoHeight = image.size.height;
   CGFloat desiredWidth = self.contentView.width;
   CGFloat desiredHeight = floor((self.contentView.width / _photoWidth) * _photoHeight);
-  if (desiredHeight < ALBUM_CELL_HEIGHT_ZOOMED) { // 120 * 1.2
-    desiredHeight = ALBUM_CELL_HEIGHT_ZOOMED;
+  if (desiredHeight < ceil(cellHeight * 1.2)) { // 120 * 1.2
+    desiredHeight = ceil(cellHeight * 1.2);
     desiredWidth = floor((desiredHeight / _photoHeight) * _photoWidth);
   }
   _photoView.width = desiredWidth;

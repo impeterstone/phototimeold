@@ -51,7 +51,7 @@ static UIImage *_imageBorderImage = nil;
   [backgroundView release];
   
   // Compose Caption Bubble
-  _composeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+  _composeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
   _composeView.backgroundColor = [UIColor clearColor];
 //  _composeView.layer.cornerRadius = 5.0;
 //  _composeView.layer.masksToBounds = YES;
