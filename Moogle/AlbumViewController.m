@@ -36,7 +36,7 @@
   [super viewWillAppear:animated];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
-  [self reloadCardController];
+//  [self reloadCardController];
   
   [self.navigationController.navigationBar addSubview:_searchField];
 }

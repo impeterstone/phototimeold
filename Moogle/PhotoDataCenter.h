@@ -22,6 +22,16 @@
 - (void)getPhotosForAlbumId:(NSString *)albumId;
 
 /**
+ Like a photo
+ */
+- (void)addLikeForPhotoId:(NSString *)photoId;
+
+/**
+ Un-Like a photo
+ */
+- (void)removeLikeForPhotoId:(NSString *)photoId;
+
+/**
  Serialize server response into Photo entities
  */
 - (void)serializePhotosWithRequest:(ASIHTTPRequest *)request;

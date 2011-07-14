@@ -141,6 +141,7 @@
   
   parent.albumType = [[rowData objectForKey:@"albumType"] integerValue];
   [parent.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+  [parent reloadCardController];
   
   // Set userDefaults
   [[NSUserDefaults standardUserDefaults] setInteger:parent.albumType forKey:@"lastAlbumType"];

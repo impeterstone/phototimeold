@@ -19,6 +19,7 @@
   UILabel *_captionLabel;
   UIImageView *_overlayView;
   UIButton *_commentButton;
+  UIButton *_likeButton;
   PSRollupView *_taggedFriendsView;
   
   CGFloat _photoWidth;
@@ -36,5 +37,6 @@
 - (void)triggerPinch;
 - (void)loadPhoto;
 - (void)showComments;
+- (void)addRemoveLike;
 
 @end

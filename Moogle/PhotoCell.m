@@ -12,6 +12,7 @@
 
 static UIImage *_overlay = nil;
 static UIImage *_comment = nil;
+static UIImage *_like = nil;
 
 @implementation PhotoCell
 
@@ -21,7 +22,8 @@ static UIImage *_comment = nil;
 
 + (void)initialize {
   _overlay = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
-  _comment = [[UIImage imageNamed:@"button-comment.png"] retain];
+  _comment = [[UIImage imageNamed:@"icon_comment.png"] retain];
+  _like = [[UIImage imageNamed:@"icon_like.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -74,6 +76,14 @@ static UIImage *_comment = nil;
     _commentButton.width = _comment.size.width;
     _commentButton.height = _comment.size.height;
     
+    // Like Button
+    _likeButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [_likeButton addTarget:self action:@selector(addRemoveLike) forControlEvents:UIControlEventTouchUpInside];
+    [_likeButton setBackgroundImage:_like forState:UIControlStateNormal];
+    
+    _likeButton.width = _like.size.width;
+    _likeButton.height = _like.size.height;
+    
     // Rollup
 //    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
 //    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
@@ -88,6 +98,7 @@ static UIImage *_comment = nil;
     [self.contentView addSubview:_photoView];
     [self.contentView addSubview:_overlayView];
     [self.contentView addSubview:_commentButton];
+    [self.contentView addSubview:_likeButton];
 //    [self.contentView addSubview:_taggedFriendsView];
     
     // Add labels
@@ -157,8 +168,12 @@ static UIImage *_comment = nil;
 //  }
   
   // Comment Button
-  _commentButton.top = MARGIN_Y;
-  _commentButton.left = self.contentView.width - _commentButton.width - MARGIN_X;
+  _commentButton.top = MARGIN_Y * 2;
+  _commentButton.left = self.contentView.width - _commentButton.width - (MARGIN_X * 2);
+  
+  // Like Button
+  _likeButton.top = MARGIN_Y * 2;
+  _likeButton.left = MARGIN_X * 2;
   
   // Caption Label
   if ([_captionLabel.text length] > 0) {    
@@ -223,11 +238,18 @@ static UIImage *_comment = nil;
   }
 }
 
+- (void)addRemoveLike {
+  if (self.delegate && [self.delegate respondsToSelector:@selector(addRemoveLikeForCell:)]) {
+    [self.delegate addRemoveLikeForCell:self];
+  }
+}
+
 - (void)dealloc {
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_captionLabel);
   RELEASE_SAFELY(_overlayView);
   RELEASE_SAFELY(_commentButton);
+  RELEASE_SAFELY(_likeButton);
 //  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }

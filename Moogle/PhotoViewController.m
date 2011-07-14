@@ -223,6 +223,15 @@
   [cvc release];
 }
 
+- (void)addRemoveLikeForCell:(PhotoCell *)cell {
+  NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  
+  // Add or Remove a like on the given photo
+  [[PhotoDataCenter defaultCenter] addLikeForPhotoId:photo.id];
+  [[PSToastCenter defaultCenter] showToastWithMessage:@"Photo Liked" toastType:PSToastTypeAlert toastDuration:1.0];
+}
+
 //- (void)pinchZoomTriggeredForCell:(PhotoCell *)cell {
 //  [self zoomPhotoForCell:cell];
 //}

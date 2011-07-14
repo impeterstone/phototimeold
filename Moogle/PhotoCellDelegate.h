@@ -13,6 +13,7 @@
 @protocol PhotoCellDelegate <NSObject>
 @optional
 - (void)commentsSelectedForCell:(PhotoCell *)cell;
+- (void)addRemoveLikeForCell:(PhotoCell *)cell;
 - (void)pinchZoomTriggeredForCell:(PhotoCell *)cell;
 
 @end

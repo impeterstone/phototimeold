@@ -50,6 +50,19 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   [self sendRequestWithURL:photosUrl andMethod:GET andHeaders:nil andParams:params andUserInfo:[NSDictionary dictionaryWithObject:albumId forKey:@"albumId"]];
 }
 
+- (void)addLikeForPhotoId:(NSString *)photoId {
+  NSURL *likeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/likes", FB_GRAPH, photoId]];
+  
+  [self sendRequestWithURL:likeUrl andMethod:POST andHeaders:nil andParams:nil andUserInfo:[NSDictionary dictionaryWithObject:@"addLike" forKey:@"requestType"]];
+}
+
+
+- (void)removeLikeForPhotoId:(NSString *)photoId {
+  NSURL *likeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/likes", FB_GRAPH, photoId]];
+  
+  [self sendRequestWithURL:likeUrl andMethod:DELETE andHeaders:nil andParams:nil andUserInfo:[NSDictionary dictionaryWithObject:@"removeLike" forKey:@"requestType"]];
+}
+
 #pragma mark -
 #pragma mark Serialization
 - (void)serializePhotosWithRequest:(ASIHTTPRequest *)request {
@@ -169,6 +182,11 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
+  NSString *requestType = [request.userInfo objectForKey:@"requestType"];
+  if ([requestType isEqualToString:@"addLike"] || [requestType isEqualToString:@"removeLike"]) {
+    return;
+  }
+  
   // Process the batched results using GCD
   dispatch_async(_coreDataSerializationQueue, ^{
     [self serializePhotosWithRequest:request];
