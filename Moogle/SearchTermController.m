@@ -33,11 +33,31 @@
   
   NSArray *filteredArray = [[PSSearchCenter defaultCenter] searchResultsForTerm:term];
 
-  [self.items addObject:filteredArray];
+  if ([filteredArray count] > 0) {
+    [self.items addObject:filteredArray];
+  }
   [self.tableView reloadData];
 }
 
 #pragma mark - Table
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+  
+  UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 26)] autorelease];
+//  sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-table-header.png"]];
+  sectionHeaderView.backgroundColor = SECTION_HEADER_COLOR;
+  
+  UILabel *sectionHeaderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(5, 0, 310, 24)] autorelease];
+  sectionHeaderLabel.backgroundColor = [UIColor clearColor];
+  sectionHeaderLabel.text = @"Previously Searched...";
+  sectionHeaderLabel.textColor = [UIColor whiteColor];
+  sectionHeaderLabel.shadowColor = [UIColor blackColor];
+  sectionHeaderLabel.shadowOffset = CGSizeMake(0, 1);
+  sectionHeaderLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0];
+  [sectionHeaderView addSubview:sectionHeaderLabel];
+  
+  return sectionHeaderView;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (tableView.style == UITableViewStylePlain) {
     UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
