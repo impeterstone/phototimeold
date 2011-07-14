@@ -16,7 +16,7 @@
 @interface AlbumCell : PSCell <PSImageViewDelegate> {
   PSURLCacheImageView *_photoView;
   UIImageView *_overlayView;
-  UIView *_captionView;
+//  UIView *_captionView;
   UIView *_ribbonView;
   
   UILabel *_nameLabel;

@@ -205,14 +205,6 @@ static UIImage *_comment = nil;
   _photoView.urlPath = photo.source;
   [_photoView loadImageAndDownload:NO];
   
-//  if (photo.imageData) {
-//    UIImage *cachedImage = [UIImage imageWithData:photo.imageData];
-//    _photoView.image = cachedImage;
-//  } else {
-//    [[PSCoreDataImageCache sharedCache] cacheImageWithURLPath:photo.source forEntity:photo];
-//    _photoView.image = nil;
-//  }
-  
   // Comments
   NSString *comments = [photo.comments count] > 0 ? [NSString stringWithFormat:@"%d",[photo.comments count]] : @"+";
   [_commentButton setTitle:comments forState:UIControlStateNormal];

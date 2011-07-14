@@ -139,6 +139,7 @@
   // This is called the first time logging in
   NSURL *meUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me?fields=id,name,friends&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
   
+#warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:meUrl];
   request.requestMethod = @"GET";
   request.allowCompressedResponse = YES;
@@ -173,6 +174,7 @@
   // This is called subsequent app launches when already logged in
   NSURL *friendsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me/friends?fields=name,gender&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
   
+#warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:friendsUrl];
   request.requestMethod = @"GET";
   request.allowCompressedResponse = YES;

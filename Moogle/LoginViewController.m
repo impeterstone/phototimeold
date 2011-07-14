@@ -32,13 +32,13 @@
   
   // Setup Welcome
   _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 384)] autorelease];
-  UIImageView *one = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
+  UIImageView *one = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]] autorelease];
   one.frame = CGRectMake(0, 0, 280, 346);
   one.contentMode = UIViewContentModeCenter;
-  UIImageView *two = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
+  UIImageView *two = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]] autorelease];
   two.frame = CGRectMake(0, 0, 280, 346);
   two.contentMode = UIViewContentModeCenter;
-  UIImageView *three = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
+  UIImageView *three = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]] autorelease];
   three.frame = CGRectMake(0, 0, 280, 346);
   three.contentMode = UIViewContentModeCenter;
   NSArray *views = [NSArray arrayWithObjects:one, two, three, nil];

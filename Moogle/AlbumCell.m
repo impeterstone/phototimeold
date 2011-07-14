@@ -102,12 +102,12 @@ static UIImage *_overlayImage = nil;
 //    _captionView.layer.opacity = 0.0;
     
     // Photo
-    CGFloat cellHeight = 0.0;
-    if (isDeviceIPad()) {
-      cellHeight = 288.0;
-    } else {
-      cellHeight = 120.0;
-    }
+//    CGFloat cellHeight = 0.0;
+//    if (isDeviceIPad()) {
+//      cellHeight = 288.0;
+//    } else {
+//      cellHeight = 120.0;
+//    }
     
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.shouldScale = YES;
@@ -226,12 +226,12 @@ static UIImage *_overlayImage = nil;
     return;
   }
   
-  CGFloat cellHeight = 0.0;
-  if (isDeviceIPad()) {
-    cellHeight = 288.0;
-  } else {
-    cellHeight = 120.0;
-  }
+//  CGFloat cellHeight = 0.0;
+//  if (isDeviceIPad()) {
+//    cellHeight = 288.0;
+//  } else {
+//    cellHeight = 120.0;
+//  }
   
 //  NSLog(@"photoView: %@", NSStringFromCGRect(_photoView.frame));
 //  NSLog(@"layer: %@", NSStringFromCGRect(_photoView.layer.frame));
@@ -296,7 +296,7 @@ static UIImage *_overlayImage = nil;
   
   // Labels
   _nameLabel.text = album.name;
-  _captionLabel.text = album.caption;
+//  _captionLabel.text = album.caption;
   _fromLabel.text = [NSString stringWithFormat:@"by %@", album.fromName];
 //  _locationLabel.text = [NSString stringWithFormat:@"%@", album.location];
   _dateLabel.text = [NSDate stringForDisplayFromDate:album.timestamp];

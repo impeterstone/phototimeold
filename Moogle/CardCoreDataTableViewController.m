@@ -215,7 +215,7 @@
   if ([self.fetchedResultsController performFetch:&frcError]) {
     VLog(@"Main Thread Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
   } else {
-    VLog(@"Main Thread Fetch failed with error: %@", [error localizedDescription]);
+    VLog(@"Main Thread Fetch failed with error: %@", [frcError localizedDescription]);
   }
   
   if (self.searchDisplayController.active) {
@@ -233,7 +233,7 @@
   if ([self.fetchedResultsController performFetch:&frcError]) {
     VLog(@"Main Thread Search Fetch request succeeded: %@", [self.fetchedResultsController fetchRequest]);
   } else {
-    VLog(@"Main Thread Search Fetch failed with error: %@", [error localizedDescription]);
+    VLog(@"Main Thread Search Fetch failed with error: %@", [frcError localizedDescription]);
   }
   
   [_tableView reloadData];

@@ -72,7 +72,7 @@
   for (UIView *subview in _searchBar.subviews) {
     if ([subview isMemberOfClass:NSClassFromString(@"UISearchBarBackground")]) {
     } else if ([subview isMemberOfClass:NSClassFromString(@"UISegmentedControl")]) {
-      segmentedControl = subview;
+//      segmentedControl = subview;
     } else if ([subview isMemberOfClass:NSClassFromString(@"UISearchBarTextField")]) {
       searchBarTextField = subview;
     }
