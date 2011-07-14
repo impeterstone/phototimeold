@@ -27,6 +27,6 @@
 - (void)logout;
 
 - (void)updateLoginProgress:(NSNotification *)notification;
-- (void)updateLoginProgressOnMainThread:(NSNumber *)progress;
+- (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
 
 @end

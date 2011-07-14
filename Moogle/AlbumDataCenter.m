@@ -190,7 +190,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     if (_parseIndex % 100 == 0) {
       NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)_parseIndex / (CGFloat)_totalAlbumsToParse)];
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObject:progress forKey:@"progress"]];
+      
+//      [NSDictionary dictionaryWithObject:progress forKey:@"progress"]
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:progress, @"progress", [NSNumber numberWithInteger:_parseIndex], @"index", [NSNumber numberWithInteger:_totalAlbumsToParse], @"total", nil]];
       NSLog(@"update progress index: %d, total: %d, percent: %@", _parseIndex, _totalAlbumsToParse, progress);
     }
     

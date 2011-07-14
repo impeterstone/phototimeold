@@ -33,8 +33,17 @@
   self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   
   // Setup Welcome
-  PSWelcomeView *welcomeView = [[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 340)];
-  NSArray *views = [NSArray arrayWithObjects:[[UIView alloc] initWithFrame:welcomeView.bounds], [[UIView alloc] initWithFrame:welcomeView.bounds], nil];
+  PSWelcomeView *welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 340)] autorelease];
+  UIImageView *one = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
+  one.frame = CGRectMake(0, 0, 280, 300);
+  one.contentMode = UIViewContentModeCenter;
+  UIImageView *two = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
+  two.frame = CGRectMake(0, 0, 280, 300);
+  two.contentMode = UIViewContentModeCenter;
+  UIImageView *three = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
+  three.frame = CGRectMake(0, 0, 280, 300);
+  three.contentMode = UIViewContentModeCenter;
+  NSArray *views = [NSArray arrayWithObjects:one, two, three, nil];
   [welcomeView setViewArray:views];
   [self.view addSubview:welcomeView];
   
@@ -68,17 +77,18 @@
   _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
   _loadingIndicator.hidesWhenStopped = YES;
   _loadingIndicator.center = self.view.center;
-  _loadingIndicator.top = _progressView.top - _loadingIndicator.height - 20.0;
-  [self.view addSubview:_loadingIndicator];
+  _loadingIndicator.top = welcomeView.bottom;
+//  [self.view addSubview:_loadingIndicator];
   
 }
 
 - (void)updateLoginProgress:(NSNotification *)notification {
-  [self performSelectorOnMainThread:@selector(updateLoginProgressOnMainThread:) withObject:[[notification userInfo] objectForKey:@"progress"] waitUntilDone:NO];
+  [self performSelectorOnMainThread:@selector(updateLoginProgressOnMainThread:) withObject:[notification userInfo] waitUntilDone:NO];
 }
 
-- (void)updateLoginProgressOnMainThread:(NSNumber *)progress {
-  _progressView.progress = [progress floatValue];
+- (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo {
+  _progressView.progress = [[userInfo objectForKey:@"progress"] floatValue];
+  [_loginButton setTitle:[NSString stringWithFormat:@"Downloading %@ of %@", [userInfo objectForKey:@"index"], [userInfo objectForKey:@"total"]] forState:UIControlStateDisabled];
 }
 
 #pragma mark -
