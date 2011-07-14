@@ -10,7 +10,7 @@
 #import "PSDataCenter.h"
 
 @interface AlbumDataCenter : PSDataCenter {
-  NSMutableArray *_pendingResponses;
+  NSMutableArray *_requestsToParse;
   NSUInteger _pendingRequestsToParse;
   NSUInteger _totalAlbumsToParse;
   NSUInteger _parseIndex;
@@ -30,5 +30,6 @@
 - (void)serializeAlbumsWithArray:(NSArray *)array inContext:(NSManagedObjectContext *)context;
 
 - (void)parsePendingResponses;
+- (void)parseMeWithRequest:(ASIHTTPRequest *)request;
 
 @end

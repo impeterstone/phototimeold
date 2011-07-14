@@ -10,6 +10,7 @@
 #import "AlbumDataCenter.h"
 #import "Album.h"
 #import "Album+Serialize.h"
+#import "PSProgressCenter.h"
 
 static dispatch_queue_t _coreDataSerializationQueue = nil;
 
@@ -33,7 +34,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     _parseIndex = 0;
     _totalAlbumsToParse = 0;
     _pendingRequestsToParse = 0;
-    _pendingResponses = [[NSMutableArray alloc] initWithCapacity:1];
+    _requestsToParse = [[NSMutableArray alloc] initWithCapacity:1];
   }
   return self;
 }
@@ -60,6 +61,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
    {'query1':'SELECT aid,owner,cover_pid,name FROM album WHERE owner = me()','query2':'SELECT src_big FROM photo WHERE pid IN (SELECT cover_pid FROM #query1)'}
    */
   
+  // Reset pending requests
+  _pendingRequestsToParse = 0;
+  
   
   // This is retarded... if the user has more than batchSize friends, we'll just fire off multiple requests
   NSURL *albumsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.facebook.com/method/fql.multiquery"]];
@@ -83,8 +87,8 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 
   [params setValue:[queries JSONRepresentation] forKey:@"queries"];
   
-  _pendingRequestsToParse++;
-  [self sendRequestWithURL:albumsUrl andMethod:POST andHeaders:nil andParams:params andUserInfo:nil];
+//  _pendingRequestsToParse++;
+  [self sendRequestWithURL:albumsUrl andMethod:POST andHeaders:nil andParams:params andUserInfo:[NSDictionary dictionaryWithObject:@"me" forKey:@"albumRequestType"]];
   
   // FRIENDS
   for (int i=0; i<batchCount; i++) {
@@ -212,13 +216,37 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 - (void)parsePendingResponses {
   // Process the batched results using GCD  
   dispatch_async(_coreDataSerializationQueue, ^{
-    
     NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
     
-    for (NSArray *response in _pendingResponses) {
+    NSMutableArray *pendingResponses = [NSMutableArray arrayWithCapacity:1];
+    
+    for (ASIHTTPRequest *request in _requestsToParse) {
+      id response = [[request responseData] JSONValue];
+      
+      NSArray *albumArray = nil;
+      for (NSDictionary *fqlResult in response) {
+        if ([[fqlResult valueForKey:@"name"] isEqualToString:@"query1"]) {
+          albumArray = [fqlResult valueForKey:@"fql_result_set"];
+        } else {
+          // check for error
+        }
+      }
+      
+      _totalAlbumsToParse += [albumArray count];
+      
+      [pendingResponses addObject:response];
+    }
+    
+    if (_totalAlbumsToParse > 0) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[PSProgressCenter defaultCenter] showProgress];
+      });
+    }
+    
+    for (id response in pendingResponses) {
       [self serializeAlbumsWithArray:response inContext:context];
     }
-    [_pendingResponses removeAllObjects];
+    [_requestsToParse removeAllObjects];
     
     // Save the context
     [PSCoreDataStack saveInContext:context];
@@ -235,6 +263,30 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
       if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
         [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
+        [[PSProgressCenter defaultCenter] hideProgress];
+      }
+    });
+  });
+}
+
+- (void)parseMeWithRequest:(ASIHTTPRequest *)request {
+  dispatch_async(_coreDataSerializationQueue, ^{
+    NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
+    
+    id response = [[request responseData] JSONValue];
+    
+    [self serializeAlbumsWithArray:response inContext:context];
+    
+    // Save the context
+    [PSCoreDataStack saveInContext:context];
+    
+    // Release context
+    [context release];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      // Inform Delegate if all responses are parsed
+      if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
       }
     });
   });
@@ -243,42 +295,27 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
-  // Put the responses into a parse pending array
-  id response = [[request responseData] JSONValue];
-  
-  // Lets tally up all the counts
-  // Special multiquery treatment
-  NSArray *albumArray = nil;
-  for (NSDictionary *fqlResult in response) {
-    if ([[fqlResult valueForKey:@"name"] isEqualToString:@"query1"]) {
-      albumArray = [fqlResult valueForKey:@"fql_result_set"];
-    } else {
-      // ignore
+  // Me request
+  if ([[request.userInfo objectForKey:@"albumRequestType"] isEqualToString:@"me"]) {
+    [self parseMeWithRequest:request];
+  } else {
+    [_requestsToParse addObject:request];
+    _pendingRequestsToParse--;
+    
+    // If we have reached the last request, let's flush the pendingResponses
+    if (_pendingRequestsToParse == 0) {
+      [self parsePendingResponses];
     }
-  }
-  _totalAlbumsToParse += [albumArray count];
-  
-  if ([response isKindOfClass:[NSArray class]]) {
-    [_pendingResponses addObject:response];
-  }
-  
-  _pendingRequestsToParse--;
-  
-  // If we have reached the last request, let's flush the pendingResponses
-  if (_pendingRequestsToParse == 0) {
-    [self parsePendingResponses];
   }
 }
 
 - (void)dataCenterRequestFailed:(ASIHTTPRequest *)request {
-  // Inform Delegate
-  if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFail:withError:)]) {
-    [_delegate performSelector:@selector(dataCenterDidFail:withError:) withObject:request withObject:[request error]];
-  } 
+  NSLog(@"CRITICAL ALBUM REQUEST FAILED");
+  [[request copy] startAsynchronous];
 }
 
 - (void)dealloc {
-  RELEASE_SAFELY(_pendingResponses);
+  RELEASE_SAFELY(_requestsToParse);
   [super dealloc];
 }
 

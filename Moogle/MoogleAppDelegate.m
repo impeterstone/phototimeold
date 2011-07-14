@@ -13,6 +13,7 @@
 #import "LoginDataCenter.h"
 #import "AlbumDataCenter.h"
 #import "PSImageCache.h"
+#import "PSProgressCenter.h"
 
 #import "AlbumViewController.h"
 
@@ -74,6 +75,8 @@
   
   // Login if necessary
   [self tryLogin];
+  
+//  [[PSProgressCenter defaultCenter] showProgress];
   
   return YES;
 }
@@ -254,8 +257,6 @@
 }
 
 - (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
-  // Show login again
-//  [_loginViewController logout];
 }
 
 #pragma mark -

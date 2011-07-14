@@ -32,7 +32,7 @@
   self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(settings) buttonType:NavButtonTypeNormal];
   self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:) buttonType:NavButtonTypeRed];
   
-  _navTitleLabel.text = @"Photos";
+  _navTitleLabel.text = @"Photo Albums";
   
 }
 
@@ -60,13 +60,13 @@
   // My Photos
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_ME substitutionVariables:[NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Photos", @"title", @"icon_filter_me.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMe], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Albums", @"title", @"icon_filter_me.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMe], @"albumType", nil];
   [rows addObject:rowData];
   
   // My Friends
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_FRIENDS substitutionVariables:[NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Friends", @"title", @"icon_filter_friends.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFriends], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Albums by My Friends", @"title", @"icon_filter_friends.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFriends], @"albumType", nil];
   [rows addObject:rowData];
   
   // Mobile Albums
@@ -90,7 +90,7 @@
   // Favorites
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_FAVORITES substitutionVariables:[NSDictionary dictionary]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Favorites", @"title", @"icon_filter_favorites.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFavorites], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Favorites", @"title", @"icon_filter_favorites.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFavorites], @"albumType", nil];
   [rows addObject:rowData];
   
   // Add rows to data source
@@ -127,6 +127,7 @@
   
   cell.textLabel.text = [rowData objectForKey:@"title"];
   cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [rowData objectForKey:@"count"]];
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
   return cell;
 }

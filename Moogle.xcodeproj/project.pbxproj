@@ -219,6 +219,7 @@
 		25E353F013CBAE2A00734BB5 /* Moogle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25E353EE13CBAE2A00734BB5 /* Moogle.xcdatamodeld */; };
 		25E56BDB138C63CE0026044A /* facebook-connect.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E56BD9138C63CD0026044A /* facebook-connect.png */; };
 		25E56BDC138C63CE0026044A /* facebook-connect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E56BDA138C63CE0026044A /* facebook-connect@2x.png */; };
+		25E8193613CEE90900134EF5 /* PSProgressCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E8193513CEE90800134EF5 /* PSProgressCenter.m */; };
 		25EFD3861341E438000108B8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EFD3851341E438000108B8 /* MobileCoreServices.framework */; };
 		25EFD3FF1343E18E000108B8 /* LoginDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EFD3FE1343E18E000108B8 /* LoginDataCenter.m */; };
 		25EFD4051343E774000108B8 /* HashValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EFD4041343E774000108B8 /* HashValue.m */; };
@@ -599,6 +600,8 @@
 		25E353EF13CBAE2A00734BB5 /* Moogle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Moogle.xcdatamodel; sourceTree = "<group>"; };
 		25E56BD9138C63CD0026044A /* facebook-connect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-connect.png"; sourceTree = "<group>"; };
 		25E56BDA138C63CE0026044A /* facebook-connect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-connect@2x.png"; sourceTree = "<group>"; };
+		25E8193413CEE90800134EF5 /* PSProgressCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSProgressCenter.h; sourceTree = "<group>"; };
+		25E8193513CEE90800134EF5 /* PSProgressCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSProgressCenter.m; sourceTree = "<group>"; };
 		25EFD3851341E438000108B8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		25EFD3FD1343E18D000108B8 /* LoginDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDataCenter.h; sourceTree = "<group>"; };
 		25EFD3FE1343E18E000108B8 /* LoginDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LoginDataCenter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -855,6 +858,8 @@
 				2570A4B113B490F4006CBCFE /* PSView.m */,
 				258F02F113BA8C1A00516DDA /* PSToastCenter.h */,
 				258F02F213BA8C1A00516DDA /* PSToastCenter.m */,
+				25E8193413CEE90800134EF5 /* PSProgressCenter.h */,
+				25E8193513CEE90800134EF5 /* PSProgressCenter.m */,
 				2570A4B213B490F4006CBCFE /* PSViewController.h */,
 				2570A4B313B490F4006CBCFE /* PSViewController.m */,
 				2570A4B413B490F4006CBCFE /* PSZoomView.h */,
@@ -1698,6 +1703,7 @@
 				25960F2813CD74BC00B44845 /* PSSearchCenter.m in Sources */,
 				25960F2B13CD791400B44845 /* SearchTermController.m in Sources */,
 				25960F2F13CE247F00B44845 /* PSWelcomeView.m in Sources */,
+				25E8193613CEE90900134EF5 /* PSProgressCenter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

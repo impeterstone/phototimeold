@@ -20,11 +20,9 @@
 
 @interface PSDataCenter : PSObject <PSDataCenterDelegate> {
   id <PSDataCenterDelegate> _delegate;
-  NSMutableArray *_pendingRequests;
 }
 
 @property (nonatomic, assign) id <PSDataCenterDelegate> delegate;
-@property (nonatomic, retain) NSMutableArray *pendingRequests;
 
 /**
  Send network operation to server (GET/POST)

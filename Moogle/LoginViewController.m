@@ -8,7 +8,6 @@
 
 #import "LoginViewController.h"
 #import "LoginDataCenter.h"
-#import "DDProgressView.h"
 #import "PSWelcomeView.h"
 
 @implementation LoginViewController
@@ -21,7 +20,6 @@
   if (self) {
     _facebook = APP_DELEGATE.facebook;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logout) name:kLogoutRequested object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLoginProgress:) name:kUpdateLoginProgress object:nil];
   }
   return self;
 }
@@ -33,19 +31,19 @@
   self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   
   // Setup Welcome
-  PSWelcomeView *welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 340)] autorelease];
+  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 384)] autorelease];
   UIImageView *one = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
-  one.frame = CGRectMake(0, 0, 280, 300);
+  one.frame = CGRectMake(0, 0, 280, 346);
   one.contentMode = UIViewContentModeCenter;
   UIImageView *two = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
-  two.frame = CGRectMake(0, 0, 280, 300);
+  two.frame = CGRectMake(0, 0, 280, 346);
   two.contentMode = UIViewContentModeCenter;
   UIImageView *three = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]];
-  three.frame = CGRectMake(0, 0, 280, 300);
+  three.frame = CGRectMake(0, 0, 280, 346);
   three.contentMode = UIViewContentModeCenter;
   NSArray *views = [NSArray arrayWithObjects:one, two, three, nil];
-  [welcomeView setViewArray:views];
-  [self.view addSubview:welcomeView];
+  [_welcomeView setViewArray:views];
+  [self.view addSubview:_welcomeView];
   
   // Setup Login Buttons
   _loginButton = [[UIButton alloc] initWithFrame:CGRectZero];
@@ -65,30 +63,13 @@
   [_loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
   [self.view addSubview:_loginButton];
   
-  // Progress View
-  _progressView = [[DDProgressView alloc] initWithFrame:CGRectMake(0, 0, 280, 36)];
-  _progressView.progress = 0.0;
-  _progressView.center = self.view.center;
-  _progressView.top = _loginButton.top - _progressView.height - 20.0;
-  _progressView.hidden = YES;
-  [self.view addSubview:_progressView];
-  
   // Loading Indicator
   _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
   _loadingIndicator.hidesWhenStopped = YES;
   _loadingIndicator.center = self.view.center;
-  _loadingIndicator.top = welcomeView.bottom;
-//  [self.view addSubview:_loadingIndicator];
+//  _loadingIndicator.top = _welcomeView.bottom;
+  [self.view addSubview:_loadingIndicator];
   
-}
-
-- (void)updateLoginProgress:(NSNotification *)notification {
-  [self performSelectorOnMainThread:@selector(updateLoginProgressOnMainThread:) withObject:[notification userInfo] waitUntilDone:NO];
-}
-
-- (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo {
-  _progressView.progress = [[userInfo objectForKey:@"progress"] floatValue];
-  [_loginButton setTitle:[NSString stringWithFormat:@"Downloading %@ of %@", [userInfo objectForKey:@"index"], [userInfo objectForKey:@"total"]] forState:UIControlStateDisabled];
 }
 
 #pragma mark -
@@ -96,7 +77,7 @@
 - (void)login {
   [_loadingIndicator startAnimating];
   _loginButton.enabled = NO;
-  _progressView.hidden = NO;
+  _welcomeView.hidden = YES;
   [_facebook authorize:FB_PERMISSIONS delegate:self];
 }
 
@@ -121,9 +102,8 @@
 - (void)fbDidNotLogin:(BOOL)cancelled {
   [self logout];
   [_loadingIndicator stopAnimating];
-  _progressView.hidden = YES;
   _loginButton.enabled = YES;
-  _progressView.progress = 0.0;
+  _welcomeView.hidden = NO;
 }
 
 - (void)fbDidLogout {
@@ -134,17 +114,14 @@
     [self.delegate performSelector:@selector(userDidLogout)];
   }
   [_loadingIndicator stopAnimating];
-  _progressView.hidden = YES;
   _loginButton.enabled = YES;
-  _progressView.progress = 0.0;
+  _welcomeView.hidden = NO;
 }
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kUpdateLoginProgress object:nil];
   RELEASE_SAFELY(_loginButton);
   RELEASE_SAFELY(_loadingIndicator);
-  RELEASE_SAFELY(_progressView);
   [super dealloc];
 }
 

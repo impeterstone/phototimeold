@@ -11,13 +11,13 @@
 #import "LoginDelegate.h"
 #import "FBConnect.h"
 
-@class DDProgressView;
+@class PSWelcomeView;
 
 @interface LoginViewController : PSViewController <FBSessionDelegate, PSDataCenterDelegate> {
   Facebook *_facebook;
   UIButton *_loginButton;
+  PSWelcomeView *_welcomeView;
   UIActivityIndicatorView *_loadingIndicator;
-  DDProgressView *_progressView;
   id <LoginDelegate> _delegate;
 }
 
@@ -25,8 +25,5 @@
 @property (nonatomic, retain) UIButton *loginButton;
 
 - (void)logout;
-
-- (void)updateLoginProgress:(NSNotification *)notification;
-- (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
 
 @end

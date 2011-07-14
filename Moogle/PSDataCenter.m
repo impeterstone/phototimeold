@@ -21,22 +21,16 @@
 @implementation PSDataCenter
 
 @synthesize delegate = _delegate;
-@synthesize pendingRequests = _pendingRequests;
 
 - (id)init {
   self = [super init];
   if (self) {
-    _pendingRequests = [[NSMutableArray alloc] initWithCapacity:1];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataDidReset) name:kCoreDataDidReset object:nil];
   }
   return self;
 }
 
 - (void)coreDataDidReset {
-  for (ASIHTTPRequest *request in _pendingRequests) {
-    [request clearDelegatesAndCancel];
-  }
-  [_pendingRequests removeAllObjects];
 }
 
 #pragma mark -
@@ -75,7 +69,7 @@
     [requestParams setValue:accessToken forKey:@"access_token"];
   }
   
-  __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:FB_GRAPH]];
+  ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:FB_GRAPH]];
   request.requestMethod = @"POST";
   
   // Allow GZIP
@@ -90,22 +84,11 @@
   
   [request addRequestHeader:@"Accept" value:@"application/json"];
   
-  // Request Completion Block
-  [request setCompletionBlock:^{
-    [self dataCenterRequestFinished:request];
-    
-    // Remove request from pendingRequests
-    [_pendingRequests removeObject:request];
-  }];
-  [request setFailedBlock:^{
-    [self dataCenterRequestFailed:request];
-    
-    // Remove request from pendingRequests
-    [_pendingRequests removeObject:request];
-  }];
-  
-  // Start the Request
-  [_pendingRequests addObject:request];
+  // Request Completion
+  [request setDelegate:self];
+  [request setDidFinishSelector:@selector(dataCenterRequestFinished:)];
+  [request setDidFailSelector:@selector(dataCenterRequestFailed:)];
+
   [request startAsynchronous];
 }
 
@@ -124,8 +107,10 @@
     url = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [self buildRequestParamsString:requestParams]] relativeToURL:url];
   }
   
-  __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+  ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
   request.requestMethod = method;
+  
+  request.numberOfTimesToRetryOnTimeout = 3;
   
   // Allow GZIP
   request.allowCompressedResponse = YES;
@@ -165,22 +150,12 @@
   //  [request addRequestHeader:@"Content-Type" value:@"application/json"];
   [request addRequestHeader:@"Accept" value:@"application/json"];
   
-  // Request Completion Block
-  [request setCompletionBlock:^{
-    [self dataCenterRequestFinished:request];
-    
-    // Remove request from pendingRequests
-    [_pendingRequests removeObject:request];
-  }];
-  [request setFailedBlock:^{
-    [self dataCenterRequestFailed:request];
-    
-    // Remove request from pendingRequests
-    [_pendingRequests removeObject:request];
-  }];
+  // Request Completion
+  [request setDelegate:self];
+  [request setDidFinishSelector:@selector(dataCenterRequestFinished:)];
+  [request setDidFailSelector:@selector(dataCenterRequestFailed:)];
   
   // Start the Request
-  [_pendingRequests addObject:request];
   [request startAsynchronous];
 }
 
@@ -193,7 +168,7 @@
     [requestParams setValue:accessToken forKey:@"access_token"];
   }
   
-  __block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+  ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
   request.requestMethod = POST;
   
   // Allow GZIP
@@ -239,22 +214,12 @@
   //  [request addRequestHeader:@"Content-Type" value:@"application/json"];
   [request addRequestHeader:@"Accept" value:@"application/json"];
   
-  // Request Completion Block
-  [request setCompletionBlock:^{
-    [self dataCenterRequestFinished:request];
-    
-    // Remove request from pendingRequests
-    [_pendingRequests removeObject:request];
-  }];
-  [request setFailedBlock:^{
-    [self dataCenterRequestFailed:request];
-    
-    // Remove request from pendingRequests
-    [_pendingRequests removeObject:request];
-  }];
+  // Request Completion
+  [request setDelegate:self];
+  [request setDidFinishSelector:@selector(dataCenterRequestFinished:)];
+  [request setDidFailSelector:@selector(dataCenterRequestFailed:)];
   
   // Start the Request
-  [_pendingRequests addObject:request];
   [request startAsynchronous];
 }
 
@@ -341,11 +306,6 @@
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kCoreDataDidReset object:nil];
-  for (ASIHTTPRequest *request in _pendingRequests) {
-    [request clearDelegatesAndCancel];
-  }
-  [_pendingRequests removeAllObjects];
-  RELEASE_SAFELY(_pendingRequests);
   [super dealloc];
 }
 
