@@ -17,6 +17,7 @@
   PSURLCacheImageView *_photoView;
   UIImageView *_overlayView;
 //  UIView *_captionView;
+  UIImageView *_disclosureView;
   UIView *_ribbonView;
   
   UILabel *_nameLabel;

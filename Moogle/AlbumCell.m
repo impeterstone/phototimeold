@@ -15,12 +15,14 @@
 
 static UIImage *_ribbonImage = nil;
 static UIImage *_overlayImage = nil;
+static UIImage *_disclosureImage = nil;
 
 @implementation AlbumCell
 
 + (void)initialize {
   _ribbonImage = [[[UIImage imageNamed:@"ribbon.png"] stretchableImageWithLeftCapWidth:30 topCapHeight:0] retain];
   _overlayImage = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
+  _disclosureImage = [[UIImage imageNamed:@"disclosure_indicator_white.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -116,6 +118,11 @@ static UIImage *_overlayImage = nil;
 //    _photoView.placeholderImage = [UIImage imageNamed:@"album-placeholder.png"];
 //    _photoView = [[PSImageView alloc] initWithFrame:CGRectZero];
     
+    // Disclosure
+    _disclosureView = [[UIImageView alloc] initWithImage:_disclosureImage];
+    _disclosureView.contentMode = UIViewContentModeCenter;
+    _disclosureView.alpha = 0.5;
+    
     // Overlay
     _overlayView = [[UIImageView alloc] initWithImage:_overlayImage];
 
@@ -132,6 +139,7 @@ static UIImage *_overlayImage = nil;
     [self.contentView addSubview:_overlayView];
 //    [self.contentView addSubview:_captionView];
     [self.contentView addSubview:_ribbonView];
+    [self.contentView addSubview:_disclosureView];
     
     // Add labels
     [self.contentView addSubview:_nameLabel];
@@ -179,6 +187,7 @@ static UIImage *_overlayImage = nil;
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
   _overlayView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
   _ribbonView.frame = CGRectMake(self.contentView.width - 68, 10, 68, 24);
+  _disclosureView.frame = CGRectMake(self.contentView.width - _disclosureView.width - MARGIN_X, 0, _disclosureView.width, self.contentView.height);
   
   CGFloat top = cellHeight - 34;
   CGFloat left = MARGIN_X;
@@ -346,6 +355,7 @@ static UIImage *_overlayImage = nil;
   RELEASE_SAFELY(_overlayView);
 //  RELEASE_SAFELY(_captionView);
   RELEASE_SAFELY(_ribbonView);
+  RELEASE_SAFELY(_disclosureView);
   
   RELEASE_SAFELY(_nameLabel);
 //  RELEASE_SAFELY(_captionLabel);
