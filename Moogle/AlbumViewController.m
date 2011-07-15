@@ -116,13 +116,13 @@
   // Update Nav Title
   switch (self.albumType) {
     case AlbumTypeMe:
-      _navTitleLabel.text = @"My Photos";
+      _navTitleLabel.text = @"Your Albums";
       break;
     case AlbumTypeFriends:
-      _navTitleLabel.text = @"My Friends";
+      _navTitleLabel.text = @"Your Friends";
       break;
     case AlbumTypeMobile:
-      _navTitleLabel.text = @"Mobile Albums";
+      _navTitleLabel.text = @"Mobile Uploads";
       break;
     case AlbumTypeProfile:
       _navTitleLabel.text = @"Profile Pictures";
@@ -185,6 +185,7 @@
   
   [self.view addSubview:_searchTermController.view];
   
+  [self.navigationController.navigationBar bringSubviewToFront:_searchField];
   [UIView animateWithDuration:0.4
                    animations:^{
                      _searchField.width = self.view.width - 80;

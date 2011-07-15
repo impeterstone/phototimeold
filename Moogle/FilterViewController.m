@@ -60,19 +60,19 @@
   // My Photos
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_ME substitutionVariables:[NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Albums", @"title", @"icon_filter_me.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMe], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Your Albums", @"title", @"icon_filter_me.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMe], @"albumType", nil];
   [rows addObject:rowData];
   
   // My Friends
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_FRIENDS substitutionVariables:[NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Albums by My Friends", @"title", @"icon_filter_friends.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFriends], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Your Friends", @"title", @"icon_filter_friends.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFriends], @"albumType", nil];
   [rows addObject:rowData];
   
   // Mobile Albums
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_MOBILE substitutionVariables:[NSDictionary dictionary]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Mobile Albums", @"title", @"icon_filter_mobile.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMobile], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Mobile Uploads", @"title", @"icon_filter_mobile.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeMobile], @"albumType", nil];
   [rows addObject:rowData];
   
   // Profile Pictures
@@ -90,7 +90,7 @@
   // Favorites
   countFetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_FAVORITES substitutionVariables:[NSDictionary dictionary]];
   count = [[PSCoreDataStack mainThreadContext] countForFetchRequest:countFetchRequest error:nil];
-  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"My Favorites", @"title", @"icon_filter_favorites.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFavorites], @"albumType", nil];
+  rowData = [NSDictionary dictionaryWithObjectsAndKeys:@"Favorites", @"title", @"icon_filter_favorites.png", @"icon", [NSNumber numberWithInteger:count], @"count", [NSNumber numberWithInteger:AlbumTypeFavorites], @"albumType", nil];
   [rows addObject:rowData];
   
   // Add rows to data source
