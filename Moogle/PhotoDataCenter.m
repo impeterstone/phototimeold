@@ -56,6 +56,14 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   [self sendRequestWithURL:likeUrl andMethod:POST andHeaders:nil andParams:nil andUserInfo:[NSDictionary dictionaryWithObject:@"addLike" forKey:@"requestType"]];
 }
 
+- (void)addCommentForPhotoId:(NSString *)photoId withMessage:(NSString *)message {
+  NSURL *commentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/comments", FB_GRAPH, photoId]];
+  
+  NSMutableDictionary *params = [NSMutableDictionary dictionary];
+  [params setValue:message forKey:@"message"];
+  
+  [self sendRequestWithURL:commentURL andMethod:POST andHeaders:nil andParams:params andUserInfo:[NSDictionary dictionaryWithObject:@"addComment" forKey:@"requestType"]];
+}
 
 - (void)removeLikeForPhotoId:(NSString *)photoId {
   NSURL *likeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/likes", FB_GRAPH, photoId]];
@@ -182,8 +190,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 #pragma mark -
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
+  // Check request type
   NSString *requestType = [request.userInfo objectForKey:@"requestType"];
-  if ([requestType isEqualToString:@"addLike"] || [requestType isEqualToString:@"removeLike"]) {
+  if ([requestType isEqualToString:@"addLike"] || [requestType isEqualToString:@"removeLike"] || [requestType isEqualToString:@"addComment"]) {
     return;
   }
   

@@ -8,7 +8,6 @@
 
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "ComposeViewController.h"
-#import "ComposeDataCenter.h"
 #import "UIImage+SML.h"
 #import "PSAlertCenter.h"
 #import "PSImageCache.h"
@@ -142,7 +141,6 @@ static UIImage *_imageBorderImage = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [[ComposeDataCenter defaultCenter] setDelegate:self];
   
   // Subclass should implement
   [_message becomeFirstResponder];
@@ -150,7 +148,6 @@ static UIImage *_imageBorderImage = nil;
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  [[ComposeDataCenter defaultCenter] setDelegate:nil];
 }
 
 - (void)send {
@@ -162,7 +159,6 @@ static UIImage *_imageBorderImage = nil;
   _send.enabled = NO;
   
   // Send comment to FB
-  [[ComposeDataCenter defaultCenter] sendCommentForPhotoId:_photoId withMessage:_message.text];
 }
 
 - (void)cancel {

@@ -32,6 +32,11 @@
 - (void)removeLikeForPhotoId:(NSString *)photoId;
 
 /**
+ Add a comment
+ */
+- (void)addCommentForPhotoId:(NSString *)photoId withMessage:(NSString *)message;
+
+/**
  Serialize server response into Photo entities
  */
 - (void)serializePhotosWithRequest:(ASIHTTPRequest *)request;

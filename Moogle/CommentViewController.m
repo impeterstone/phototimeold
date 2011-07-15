@@ -7,35 +7,52 @@
 //
 
 #import "CommentViewController.h"
-#import "CommentDataCenter.h"
 #import "Comment.h"
 #import "CommentCell.h"
 #import "Photo.h"
-#import "ComposeViewController.h"
 #import "PhotoDataCenter.h" // for insert
-#import "PSRollupView.h"
+#import "PSImageView.h"
 
 @implementation CommentViewController
 
 @synthesize photo = _photo;
-@synthesize photoImage = _photoImage;
+@synthesize photoOffset = _photoOffset;
+@synthesize photoView = _photoView;
 
 - (id)init {
   self = [super init];
   if (self) {
-    _commentDataCenter = [[CommentDataCenter alloc] init];
-    _commentDataCenter.delegate = self;
-    _isHeaderExpanded = NO;
-    self.hidesBottomBarWhenPushed = YES;
     _fetchLimit = 100;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
+    _photoOffset = 0.0;
+    _photoView = [[PSImageView alloc] initWithFrame:CGRectZero];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
   }
   return self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  
+  CGFloat photoWidth = self.photoView.image.size.width;
+  CGFloat photoHeight = self.photoView.image.size.height;
+  
+  self.photoView.frame = CGRectMake(0, _photoOffset, self.view.width, floor(photoHeight / (photoWidth / self.view.width)));
+  
+  [self.view insertSubview:self.photoView atIndex:0];
+  self.view.alpha = 0.0;
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _photoView.frame = CGRectMake(0, 0, _photoView.width, _photoView.height);
+                     self.view.alpha = 1.0;
+                   }
+                   completion:^(BOOL finished) {
+                     [self.photoView removeFromSuperview];
+                     self.tableView.tableHeaderView = self.photoView;
+                   }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -43,156 +60,118 @@
 }
 
 - (void)loadView {
-  [super loadView];
-  
+  [super loadView];  
   [self resetFetchedResultsController];
-  
-  // Title and Buttons
-  _navTitleLabel.text = _photo.name;
-  
-  [self addBackButton];
-//  [self addButtonWithTitle:@"New" andSelector:@selector(newComment) isLeft:NO];
   
   // Table
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-  
-  // Pull Refresh
-//  [self setupPullRefresh];
-  
-  [self setupHeader];
-//  [self setupTableFooter];
-  
-  [self setupFooter];
   
   [self executeFetch:FetchTypeCold];
   
   // Get new from server
   // Comments don't need to fetch from server immediately, only after a new post
 //  [self reloadCardController];
+  
+  [self setupFooter];
+  
+  // Gestures    
+  UITapGestureRecognizer *dismissTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)] autorelease];
+  dismissTap.delegate = self;
+  [self.view addGestureRecognizer:dismissTap];
 }
 
-- (void)setupTableFooter {
-  // subclass should implement
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
-}
-
-- (void)setupHeader {
-  _headerHeight = 0.0;
-  _headerOffset = 0.0;
-  _photoHeight = 0.0;
-  
-  _photoHeaderView = [[[UIImageView alloc] initWithImage:_photoImage] autorelease];
-  _photoHeaderView.width = self.view.width;
-  _photoHeight = floor((self.view.width / _photoImage.size.width) * _photoImage.size.height);
-  _photoHeaderView.height = _photoHeight;
-  
-  _headerHeight = (_photoHeight >= 120) ? 120 : _photoHeight;
-  _headerOffset = floor((_photoHeight - _headerHeight) / 2);
-  
-  _commentHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, _headerHeight)] autorelease];
-  _commentHeaderView.clipsToBounds = YES;
-  _photoHeaderView.top = 0 - _headerOffset;
-  [_commentHeaderView addSubview:_photoHeaderView];
-  _tableView.tableHeaderView = _commentHeaderView;
-  
-  UITapGestureRecognizer *toggleHeaderTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleHeader:)] autorelease];
-  [_commentHeaderView addGestureRecognizer:toggleHeaderTap];
-}
-
-- (void)toggleHeader:(UITapGestureRecognizer *)gestureRecognizer {
-  [UIView beginAnimations:nil context:nil];
-  [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-  [UIView setAnimationDuration:0.4];
-  [UIView setAnimationDidStopSelector:@selector(toggleHeaderFinished)];
-  [UIView setAnimationDelegate:self];
-  if (_isHeaderExpanded) {
-    _isHeaderExpanded = NO;
-    _commentHeaderView.height = _headerHeight;
-    _photoHeaderView.top -= _headerOffset;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+  if ([touch.view isKindOfClass:[UIButton class]]) {
+    return NO;
   } else {
-    _isHeaderExpanded = YES;
-    _commentHeaderView.height = _photoHeight;
-    _photoHeaderView.top = 0;
+    return YES;
   }
-  _tableView.tableHeaderView = _commentHeaderView;
-  [UIView commitAnimations];
 }
 
-- (void)toggleHeaderFinished {
 
+- (void)dismiss {
+  [_commentField resignFirstResponder];
+  [self setupTableHeader];
+  [self.view insertSubview:self.photoView atIndex:0];
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _photoView.frame = CGRectMake(0, _photoOffset, _photoView.width, _photoView.height);
+                     self.view.alpha = 0.0;
+                   }
+                   completion:^(BOOL finished) {
+                     [self.view removeFromSuperview];
+                     [self autorelease];
+                   }];
 }
 
+#pragma mark - Footer
 - (void)setupFooter {
   UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)] autorelease];
   footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-  
-  // Setup the fake image view
-  PSURLCacheImageView *profileImage = [[PSURLCacheImageView alloc] initWithFrame:CGRectMake(10, 7, 30, 30)];
-  profileImage.urlPath = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", [[NSUserDefaults standardUserDefaults] objectForKey:@"facebookId"]];
-  [profileImage loadImageAndDownload:YES];
-  profileImage.layer.cornerRadius = 5.0;
-  profileImage.layer.masksToBounds = YES;
-  [footerView addSubview:profileImage];
-  [profileImage release];
-  
-  // Setup the fake comment button
-  UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(45, 7, self.view.width - 55, 30)];
-  commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-  commentButton.titleLabel.font = [UIFont systemFontOfSize:14];
-  [commentButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-  [commentButton setContentEdgeInsets:UIEdgeInsetsMake(0, 15, 0, 0)];
-  [commentButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-  [commentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-  [commentButton setTitle:@"Write a comment..." forState:UIControlStateNormal];
-  [commentButton setBackgroundImage:[[UIImage imageNamed:@"bubble.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:15] forState:UIControlStateNormal];
-  [commentButton addTarget:self action:@selector(newComment) forControlEvents:UIControlEventTouchUpInside];
-  [footerView addSubview:commentButton];
-  [commentButton release];
   
   UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-compose-bubble.png"]] autorelease];
   bg.top = -14;
   [footerView insertSubview:bg atIndex:0];
   
+  // Field
+  _commentField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 5, 245, 34) withInset:CGSizeMake(5, 8)];
+//  _commentField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//  _commentField.borderStyle = UITextBorderStyleNone;
+  _commentField.background = [UIImage stretchableImageNamed:@"bg_textfield.png" withLeftCapWidth:12 topCapWidth:15];
+  _commentField.font = BOLD_FONT;
+  _commentField.placeholder = @"Write a comment...";
+  _commentField.returnKeyType = UIReturnKeySend;
+  [_commentField addTarget:self action:@selector(commentChanged:) forControlEvents:UIControlEventEditingChanged];
+  [footerView addSubview:_commentField];
+  
+  // Button
+  _sendCommentButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+  _sendCommentButton.frame = CGRectMake(255, 4, 60, 36);
+  [_sendCommentButton setTitle:@"Send" forState:UIControlStateNormal];
+  _sendCommentButton.titleLabel.font = TITLE_FONT;
+  _sendCommentButton.titleLabel.shadowColor = [UIColor blackColor];
+  _sendCommentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+  [_sendCommentButton setBackgroundImage:[[UIImage imageNamed:@"navbar_blue_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+  [_sendCommentButton setBackgroundImage:[[UIImage imageNamed:@"navbar_blue_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
+  [_sendCommentButton addTarget:self action:@selector(sendComment) forControlEvents:UIControlEventTouchUpInside];
+  _sendCommentButton.enabled = NO;
+  [footerView addSubview:_sendCommentButton];
+  
   [self setupFooterWithView:footerView];
 }
 
-#pragma mark - Tagged Friends
-- (void)getTaggedFriends {
-  if (!_taggedFriendsView) {
-    NSSet *tags = _photo.tags;
-    NSArray *taggedFriendIds = [[tags valueForKeyPath:@"@distinctUnionOfObjects.fromId"] allObjects];
-    NSArray *taggedFriendNames = [[tags valueForKeyPath:@"@distinctUnionOfObjects.fromName"] allObjects];
-    
-    // For testing lots of pictures
-    //    NSMutableArray *testArray = [NSMutableArray array];
-    //    [testArray addObjectsFromArray:taggedFriendIds];
-    //    [testArray addObjectsFromArray:taggedFriendIds];
-    //    [testArray addObjectsFromArray:taggedFriendIds];
-    //    [testArray addObjectsFromArray:taggedFriendIds];
-    //    [testArray addObjectsFromArray:taggedFriendIds];
-    
-    if ([taggedFriendIds count] > 0) {
-      NSMutableArray *taggedFriendPictures = [NSMutableArray array];
-      for (NSString *friendId in taggedFriendIds) {
-        [taggedFriendPictures addObject:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", friendId]];
-      }
-      
-      // Create Rollup
-      _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
-      [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
-      [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@.", [NSString stringWithFormat:@"%@", [taggedFriendNames componentsJoinedByString:@", "]]]];
-      [_taggedFriendsView setPictureURLArray:taggedFriendPictures];
-      self.tableView.tableHeaderView = _taggedFriendsView;
-    }
+- (void)commentChanged:(UITextField *)textField {
+  if ([textField.text length] > 0) {
+    _sendCommentButton.enabled = YES;
+  } else {
+    _sendCommentButton.enabled = NO;
   }
+}
+
+- (void)sendComment {
+  [[PhotoDataCenter defaultCenter] addCommentForPhotoId:_photo.id withMessage:_commentField.text];
+  _commentField.text = nil;
+  [_commentField resignFirstResponder];
+}
+
+#pragma mark - Table Header/Footer
+- (void)setupTableHeader {
+  CGFloat photoWidth = self.photoView.image.size.width;
+  CGFloat photoHeight = self.photoView.image.size.height;
+  
+  // Dummy placer view
+  self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, photoWidth, photoHeight)] autorelease];
+}
+
+- (void)setupTableFooter {
+  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
+  _tableView.tableFooterView = footerImage;
+  [footerImage release];
 }
 
 #pragma mark - State Machine
 - (void)updateState {
   [super updateState];
-//  [self getTaggedFriends]; // disabled
 }
 
 - (void)reloadCardController {
@@ -216,20 +195,61 @@
 #pragma mark -
 #pragma mark Compose
 - (void)newComment {
-  ComposeViewController *cvc = [[ComposeViewController alloc] init];
-  cvc.photoId = _photo.id;
-  cvc.pickedImage = self.photoImage;
-  cvc.delegate = self;
-  cvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-  [self presentModalViewController:cvc animated:YES];
-  [cvc release];
+//  ComposeViewController *cvc = [[ComposeViewController alloc] init];
+//  cvc.photoId = _photo.id;
+//  cvc.pickedImage = self.photoImage;
+//  cvc.delegate = self;
+//  cvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//  [self presentModalViewController:cvc animated:YES];
+//  [cvc release];
 }
 
-#pragma mark - Compose Delegate
-- (void)composeDidSendWithUserInfo:(NSDictionary *)userInfo {
-  [[PhotoDataCenter defaultCenter] insertCommentWithDictionary:userInfo forPhoto:_photo inContext:[_photo managedObjectContext]];
+#pragma mark UIKeyboard
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+  [self moveTextViewForKeyboard:aNotification up:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+  [self moveTextViewForKeyboard:aNotification up:NO]; 
+}
+
+- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL) up {
+  NSDictionary* userInfo = [aNotification userInfo];
   
-  // Reload
+  // Get animation info from userInfo
+  NSTimeInterval animationDuration;
+  UIViewAnimationCurve animationCurve;
+  
+  CGRect keyboardEndFrame;
+  
+  [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+  [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+  
+  
+  CGRect keyboardFrame = CGRectZero;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 30200
+  // code for iOS below 3.2
+  [[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardEndFrame];
+  keyboardFrame = keyboardEndFrame;
+#else
+  // code for iOS 3.2 ++
+  [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
+  keyboardFrame = [UIScreen convertRect:keyboardEndFrame toView:self.view];
+#endif  
+  
+  // Animate up or down
+  NSString *dir = up ? @"up" : @"down";
+  [UIView beginAnimations:dir context:nil];
+  [UIView setAnimationDuration:animationDuration];
+  [UIView setAnimationCurve:animationCurve];
+  
+  if (up) {
+    self.view.height = self.view.height - keyboardFrame.size.height;
+  } else {
+    self.view.height = self.view.height + keyboardFrame.size.height;
+  }
+  
+  [UIView commitAnimations];
 }
 
 #pragma mark -
@@ -284,9 +304,12 @@
 }
 
 - (void)dealloc {
-  _commentDataCenter.delegate = nil;
-  RELEASE_SAFELY(_commentDataCenter);
-  RELEASE_SAFELY(_taggedFriendsView);
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+  
+  RELEASE_SAFELY(_photoView);
+  RELEASE_SAFELY(_commentField);
+  RELEASE_SAFELY(_sendCommentButton);
   [super dealloc];
 }
 

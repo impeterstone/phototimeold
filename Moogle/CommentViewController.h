@@ -8,33 +8,27 @@
 
 #import <UIKit/UIKit.h>
 #import "CardCoreDataTableViewController.h"
-#import "ComposeDelegate.h"
 
-@class CommentDataCenter;
 @class Photo;
-@class PSRollupView;
+@class PSImageView;
+@class PSTextField;
 
-@interface CommentViewController : CardCoreDataTableViewController <ComposeDelegate> {
-  CommentDataCenter *_commentDataCenter;
+@interface CommentViewController : CardCoreDataTableViewController <UIGestureRecognizerDelegate> {
   Photo *_photo;
-  UIView *_commentHeaderView;
-  UIImage *_photoImage;
-  UIImageView *_photoHeaderView;
-  PSRollupView *_taggedFriendsView;
-  
-  CGFloat _headerHeight;
-  CGFloat _headerOffset;
-  CGFloat _photoHeight;
-  BOOL _isHeaderExpanded;
+  CGFloat _photoOffset;
+  PSImageView *_photoView;
+  PSTextField *_commentField;
+  UIButton *_sendCommentButton;
 }
 
 @property (nonatomic, assign) Photo *photo;
-@property (nonatomic, assign) UIImage *photoImage;
+@property (nonatomic, assign) CGFloat photoOffset;
+@property (nonatomic, retain) PSImageView *photoView;
 
-- (void)getTaggedFriends;
-- (void)newComment;
-- (void)setupHeader;
 - (void)setupFooter;
-- (void)toggleHeader:(UITapGestureRecognizer *)gestureRecognizer;
+- (void)commentChanged:(UITextField *)textField;
+- (void)sendComment;
+
+- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up;
 
 @end

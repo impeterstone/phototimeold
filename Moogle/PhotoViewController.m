@@ -26,8 +26,6 @@
 - (id)init {
   self = [super init];
   if (self) {
-    _photoDataCenter = [[PhotoDataCenter alloc] init];
-    _photoDataCenter.delegate = self;
     _sectionNameKeyPathForFetchedResultsController = nil;
     self.hidesBottomBarWhenPushed = YES;
     _fetchLimit = 25;
@@ -42,11 +40,13 @@
   [super viewWillAppear:animated];
 //  [self.navigationController setNavigationBarHidden:NO animated:YES];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadPhotoController object:nil];
+  [[PhotoDataCenter defaultCenter] setDelegate:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadPhotoController object:nil];
+  [[PhotoDataCenter defaultCenter] setDelegate:nil];
 }
 
 - (void)loadView {
@@ -121,7 +121,7 @@
 - (void)reloadCardController {
   [super reloadCardController];
 
-  [_photoDataCenter getPhotosForAlbumId:_album.id];
+  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
 }
 
 - (void)unloadCardController {
@@ -188,21 +188,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   PhotoCell *cell = (PhotoCell *)[tableView cellForRowAtIndexPath:indexPath];
-
-  [self zoomPhotoForCell:cell atIndexPath:indexPath];
-}
-
-- (void)zoomPhotoForCell:(PhotoCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-  if (!_zoomView) {
-    _zoomView = [[PSZoomView alloc] initWithFrame:[[[UIApplication sharedApplication] keyWindow] bounds]];
-  }
-  
-  _zoomView.zoomImageView.image = cell.photoView.image;
-  _zoomView.zoomImageView.frame = [cell convertRect:cell.photoView.frame toView:nil];
-  _zoomView.oldImageFrame = [cell convertRect:cell.photoView.frame toView:nil];
-  _zoomView.oldCaptionFrame = [cell convertRect:cell.captionLabel.frame toView:nil];
-  _zoomView.caption = [[cell.captionLabel.text copy] autorelease];
-  [_zoomView showZoom];
+  [self commentsSelectedForCell:cell];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -216,11 +202,17 @@
 - (void)commentsSelectedForCell:(PhotoCell *)cell {
   NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  
+  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
+  
   CommentViewController *cvc = [[CommentViewController alloc] init];
   cvc.photo = photo;
-  cvc.photoImage = cell.photoView.image; // copy
-  [self.navigationController pushViewController:cvc animated:YES];
-  [cvc release];
+  cvc.photoOffset = photoFrame.origin.y + 44;
+  cvc.photoView.image = [[cell.photoView.image copy] autorelease];
+//  cvc.photoView.image = cell.photoView.image;
+  [self.navigationController.view addSubview:cvc.view];
+  [cvc viewWillAppear:YES];
+//  [cvc release];
 }
 
 - (void)addRemoveLikeForCell:(PhotoCell *)cell {
@@ -274,8 +266,6 @@
 }
 
 - (void)dealloc {
-  _photoDataCenter.delegate = nil;
-  RELEASE_SAFELY(_photoDataCenter);
   RELEASE_SAFELY(_zoomView);
   RELEASE_SAFELY(_taggedFriendsView);
   RELEASE_SAFELY(_sortKey);

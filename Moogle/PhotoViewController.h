@@ -10,13 +10,11 @@
 #import "CardCoreDataTableViewController.h"
 #import "PhotoCellDelegate.h"
 
-@class PhotoDataCenter;
 @class Album;
 @class PSZoomView;
 @class PSRollupView;
 
 @interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate> {
-  PhotoDataCenter *_photoDataCenter;
   Album *_album;
   PSRollupView *_taggedFriendsView;
   PSZoomView *_zoomView;
@@ -27,6 +25,5 @@
 @property (nonatomic, retain) NSString *sortKey;
 
 - (void)getTaggedFriends;
-- (void)zoomPhotoForCell:(id)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -10,7 +10,6 @@
 #import "CardViewController.h"
 #import "ComposeDelegate.h"
 #import "PSTextView.h"
-#import "ComposeDataCenter.h"
 
 @interface ComposeViewController : CardViewController <UITextViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   NSString *_photoId;

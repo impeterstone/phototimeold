@@ -66,6 +66,7 @@
 #define CAPTION_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0]
 #define TITLE_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0]
 #define NORMAL_FONT [UIFont fontWithName:@"HelveticaNeue" size:14.0]
+#define BOLD_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0]
 #define SUBTITLE_FONT [UIFont fontWithName:@"HelveticaNeue" size:12.0]
 #define TIMESTAMP_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
 
