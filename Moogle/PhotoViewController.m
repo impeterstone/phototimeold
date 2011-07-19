@@ -17,6 +17,45 @@
 #import "CommentViewController.h"
 #import "PSRollupView.h"
 #import "PSToastCenter.h"
+#import "UploadViewController.h"
+
+#import <MobileCoreServices/UTCoreTypes.h>
+
+@implementation PhotoViewController (ImagePickerDelegateMethods)
+
+// For responding to the user tapping Cancel.
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+  [[picker parentViewController] dismissModalViewControllerAnimated:YES];
+  [picker release];
+}
+
+// For responding to the user accepting a newly-captured picture or movie
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+  NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+  
+  //  if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+  //    _shouldSaveToAlbum = YES;
+  //  } else {
+  //    _shouldSaveToAlbum = NO;
+  //  }
+  
+  // Handle a still image capture
+  if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo) {
+    _uploadImage = (UIImage *) [info objectForKey:UIImagePickerControllerOriginalImage];
+    //    _selectedImage = [[originalImage scaleProportionalToSize:CGSizeMake(640, 640)] retain];
+  }
+  
+  //  if (_snappedImage && _shouldSaveToAlbum) {
+  //    UIImageWriteToSavedPhotosAlbum(_snappedImage, nil, nil, nil);
+  //  }
+  
+  UploadViewController *uvc = [[UploadViewController alloc] init];
+  uvc.uploadImage = _uploadImage;
+  [picker pushViewController:uvc animated:YES];
+  [uvc release];
+}
+
+@end
 
 @implementation PhotoViewController
 
@@ -63,7 +102,11 @@
   CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
+  if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
+    self.navigationItem.rightBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:NavButtonTypeGreen];
+  } else {
+    self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
+  }
   
   // Pull Refresh
   [self setupPullRefresh];
@@ -138,8 +181,24 @@
   [self dataSourceDidLoad];
 }
 
-#pragma mark -
-#pragma mark Compose
+#pragma mark - Actions
+- (void)upload {
+  UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+  imagePicker.allowsEditing = NO;
+  imagePicker.delegate = self;
+//  imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+  
+  // Source Type
+  imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+  
+  // Media Types
+  //  imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
+  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+  //  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+  
+  [self presentModalViewController:imagePicker animated:YES];
+}
+
 - (void)favorite {
   if ([_album.isFavorite boolValue]) {
     _album.isFavorite = [NSNumber numberWithBool:NO];
@@ -269,6 +328,7 @@
   RELEASE_SAFELY(_zoomView);
   RELEASE_SAFELY(_taggedFriendsView);
   RELEASE_SAFELY(_sortKey);
+  RELEASE_SAFELY(_uploadImage);
   [super dealloc];
 }
 

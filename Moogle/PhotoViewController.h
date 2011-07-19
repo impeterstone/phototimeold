@@ -14,11 +14,12 @@
 @class PSZoomView;
 @class PSRollupView;
 
-@interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate> {
+@interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   Album *_album;
   PSRollupView *_taggedFriendsView;
   PSZoomView *_zoomView;
   NSString *_sortKey;
+  UIImage *_uploadImage;
 }
 
 @property (nonatomic, assign) Album *album;

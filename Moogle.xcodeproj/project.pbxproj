@@ -46,6 +46,13 @@
 		254097411383517900EBE848 /* bg-searchbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2540973F1383517900EBE848 /* bg-searchbar.png */; };
 		254097421383517900EBE848 /* bg-searchbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 254097401383517900EBE848 /* bg-searchbar@2x.png */; };
 		254097451383527600EBE848 /* UISearchBar+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 254097441383527600EBE848 /* UISearchBar+Custom.m */; };
+		25420AC713D4F82400DD5A27 /* icon_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420AC513D4F82400DD5A27 /* icon_camera.png */; };
+		25420AC813D4F82400DD5A27 /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420AC613D4F82400DD5A27 /* icon_camera@2x.png */; };
+		25420ACE13D4FC3600DD5A27 /* navbar_green_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420ACA13D4FC3600DD5A27 /* navbar_green_button.png */; };
+		25420ACF13D4FC3600DD5A27 /* navbar_green_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420ACB13D4FC3600DD5A27 /* navbar_green_button@2x.png */; };
+		25420AD013D4FC3600DD5A27 /* navbar_green_highlighted_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420ACC13D4FC3600DD5A27 /* navbar_green_highlighted_button.png */; };
+		25420AD113D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420ACD13D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png */; };
+		25420ADC13D51A3600DD5A27 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25420ADB13D51A3600DD5A27 /* UploadViewController.m */; };
 		2544ACAC1378829E0072C86C /* CameraImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2544ACAB1378829E0072C86C /* CameraImageHelper.m */; };
 		2544ACAF13788E040072C86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACAE13788E030072C86C /* AVFoundation.framework */; };
 		2544ACB213788E2C0072C86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACB113788E2B0072C86C /* CoreMedia.framework */; };
@@ -337,6 +344,14 @@
 		254097401383517900EBE848 /* bg-searchbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-searchbar@2x.png"; sourceTree = "<group>"; };
 		254097431383527600EBE848 /* UISearchBar+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Custom.h"; sourceTree = "<group>"; };
 		254097441383527600EBE848 /* UISearchBar+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Custom.m"; sourceTree = "<group>"; };
+		25420AC513D4F82400DD5A27 /* icon_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_camera.png; sourceTree = "<group>"; };
+		25420AC613D4F82400DD5A27 /* icon_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@2x.png"; sourceTree = "<group>"; };
+		25420ACA13D4FC3600DD5A27 /* navbar_green_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_green_button.png; path = Resources/navbar_green_button.png; sourceTree = SOURCE_ROOT; };
+		25420ACB13D4FC3600DD5A27 /* navbar_green_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_green_button@2x.png"; path = "Resources/navbar_green_button@2x.png"; sourceTree = SOURCE_ROOT; };
+		25420ACC13D4FC3600DD5A27 /* navbar_green_highlighted_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_green_highlighted_button.png; path = Resources/navbar_green_highlighted_button.png; sourceTree = SOURCE_ROOT; };
+		25420ACD13D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_green_highlighted_button@2x.png"; path = "Resources/navbar_green_highlighted_button@2x.png"; sourceTree = SOURCE_ROOT; };
+		25420ADA13D51A3600DD5A27 /* UploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UploadViewController.h; sourceTree = "<group>"; };
+		25420ADB13D51A3600DD5A27 /* UploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
 		2544ACAA1378829E0072C86C /* CameraImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraImageHelper.h; sourceTree = "<group>"; };
 		2544ACAB1378829E0072C86C /* CameraImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraImageHelper.m; sourceTree = "<group>"; };
 		2544ACAE13788E030072C86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -726,6 +741,8 @@
 				25E353EC13CA648F00734BB5 /* FilterViewController.m */,
 				25D4D28913B0776100A21C4C /* ComposeViewController.h */,
 				25D4D28A13B0776100A21C4C /* ComposeViewController.m */,
+				25420ADA13D51A3600DD5A27 /* UploadViewController.h */,
+				25420ADB13D51A3600DD5A27 /* UploadViewController.m */,
 			);
 			name = Modals;
 			sourceTree = "<group>";
@@ -911,6 +928,10 @@
 				2593D4EE13CD133800C065E9 /* navbar_red_button@2x.png */,
 				2593D4EF13CD133800C065E9 /* navbar_red_highlighted_button.png */,
 				2593D4F013CD133800C065E9 /* navbar_red_highlighted_button@2x.png */,
+				25420ACA13D4FC3600DD5A27 /* navbar_green_button.png */,
+				25420ACB13D4FC3600DD5A27 /* navbar_green_button@2x.png */,
+				25420ACC13D4FC3600DD5A27 /* navbar_green_highlighted_button.png */,
+				25420ACD13D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png */,
 				2593D4F113CD133800C065E9 /* navigationbar_bg.png */,
 				2593D4F213CD133800C065E9 /* navigationbar_bg@2x.png */,
 			);
@@ -1057,6 +1078,8 @@
 		25CEF8FE133A000C006F23A7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				25420AC513D4F82400DD5A27 /* icon_camera.png */,
+				25420AC613D4F82400DD5A27 /* icon_camera@2x.png */,
 				25A0002513CE6F8D005A66B9 /* photos-large.png */,
 				25A0002613CE6F8D005A66B9 /* photos-large@2x.png */,
 				25E0BC5C13CFA9BF0062D99C /* icon_like.png */,
@@ -1578,6 +1601,12 @@
 				25A0002813CE6F8D005A66B9 /* photos-large@2x.png in Resources */,
 				25E0BC5E13CFA9BF0062D99C /* icon_like.png in Resources */,
 				25E0BC5F13CFA9BF0062D99C /* icon_like@2x.png in Resources */,
+				25420AC713D4F82400DD5A27 /* icon_camera.png in Resources */,
+				25420AC813D4F82400DD5A27 /* icon_camera@2x.png in Resources */,
+				25420ACE13D4FC3600DD5A27 /* navbar_green_button.png in Resources */,
+				25420ACF13D4FC3600DD5A27 /* navbar_green_button@2x.png in Resources */,
+				25420AD013D4FC3600DD5A27 /* navbar_green_highlighted_button.png in Resources */,
+				25420AD113D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1700,6 +1729,7 @@
 				25960F2B13CD791400B44845 /* SearchTermController.m in Sources */,
 				25960F2F13CE247F00B44845 /* PSWelcomeView.m in Sources */,
 				25E8193613CEE90900134EF5 /* PSProgressCenter.m in Sources */,
+				25420ADC13D51A3600DD5A27 /* UploadViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

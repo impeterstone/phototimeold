@@ -42,7 +42,7 @@
   
   self.photoView.frame = CGRectMake(0, _photoOffset, self.view.width, floor(photoHeight / (photoWidth / self.view.width)));
   
-  [self.view insertSubview:self.photoView atIndex:0];
+  [self.view insertSubview:self.photoView aboveSubview:self.tableView];
   self.view.alpha = 0.0;
   [UIView animateWithDuration:0.4
                    animations:^{
@@ -92,7 +92,7 @@
 - (void)dismiss {
   [_commentField resignFirstResponder];
   [self setupTableHeader];
-  [self.view insertSubview:self.photoView atIndex:0];
+  [self.view insertSubview:self.photoView aboveSubview:self.tableView];
   [UIView animateWithDuration:0.4
                    animations:^{
                      _photoView.frame = CGRectMake(0, _photoOffset, _photoView.width, _photoView.height);
@@ -213,7 +213,7 @@
   [self moveTextViewForKeyboard:aNotification up:NO]; 
 }
 
-- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL) up {
+- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up {
   NSDictionary* userInfo = [aNotification userInfo];
   
   // Get animation info from userInfo

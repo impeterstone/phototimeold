@@ -17,7 +17,8 @@ enum {
   NavButtonTypeNormal = 0,
   NavButtonTypeBlue = 1,
   NavButtonTypeRed = 2,
-  NavButtonTypeSilver = 3
+  NavButtonTypeGreen = 3,
+  NavButtonTypeSilver = 4
 };
 typedef uint32_t NavButtonType;
 
