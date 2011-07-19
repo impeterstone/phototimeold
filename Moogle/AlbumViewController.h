@@ -31,6 +31,11 @@ typedef enum {
   UIBarButtonItem *_filterButton;
   UIBarButtonItem *_cancelButton;
   SearchTermController *_searchTermController;
+  
+  // This is a hack for uitextfield autocorrected -> return key
+  // When the return key is tapped and an autocorrect bubble is still visible,
+  // the delegate callback doesn't account for the autocorrect
+  BOOL _searchTapped;
 }
 
 @property (nonatomic, assign) AlbumType albumType;

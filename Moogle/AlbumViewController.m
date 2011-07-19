@@ -28,6 +28,7 @@
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
 //    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
+    _searchTapped = NO;
   }
   return self;
 }
@@ -37,8 +38,7 @@
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
 //  [self reloadCardController];
-  
-  [self.navigationController.navigationBar addSubview:_searchField];
+  [self.navigationController.view addSubview:_searchField];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -61,7 +61,7 @@
 //  self.tableView.rowHeight = 120.0;
   
   // Custom Search
-  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 6)];
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 26, 60, 30) withInset:CGSizeMake(30, 6)];
   _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
   _searchField.font = NORMAL_FONT;
   _searchField.delegate = self;
@@ -136,8 +136,6 @@
     default:
       break;
   }
-  
-  [self.navigationController.navigationBar bringSubviewToFront:_searchField];
 }
 
 - (void)reloadCardController {
@@ -212,13 +210,20 @@
   return YES;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+  if (_searchTapped) {
+    _searchTapped = NO;
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self searchWithText:textField.text];
+  }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
   if ([textField.text length] == 0) {
     // Empty search
     [self cancelSearch];
   } else {
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    [self searchWithText:textField.text];
+    _searchTapped = YES;
     [textField resignFirstResponder];
   }
   
