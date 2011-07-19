@@ -224,6 +224,14 @@
 		25E0BC5F13CFA9BF0062D99C /* icon_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E0BC5D13CFA9BF0062D99C /* icon_like@2x.png */; };
 		25E353ED13CA648F00734BB5 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E353EC13CA648F00734BB5 /* FilterViewController.m */; };
 		25E353F013CBAE2A00734BB5 /* Moogle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25E353EE13CBAE2A00734BB5 /* Moogle.xcdatamodeld */; };
+		25E4672813D62A4600BFB354 /* nux_albums.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672013D62A4600BFB354 /* nux_albums.png */; };
+		25E4672913D62A4600BFB354 /* nux_albums@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672113D62A4600BFB354 /* nux_albums@2x.png */; };
+		25E4672A13D62A4600BFB354 /* nux_more.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672213D62A4600BFB354 /* nux_more.png */; };
+		25E4672B13D62A4600BFB354 /* nux_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672313D62A4600BFB354 /* nux_more@2x.png */; };
+		25E4672C13D62A4600BFB354 /* nux_photos.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672413D62A4600BFB354 /* nux_photos.png */; };
+		25E4672D13D62A4600BFB354 /* nux_photos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672513D62A4600BFB354 /* nux_photos@2x.png */; };
+		25E4672E13D62A4600BFB354 /* nux_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672613D62A4600BFB354 /* nux_search.png */; };
+		25E4672F13D62A4600BFB354 /* nux_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E4672713D62A4600BFB354 /* nux_search@2x.png */; };
 		25E56BDB138C63CE0026044A /* facebook-connect.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E56BD9138C63CD0026044A /* facebook-connect.png */; };
 		25E56BDC138C63CE0026044A /* facebook-connect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E56BDA138C63CE0026044A /* facebook-connect@2x.png */; };
 		25E8193613CEE90900134EF5 /* PSProgressCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E8193513CEE90800134EF5 /* PSProgressCenter.m */; };
@@ -611,6 +619,14 @@
 		25E353EB13CA648F00734BB5 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
 		25E353EC13CA648F00734BB5 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		25E353EF13CBAE2A00734BB5 /* Moogle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Moogle.xcdatamodel; sourceTree = "<group>"; };
+		25E4672013D62A4600BFB354 /* nux_albums.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nux_albums.png; sourceTree = "<group>"; };
+		25E4672113D62A4600BFB354 /* nux_albums@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_albums@2x.png"; sourceTree = "<group>"; };
+		25E4672213D62A4600BFB354 /* nux_more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nux_more.png; sourceTree = "<group>"; };
+		25E4672313D62A4600BFB354 /* nux_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_more@2x.png"; sourceTree = "<group>"; };
+		25E4672413D62A4600BFB354 /* nux_photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nux_photos.png; sourceTree = "<group>"; };
+		25E4672513D62A4600BFB354 /* nux_photos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_photos@2x.png"; sourceTree = "<group>"; };
+		25E4672613D62A4600BFB354 /* nux_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nux_search.png; sourceTree = "<group>"; };
+		25E4672713D62A4600BFB354 /* nux_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_search@2x.png"; sourceTree = "<group>"; };
 		25E56BD9138C63CD0026044A /* facebook-connect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-connect.png"; sourceTree = "<group>"; };
 		25E56BDA138C63CE0026044A /* facebook-connect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-connect@2x.png"; sourceTree = "<group>"; };
 		25E8193413CEE90800134EF5 /* PSProgressCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSProgressCenter.h; sourceTree = "<group>"; };
@@ -1067,6 +1083,7 @@
 		25CEF8FE133A000C006F23A7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				25E4671F13D62A4600BFB354 /* nux */,
 				25420AC513D4F82400DD5A27 /* icon_camera.png */,
 				25420AC613D4F82400DD5A27 /* icon_camera@2x.png */,
 				25A0002513CE6F8D005A66B9 /* photos-large.png */,
@@ -1202,6 +1219,21 @@
 				25D4D29E13B0780C00A21C4C /* compose-send@2x.png */,
 			);
 			path = compose;
+			sourceTree = "<group>";
+		};
+		25E4671F13D62A4600BFB354 /* nux */ = {
+			isa = PBXGroup;
+			children = (
+				25E4672013D62A4600BFB354 /* nux_albums.png */,
+				25E4672113D62A4600BFB354 /* nux_albums@2x.png */,
+				25E4672213D62A4600BFB354 /* nux_more.png */,
+				25E4672313D62A4600BFB354 /* nux_more@2x.png */,
+				25E4672413D62A4600BFB354 /* nux_photos.png */,
+				25E4672513D62A4600BFB354 /* nux_photos@2x.png */,
+				25E4672613D62A4600BFB354 /* nux_search.png */,
+				25E4672713D62A4600BFB354 /* nux_search@2x.png */,
+			);
+			path = nux;
 			sourceTree = "<group>";
 		};
 		25EFD4021343E75C000108B8 /* HashValue */ = {
@@ -1600,6 +1632,14 @@
 				25420AD113D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png in Resources */,
 				25784B8013D5566000164124 /* bg_footer_44.png in Resources */,
 				25784B8113D5566000164124 /* bg_footer_44@2x.png in Resources */,
+				25E4672813D62A4600BFB354 /* nux_albums.png in Resources */,
+				25E4672913D62A4600BFB354 /* nux_albums@2x.png in Resources */,
+				25E4672A13D62A4600BFB354 /* nux_more.png in Resources */,
+				25E4672B13D62A4600BFB354 /* nux_more@2x.png in Resources */,
+				25E4672C13D62A4600BFB354 /* nux_photos.png in Resources */,
+				25E4672D13D62A4600BFB354 /* nux_photos@2x.png in Resources */,
+				25E4672E13D62A4600BFB354 /* nux_search.png in Resources */,
+				25E4672F13D62A4600BFB354 /* nux_search@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

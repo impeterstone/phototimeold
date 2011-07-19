@@ -31,17 +31,20 @@
   self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   
   // Setup Welcome
-  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(20, 20, 280, 384)] autorelease];
-  UIImageView *one = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]] autorelease];
+  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(0, 0, 320, 404)] autorelease];
+  UIImageView *one = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_albums.png"]] autorelease];
   one.frame = CGRectMake(0, 0, 280, 346);
   one.contentMode = UIViewContentModeCenter;
-  UIImageView *two = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]] autorelease];
+  UIImageView *two = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_more.png"]] autorelease];
   two.frame = CGRectMake(0, 0, 280, 346);
   two.contentMode = UIViewContentModeCenter;
-  UIImageView *three = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photos-large.png"]] autorelease];
+  UIImageView *three = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_search.png"]] autorelease];
   three.frame = CGRectMake(0, 0, 280, 346);
   three.contentMode = UIViewContentModeCenter;
-  NSArray *views = [NSArray arrayWithObjects:one, two, three, nil];
+  UIImageView *four = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_photos.png"]] autorelease];
+  four.frame = CGRectMake(0, 0, 280, 346);
+  four.contentMode = UIViewContentModeCenter;
+  NSArray *views = [NSArray arrayWithObjects:one, two, three, four, nil];
   [_welcomeView setViewArray:views];
   [self.view addSubview:_welcomeView];
   

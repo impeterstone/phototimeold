@@ -188,9 +188,8 @@
 }
 
 - (void)setupTableFooter {
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
+  UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)] autorelease];
+  _tableView.tableFooterView = footerView;
 }
 
 //- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
