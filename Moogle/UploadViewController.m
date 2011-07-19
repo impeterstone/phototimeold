@@ -108,7 +108,7 @@
   //  _captionField.clearButtonMode = UITextFieldViewModeWhileEditing;
   //  _captionField.borderStyle = UITextBorderStyleNone;
   _captionField.background = [UIImage stretchableImageNamed:@"bg_textfield.png" withLeftCapWidth:12 topCapWidth:15];
-  _captionField.font = BOLD_FONT;
+  _captionField.font = NORMAL_FONT;
   _captionField.placeholder = @"Add a caption...";
   _captionField.returnKeyType = UIReturnKeyDone;
 //  [_captionField addTarget:self action:@selector(captionChanged:) forControlEvents:UIControlEventEditingChanged];

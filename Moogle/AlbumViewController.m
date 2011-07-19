@@ -103,7 +103,7 @@
 //  _navTitleLabel.text = @"Moogle";
   
   // Pull Refresh
-//  [self setupPullRefresh];
+  [self setupPullRefresh];
   
 //  [self setupLoadMoreView];
   

@@ -45,10 +45,10 @@
     
     // Use FB High Res (2048x2048)
     // Only use if high res uploads are enabled
-//    _uploadImage = [UIImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit imageToScale:originalImage bounds:CGSizeMake(2048, 2048) interpolationQuality:kCGInterpolationDefault];
+//    _uploadImage = [originalImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(2048, 2048) interpolationQuality:kCGInterpolationHigh];
     
     // Use FB Low Res (720x720)
-    _uploadImage = [UIImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit imageToScale:originalImage bounds:CGSizeMake(720, 720) interpolationQuality:kCGInterpolationDefault];
+    _uploadImage = [originalImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(720, 720) interpolationQuality:kCGInterpolationHigh];
     
   }
   
@@ -118,7 +118,7 @@
   }
   
   // Pull Refresh
-  [self setupPullRefresh];
+//  [self setupPullRefresh];
   
   [self executeFetch:FetchTypeCold];
   

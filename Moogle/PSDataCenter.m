@@ -221,7 +221,7 @@
   
   // Progress
   [request setUploadProgressDelegate:[PSProgressCenter defaultCenter]];
-  [[PSProgressCenter defaultCenter] showProgress];
+  [[PSProgressCenter defaultCenter] setMessage:@"Uploading Photo..."];
   
   // Start the Request
   [request startAsynchronous];

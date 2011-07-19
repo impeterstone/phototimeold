@@ -76,8 +76,6 @@
   // Login if necessary
   [self tryLogin];
   
-//  [[PSProgressCenter defaultCenter] showProgress];
-  
   return YES;
 }
 
@@ -141,6 +139,7 @@
   
 #warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:meUrl];
+  request.userInfo = [NSDictionary dictionaryWithObject:@"me" forKey:@"requestType"];
   request.requestMethod = @"GET";
   request.allowCompressedResponse = YES;
   
@@ -176,6 +175,7 @@
   
 #warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:friendsUrl];
+  request.userInfo = [NSDictionary dictionaryWithObject:@"friends" forKey:@"requestType"];
   request.requestMethod = @"GET";
   request.allowCompressedResponse = YES;
   

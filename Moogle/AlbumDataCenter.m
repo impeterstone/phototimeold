@@ -239,6 +239,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     if (_totalAlbumsToParse > 0) {
       dispatch_async(dispatch_get_main_queue(), ^{
+        [[PSProgressCenter defaultCenter] setMessage:@"Downloading Albums..."];
         [[PSProgressCenter defaultCenter] showProgress];
       });
     }
