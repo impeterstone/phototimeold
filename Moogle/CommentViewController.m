@@ -208,6 +208,10 @@
 //}
 
 #pragma mark - State Machine
+- (BOOL)dataIsAvailable {
+  return YES; // override
+}
+
 - (void)updateState {
   [super updateState];
 }

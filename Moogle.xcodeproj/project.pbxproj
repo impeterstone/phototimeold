@@ -53,8 +53,6 @@
 		25420AD013D4FC3600DD5A27 /* navbar_green_highlighted_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420ACC13D4FC3600DD5A27 /* navbar_green_highlighted_button.png */; };
 		25420AD113D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25420ACD13D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png */; };
 		25420ADC13D51A3600DD5A27 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25420ADB13D51A3600DD5A27 /* UploadViewController.m */; };
-		2544ACAC1378829E0072C86C /* CameraImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2544ACAB1378829E0072C86C /* CameraImageHelper.m */; };
-		2544ACAF13788E040072C86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACAE13788E030072C86C /* AVFoundation.framework */; };
 		2544ACB213788E2C0072C86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACB113788E2B0072C86C /* CoreMedia.framework */; };
 		2544ACB413788E380072C86C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACB313788E370072C86C /* CoreVideo.framework */; };
 		2546E8BA138226A200BD8757 /* Like.m in Sources */ = {isa = PBXBuildFile; fileRef = 2546E8B9138226A200BD8757 /* Like.m */; };
@@ -354,9 +352,6 @@
 		25420ACD13D4FC3600DD5A27 /* navbar_green_highlighted_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_green_highlighted_button@2x.png"; path = "Resources/navbar_green_highlighted_button@2x.png"; sourceTree = SOURCE_ROOT; };
 		25420ADA13D51A3600DD5A27 /* UploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewController.h; sourceTree = "<group>"; };
 		25420ADB13D51A3600DD5A27 /* UploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
-		2544ACAA1378829E0072C86C /* CameraImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraImageHelper.h; sourceTree = "<group>"; };
-		2544ACAB1378829E0072C86C /* CameraImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraImageHelper.m; sourceTree = "<group>"; };
-		2544ACAE13788E030072C86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2544ACB113788E2B0072C86C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		2544ACB313788E370072C86C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		2546E8B8138226A200BD8757 /* Like.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Like.h; sourceTree = "<group>"; };
@@ -717,7 +712,6 @@
 				25622EF5139F16DD004945AA /* libz.dylib in Frameworks */,
 				2544ACB413788E380072C86C /* CoreVideo.framework in Frameworks */,
 				2544ACB213788E2C0072C86C /* CoreMedia.framework in Frameworks */,
-				2544ACAF13788E040072C86C /* AVFoundation.framework in Frameworks */,
 				259C7B71134A915000C37AE1 /* MediaPlayer.framework in Frameworks */,
 				259C7B4E1349735D00C37AE1 /* CFNetwork.framework in Frameworks */,
 				25EFD3861341E438000108B8 /* MobileCoreServices.framework in Frameworks */,
@@ -792,15 +786,6 @@
 				2538FF75133B508500ACE127 /* whiteArrow@2x.png */,
 			);
 			name = EGO;
-			sourceTree = "<group>";
-		};
-		2544ACA9137882850072C86C /* CameraImageHelper */ = {
-			isa = PBXGroup;
-			children = (
-				2544ACAA1378829E0072C86C /* CameraImageHelper.h */,
-				2544ACAB1378829E0072C86C /* CameraImageHelper.m */,
-			);
-			name = CameraImageHelper;
 			sourceTree = "<group>";
 		};
 		255ECED413906D7F00E37BC0 /* JSONKit */ = {
@@ -988,7 +973,6 @@
 				25622EF4139F16DD004945AA /* libz.dylib */,
 				2544ACB313788E370072C86C /* CoreVideo.framework */,
 				2544ACB113788E2B0072C86C /* CoreMedia.framework */,
-				2544ACAE13788E030072C86C /* AVFoundation.framework */,
 				259C7B70134A914800C37AE1 /* MediaPlayer.framework */,
 				259C7B4D1349735D00C37AE1 /* CFNetwork.framework */,
 				25EFD3851341E438000108B8 /* MobileCoreServices.framework */,
@@ -1251,7 +1235,6 @@
 				255ECED413906D7F00E37BC0 /* JSONKit */,
 				25544F1F1384B1A700948E2C /* ISO8601DateFormatter.h */,
 				25544F201384B1A700948E2C /* ISO8601DateFormatter.m */,
-				2544ACA9137882850072C86C /* CameraImageHelper */,
 				25C67E2D1372196D00330DA7 /* Base64 */,
 				2511A7E51365550600C9CF9A /* ASIHTTPRequest */,
 				259C7B491349733000C37AE1 /* Reachability.h */,
@@ -1675,7 +1658,6 @@
 				259AD5491366B09100FA2B8D /* PhotoDataCenter.m in Sources */,
 				259AD54D1366B67300FA2B8D /* HeaderCell.m in Sources */,
 				25C67E301372197E00330DA7 /* Base64Transcoder+PS.c in Sources */,
-				2544ACAC1378829E0072C86C /* CameraImageHelper.m in Sources */,
 				2546E8BA138226A200BD8757 /* Like.m in Sources */,
 				254097451383527600EBE848 /* UISearchBar+Custom.m in Sources */,
 				25544F211384B1A700948E2C /* ISO8601DateFormatter.m in Sources */,

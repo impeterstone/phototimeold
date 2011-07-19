@@ -270,7 +270,7 @@
   CommentViewController *cvc = [[CommentViewController alloc] init];
   cvc.photo = photo;
   cvc.photoOffset = photoFrame.origin.y + 44;
-  cvc.photoView.image = [[cell.photoView.image copy] autorelease];
+  cvc.photoView.image = cell.photoView.image;
   //  cvc.photoView.image = cell.photoView.image;
   
   [self.navigationController.view addSubview:cvc.view];
@@ -294,7 +294,7 @@
   CommentViewController *cvc = [[CommentViewController alloc] init];
   cvc.photo = photo;
   cvc.photoOffset = photoFrame.origin.y + 44;
-  cvc.photoView.image = [[cell.photoView.image copy] autorelease];
+  cvc.photoView.image = cell.photoView.image;
 //  cvc.photoView.image = cell.photoView.image;
   
   // If there are no comments, compose on appear
