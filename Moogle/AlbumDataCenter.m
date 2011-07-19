@@ -262,18 +262,20 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      // reset counters
-      _parseIndex = 0;
-      _totalAlbumsToParse = 0;
-      
-      // All albums downloaded
-      [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
-      
-      // Inform Delegate if all responses are parsed
-      if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
-        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
-        [[PSProgressCenter defaultCenter] hideProgress];
+      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
+        // reset counters
+        _parseIndex = 0;
+        _totalAlbumsToParse = 0;
+        
+        // All albums downloaded
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
+        
+        // Inform Delegate if all responses are parsed
+        if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+          [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
+          [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
+          [[PSProgressCenter defaultCenter] hideProgress];
+        }
       }
     });
   });
@@ -294,12 +296,14 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      _parseIndex = 0;
-      _totalAlbumsToParse = 0;
-      
-      // Inform Delegate if all responses are parsed
-      if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-        [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
+      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
+        _parseIndex = 0;
+        _totalAlbumsToParse = 0;
+        
+        // Inform Delegate if all responses are parsed
+        if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+          [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
+        }
       }
     });
   });

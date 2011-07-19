@@ -84,6 +84,8 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   [params setValue:caption forKey:@"message"];
   
   [self sendFormRequestWithURL:uploadUrl andHeaders:nil andParams:params andFile:fileDict andUserInfo:[NSDictionary dictionaryWithObject:@"uploadPhoto" forKey:@"requestType"]];
+  
+    [[PSProgressCenter defaultCenter] showProgress];
 }
 
 #pragma mark -
