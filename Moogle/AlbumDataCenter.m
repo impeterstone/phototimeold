@@ -193,11 +193,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     _parseIndex++;
     
     if (_parseIndex % 100 == 0) {
-      NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)_parseIndex / (CGFloat)_totalAlbumsToParse)];
-      
-//      [NSDictionary dictionaryWithObject:progress forKey:@"progress"]
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:progress, @"progress", [NSNumber numberWithInteger:_parseIndex], @"index", [NSNumber numberWithInteger:_totalAlbumsToParse], @"total", nil]];
-      NSLog(@"update progress index: %d, total: %d, percent: %@", _parseIndex, _totalAlbumsToParse, progress);
+      [self updateParseProgress];
     }
     
     // Perform batch core data saves
@@ -210,7 +206,17 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     }
   }
   
+  [self updateParseProgress];
+  
   [pool drain];
+}
+
+- (void)updateParseProgress {
+  NSNumber *progress = [NSNumber numberWithFloat:((CGFloat)_parseIndex / (CGFloat)_totalAlbumsToParse)];
+  
+  //      [NSDictionary dictionaryWithObject:progress forKey:@"progress"]
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateLoginProgress object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:progress, @"progress", [NSNumber numberWithInteger:_parseIndex], @"index", [NSNumber numberWithInteger:_totalAlbumsToParse], @"total", nil]];
+  DLog(@"update progress index: %d, total: %d, percent: %@", _parseIndex, _totalAlbumsToParse, progress);
 }
 
 - (void)parsePendingResponses {
@@ -260,6 +266,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
       _parseIndex = 0;
       _totalAlbumsToParse = 0;
       
+      // All albums downloaded
+      [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
+      
       // Inform Delegate if all responses are parsed
       if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
         [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
@@ -285,6 +294,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
+      _parseIndex = 0;
+      _totalAlbumsToParse = 0;
+      
       // Inform Delegate if all responses are parsed
       if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
         [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];

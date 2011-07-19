@@ -89,8 +89,11 @@
 //  [self.view addSubview:_searchEmptyView];
   
   _searchTermController = [[SearchTermController alloc] init];
+  _searchTermController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   _searchTermController.delegate = self;
-  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
+  _searchTermController.view.frame = self.view.bounds;
+  _searchTermController.view.height -= 44;
+//  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
   _searchTermController.view.alpha = 0.0;
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];

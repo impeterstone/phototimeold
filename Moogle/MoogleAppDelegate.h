@@ -44,4 +44,7 @@
 - (void)getFriends;
 - (void)serializeFriendsWithResponse:(id)response shouldDownload:(BOOL)shouldDownload;
 
+- (void)updateLoginProgress:(NSNotification *)notification;
+- (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
+
 @end

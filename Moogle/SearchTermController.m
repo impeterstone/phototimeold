@@ -18,11 +18,16 @@
   if (self) {
     _loadingLabel = [@"Searching..." retain];
     _emptyLabel = [@"Search for Photos by\nKeywords, Friends, or Places\nTap Search for Results" retain];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
   }
   return self;
 }
 
 - (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
   RELEASE_SAFELY(_noResultsView);
   [super dealloc];
 }
@@ -136,6 +141,54 @@
   if (self.delegate && [self.delegate respondsToSelector:@selector(searchTermSelected:)]) {
     [self.delegate searchTermSelected:term];
   }
+}
+
+#pragma mark UIKeyboard
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+  [self moveTextViewForKeyboard:aNotification up:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+  [self moveTextViewForKeyboard:aNotification up:NO]; 
+}
+
+- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up {
+  NSDictionary* userInfo = [aNotification userInfo];
+  
+  // Get animation info from userInfo
+  NSTimeInterval animationDuration;
+  UIViewAnimationCurve animationCurve;
+  
+  CGRect keyboardEndFrame;
+  
+  [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+  [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+  
+  
+  CGRect keyboardFrame = CGRectZero;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 30200
+  // code for iOS below 3.2
+  [[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardEndFrame];
+  keyboardFrame = keyboardEndFrame;
+#else
+  // code for iOS 3.2 ++
+  [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
+  keyboardFrame = [UIScreen convertRect:keyboardEndFrame toView:self.view];
+#endif  
+  
+  // Animate up or down
+  NSString *dir = up ? @"up" : @"down";
+  [UIView beginAnimations:dir context:nil];
+  [UIView setAnimationDuration:animationDuration];
+  [UIView setAnimationCurve:animationCurve];
+  
+  if (up) {
+    self.view.height = self.view.height - keyboardFrame.size.height;
+  } else {
+    self.view.height = self.view.height + keyboardFrame.size.height;
+  }
+  
+  [UIView commitAnimations];
 }
 
 @end

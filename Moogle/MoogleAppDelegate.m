@@ -45,6 +45,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLoginProgress:) name:kUpdateLoginProgress object:nil];
+  
   [[AlbumDataCenter defaultCenter] setDelegate:self];
   
   NSLog(@"fonts: %@",[UIFont familyNames]);
@@ -89,6 +91,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   [[NSUserDefaults standardUserDefaults] synchronize];
 //  [[PSImageCache sharedCache] flushImageCacheToDisk];
+//  [[NSNotificationCenter defaultCenter] removeObserver:self name:kUpdateLoginProgress object:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -106,8 +109,18 @@
   [[NSUserDefaults standardUserDefaults] synchronize];
 //  [[PSImageCache sharedCache] flushImageCacheToDisk];
 }
-#pragma mark -
-#pragma mark Login
+
+#pragma mark - Notifications
+- (void)updateLoginProgress:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(updateLoginProgressOnMainThread:) withObject:[notification userInfo] waitUntilDone:NO];
+}
+
+- (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo {
+  [[PSProgressCenter defaultCenter] setProgress:[[userInfo objectForKey:@"progress"] floatValue]];
+  [[PSProgressCenter defaultCenter] setMessage:[NSString stringWithFormat:@"Downloading Albums: %@ of %@", [userInfo objectForKey:@"index"], [userInfo objectForKey:@"total"]]];
+}
+
+#pragma mark - Login
 - (void)tryLogin {
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     if (![_navController.modalViewController isEqual:_loginViewController] && _loginViewController != nil) {

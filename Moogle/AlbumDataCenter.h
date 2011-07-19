@@ -31,5 +31,6 @@
 
 - (void)parsePendingResponses;
 - (void)parseMeWithRequest:(ASIHTTPRequest *)request;
+- (void)updateParseProgress;
 
 @end

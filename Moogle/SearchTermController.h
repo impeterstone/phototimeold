@@ -20,4 +20,6 @@
 - (void)searchWithTerm:(NSString *)term;
 - (void)setupNoResultsView;
 
+- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up;
+
 @end

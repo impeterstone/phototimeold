@@ -36,6 +36,7 @@
 #define kOrientationChanged @"OrientationChangedNotification"
 #define kUpdateLoginProgress @"UpdateLoginProgress"
 #define kPSImageCacheDidCacheImage @"PSImageCacheDidCacheImage"
+#define kAlbumDownloadComplete @"AlbumDownloadComplete"
 
 // Fetch Templates
 #define FETCH_ME @"fetchMe"
