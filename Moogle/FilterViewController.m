@@ -8,6 +8,7 @@
 
 #import "FilterViewController.h"
 #import "AlbumViewController.h"
+#import "PSAlertCenter.h"
 
 @implementation FilterViewController
 
@@ -40,7 +41,7 @@
 
 #pragma mark - Actions
 - (void)settings {
-  
+  [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Not Implemented" andMessage:@"In the future this will be the settings/logout screen" andDelegate:nil];
 }
 
 #pragma mark - Setup
