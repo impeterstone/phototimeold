@@ -13,5 +13,6 @@
 
 @optional
 - (void)searchTermSelected:(NSString *)searchTerm;
+- (void)searchCancelled;
 
 @end

@@ -90,7 +90,7 @@
   
   _searchTermController = [[SearchTermController alloc] init];
   _searchTermController.delegate = self;
-  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216));
+  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
   _searchTermController.view.alpha = 0.0;
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
@@ -103,7 +103,7 @@
 //  _navTitleLabel.text = @"Moogle";
   
   // Pull Refresh
-  [self setupPullRefresh];
+//  [self setupPullRefresh];
   
 //  [self setupLoadMoreView];
   
@@ -275,6 +275,10 @@
   [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
   [self searchWithText:_searchField.text];
   [_searchField resignFirstResponder];
+}
+
+- (void)searchCancelled {
+  [self cancelSearch];
 }
 
 #pragma mark - TableView

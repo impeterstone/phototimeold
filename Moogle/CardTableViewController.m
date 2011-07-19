@@ -33,9 +33,6 @@
 
 - (void)loadView {
   [super loadView];
-  
-  // Setup Data Source if implmeneted
-  [self setupDataSource];
   [self updateState];
 }
 
@@ -270,6 +267,7 @@
   if (_refreshHeaderView) {
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
   }
+  [self updateState];
 }
 
 #pragma mark CardStateMachine

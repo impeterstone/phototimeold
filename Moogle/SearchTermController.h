@@ -11,11 +11,13 @@
 #import "SearchTermDelegate.h"
 
 @interface SearchTermController : CardTableViewController {
+  UIView *_noResultsView;
   id <SearchTermDelegate> _delegate;
 }
 
 @property (nonatomic, assign) id <SearchTermDelegate> delegate;
 
 - (void)searchWithTerm:(NSString *)term;
+- (void)setupNoResultsView;
 
 @end

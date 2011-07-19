@@ -34,6 +34,8 @@
   
   _navTitleLabel.text = @"Photo Albums";
   
+  // Setup Data Source if implmeneted
+  [self setupDataSource];
 }
 
 #pragma mark - Actions
@@ -43,10 +45,8 @@
 
 #pragma mark - Setup
 - (void)setupTableFooter {
-  // subclass should implement
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
+  UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)] autorelease];
+  _tableView.tableFooterView = footerView;
 }
 
 - (void)setupDataSource {
@@ -96,6 +96,7 @@
   // Add rows to data source
   [self.items addObject:rows];
   [self.tableView reloadData];
+  [self dataSourceDidLoad];
 }
 
 #pragma mark - Table

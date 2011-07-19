@@ -13,18 +13,40 @@
 
 @synthesize delegate = _delegate;
 
+- (void)dealloc {
+  RELEASE_SAFELY(_noResultsView);
+  [super dealloc];
+}
+
 - (void)loadView {
   [super loadView];
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+  
+  [self setupNoResultsView];
 }
 
 #pragma mark - Setup
 - (void)setupTableFooter {
-  // subclass should implement
-  UIImageView *footerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-table-footer.png"]];
-  _tableView.tableFooterView = footerImage;
-  [footerImage release];
+  UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)] autorelease];
+  _tableView.tableFooterView = footerView;
+}
+
+- (void)setupNoResultsView {
+  _noResultsView = [[UIView alloc] initWithFrame:self.tableView.bounds];
+  _noResultsView.autoresizingMask = self.tableView.autoresizingMask;
+  _noResultsView.backgroundColor = [UIColor grayColor];
+  
+  UITapGestureRecognizer *cancelGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelSearch)] autorelease];
+  [_noResultsView addGestureRecognizer:cancelGesture];
+  
+  [self.view addSubview:_noResultsView];
+}
+
+- (void)cancelSearch {
+  if (self.delegate && [self.delegate respondsToSelector:@selector(cancelSearch)]) {
+    [self.delegate searchCancelled];
+  }
 }
 
 #pragma mark - Search
@@ -34,9 +56,15 @@
   NSArray *filteredArray = [[PSSearchCenter defaultCenter] searchResultsForTerm:term];
 
   if ([filteredArray count] > 0) {
+    // remove empty view
+    [_noResultsView removeFromSuperview];
     [self.items addObject:filteredArray];
+  } else {
+    // show empty view
+    [self.view addSubview:_noResultsView];
   }
   [self.tableView reloadData];
+  [self dataSourceDidLoad];
 }
 
 #pragma mark - Table
