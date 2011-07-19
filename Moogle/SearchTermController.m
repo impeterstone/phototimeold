@@ -13,6 +13,15 @@
 
 @synthesize delegate = _delegate;
 
+- (id)init {
+  self = [super init];
+  if (self) {
+    _loadingLabel = [@"Searching..." retain];
+    _emptyLabel = [@"Search for Photos by\nKeywords, Friends, or Places\nTap Search for Results" retain];
+  }
+  return self;
+}
+
 - (void)dealloc {
   RELEASE_SAFELY(_noResultsView);
   [super dealloc];
@@ -35,7 +44,7 @@
 - (void)setupNoResultsView {
   _noResultsView = [[UIView alloc] initWithFrame:self.tableView.bounds];
   _noResultsView.autoresizingMask = self.tableView.autoresizingMask;
-  _noResultsView.backgroundColor = [UIColor grayColor];
+//  _noResultsView.backgroundColor = [UIColor grayColor];
   
   UITapGestureRecognizer *cancelGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelSearch)] autorelease];
   [_noResultsView addGestureRecognizer:cancelGesture];
@@ -65,6 +74,7 @@
   }
   [self.tableView reloadData];
   [self dataSourceDidLoad];
+  [self updateState];
 }
 
 #pragma mark - Table

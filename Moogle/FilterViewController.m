@@ -97,6 +97,7 @@
   [self.items addObject:rows];
   [self.tableView reloadData];
   [self dataSourceDidLoad];
+  [self updateState];
 }
 
 #pragma mark - Table

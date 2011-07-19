@@ -267,7 +267,6 @@
   if (_refreshHeaderView) {
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
   }
-  [self updateState];
 }
 
 #pragma mark CardStateMachine

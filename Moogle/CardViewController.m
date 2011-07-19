@@ -21,6 +21,8 @@
   self = [super init];
   if (self) {
     _activeScrollView = nil;
+    _loadingLabel = [@"Loading..." retain];
+    _emptyLabel = [@"No Results" retain];
   }
   return self;
 }
@@ -37,6 +39,8 @@
   //  [backgroundView release];
   
   _nullView = [[PSNullView alloc] initWithFrame:self.view.bounds];
+  [_nullView setLoadingLabel:_loadingLabel];
+  [_nullView setEmptyLabel:_emptyLabel];
   [self.view addSubview:_nullView];
   
   //  self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
@@ -285,6 +289,8 @@
   RELEASE_SAFELY(_headerTabView);
   RELEASE_SAFELY(_nullView);
   RELEASE_SAFELY(_navTitleLabel);
+  RELEASE_SAFELY(_loadingLabel);
+  RELEASE_SAFELY(_emptyLabel);
   [super dealloc];
 }
 

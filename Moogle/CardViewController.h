@@ -29,6 +29,8 @@ typedef uint32_t NavButtonType;
   UILabel *_navTitleLabel;
   HeaderTabView *_headerTabView;
   PSNullView *_nullView;
+  NSString *_loadingLabel;
+  NSString *_emptyLabel;
 }
 
 - (void)clearCachedData;
