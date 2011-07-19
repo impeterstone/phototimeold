@@ -41,8 +41,15 @@
   
   // Handle a still image capture
   if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo) {
-    _uploadImage = (UIImage *) [info objectForKey:UIImagePickerControllerOriginalImage];
-    //    _selectedImage = [[originalImage scaleProportionalToSize:CGSizeMake(640, 640)] retain];
+    UIImage *originalImage = (UIImage *) [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    // Use FB High Res (2048x2048)
+    // Only use if high res uploads are enabled
+//    _uploadImage = [UIImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit imageToScale:originalImage bounds:CGSizeMake(2048, 2048) interpolationQuality:kCGInterpolationDefault];
+    
+    // Use FB Low Res (720x720)
+    _uploadImage = [UIImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit imageToScale:originalImage bounds:CGSizeMake(720, 720) interpolationQuality:kCGInterpolationDefault];
+    
   }
   
   //  if (_snappedImage && _shouldSaveToAlbum) {
@@ -51,6 +58,7 @@
   
   UploadViewController *uvc = [[UploadViewController alloc] init];
   uvc.uploadImage = _uploadImage;
+  uvc.delegate = self;
   [picker pushViewController:uvc animated:YES];
   [uvc release];
 }
@@ -86,6 +94,7 @@
   [super viewWillDisappear:animated];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadPhotoController object:nil];
   [[PhotoDataCenter defaultCenter] setDelegate:nil];
+  self.navigationItem.leftBarButtonItem = nil;
 }
 
 - (void)loadView {
@@ -115,6 +124,11 @@
   
   // Get new from server
   [self reloadCardController];
+}
+
+#pragma mark - UploadDelegate
+- (void)uploadPhotoWithData:(NSData *)data caption:(NSString *)caption {
+  [[PhotoDataCenter defaultCenter] uploadPhotoForAlbumId:_album.id withImageData:data andCaption:caption];
 }
 
 #pragma mark - Tagged Friends
@@ -247,7 +261,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   PhotoCell *cell = (PhotoCell *)[tableView cellForRowAtIndexPath:indexPath];
-  [self commentsSelectedForCell:cell];
+//  [self commentsSelectedForCell:cell];
+  
+  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  
+  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
+  
+  CommentViewController *cvc = [[CommentViewController alloc] init];
+  cvc.photo = photo;
+  cvc.photoOffset = photoFrame.origin.y + 44;
+  cvc.photoView.image = [[cell.photoView.image copy] autorelease];
+  //  cvc.photoView.image = cell.photoView.image;
+  
+  [self.navigationController.view addSubview:cvc.view];
+  [cvc viewWillAppear:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -269,9 +296,14 @@
   cvc.photoOffset = photoFrame.origin.y + 44;
   cvc.photoView.image = [[cell.photoView.image copy] autorelease];
 //  cvc.photoView.image = cell.photoView.image;
+  
+  // If there are no comments, compose on appear
+  if ([photo.comments count] == 0) {
+    cvc.composeOnAppear = YES;
+  }
+  
   [self.navigationController.view addSubview:cvc.view];
   [cvc viewWillAppear:YES];
-//  [cvc release];
 }
 
 - (void)addRemoveLikeForCell:(PhotoCell *)cell {
@@ -328,7 +360,6 @@
   RELEASE_SAFELY(_zoomView);
   RELEASE_SAFELY(_taggedFriendsView);
   RELEASE_SAFELY(_sortKey);
-  RELEASE_SAFELY(_uploadImage);
   [super dealloc];
 }
 

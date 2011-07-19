@@ -18,12 +18,16 @@
   CGFloat _photoOffset;
   PSImageView *_photoView;
   PSTextField *_commentField;
-  UIButton *_sendCommentButton;
+//  UIButton *_sendCommentButton;
+  UIButton *_cancelButton;
+  
+  BOOL _composeOnAppear;
 }
 
 @property (nonatomic, assign) Photo *photo;
 @property (nonatomic, assign) CGFloat photoOffset;
 @property (nonatomic, retain) PSImageView *photoView;
+@property (nonatomic, assign) BOOL composeOnAppear;
 
 - (void)setupFooter;
 - (void)commentChanged:(UITextField *)textField;

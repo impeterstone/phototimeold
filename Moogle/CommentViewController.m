@@ -18,10 +18,12 @@
 @synthesize photo = _photo;
 @synthesize photoOffset = _photoOffset;
 @synthesize photoView = _photoView;
+@synthesize composeOnAppear = _composeOnAppear;
 
 - (id)init {
   self = [super init];
   if (self) {
+    _composeOnAppear = NO;
     _fetchLimit = 100;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
@@ -44,7 +46,7 @@
   
   [self.view insertSubview:self.photoView aboveSubview:self.tableView];
   self.view.alpha = 0.0;
-  [UIView animateWithDuration:0.4
+  [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationCurveEaseOut
                    animations:^{
                      _photoView.frame = CGRectMake(0, 0, _photoView.width, _photoView.height);
                      self.view.alpha = 1.0;
@@ -53,6 +55,9 @@
                      [self.photoView removeFromSuperview];
                      self.tableView.tableHeaderView = self.photoView;
                    }];
+  if (_composeOnAppear) {
+    [_commentField becomeFirstResponder];
+  }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -90,10 +95,16 @@
 
 
 - (void)dismiss {
-  [_commentField resignFirstResponder];
-  [self setupTableHeader];
+  if ([_commentField isFirstResponder]) {
+    [_commentField resignFirstResponder];
+    return;
+  }
+  
+  CGRect photoFrame = [self.tableView convertRect:self.tableView.tableHeaderView.frame toView:self.view];
+  self.photoView.frame = photoFrame;
+  
   [self.view insertSubview:self.photoView aboveSubview:self.tableView];
-  [UIView animateWithDuration:0.4
+  [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationCurveEaseOut
                    animations:^{
                      _photoView.frame = CGRectMake(0, _photoOffset, _photoView.width, _photoView.height);
                      self.view.alpha = 0.0;
@@ -109,43 +120,56 @@
   UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)] autorelease];
   footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-compose-bubble.png"]] autorelease];
-  bg.top = -14;
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage stretchableImageNamed:@"bg_footer_44.png" withLeftCapWidth:1 topCapWidth:0]] autorelease];
+//  bg.top = -14;
+  bg.width = footerView.width;
   [footerView insertSubview:bg atIndex:0];
   
-  // Field
-  _commentField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 5, 245, 34) withInset:CGSizeMake(5, 8)];
+  // Field (310 <-> 245)
+  _commentField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 310, 32) withInset:CGSizeMake(5, 7)];
 //  _commentField.clearButtonMode = UITextFieldViewModeWhileEditing;
 //  _commentField.borderStyle = UITextBorderStyleNone;
   _commentField.background = [UIImage stretchableImageNamed:@"bg_textfield.png" withLeftCapWidth:12 topCapWidth:15];
-  _commentField.font = BOLD_FONT;
+  _commentField.font = NORMAL_FONT;
   _commentField.placeholder = @"Write a comment...";
   _commentField.returnKeyType = UIReturnKeySend;
   [_commentField addTarget:self action:@selector(commentChanged:) forControlEvents:UIControlEventEditingChanged];
   [footerView addSubview:_commentField];
   
   // Button
-  _sendCommentButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-  _sendCommentButton.frame = CGRectMake(255, 4, 60, 36);
-  [_sendCommentButton setTitle:@"Send" forState:UIControlStateNormal];
-  _sendCommentButton.titleLabel.font = TITLE_FONT;
-  _sendCommentButton.titleLabel.shadowColor = [UIColor blackColor];
-  _sendCommentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-  [_sendCommentButton setBackgroundImage:[[UIImage imageNamed:@"navbar_blue_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
-  [_sendCommentButton setBackgroundImage:[[UIImage imageNamed:@"navbar_blue_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
-  [_sendCommentButton addTarget:self action:@selector(sendComment) forControlEvents:UIControlEventTouchUpInside];
-  _sendCommentButton.enabled = NO;
-  [footerView addSubview:_sendCommentButton];
+  _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+  _cancelButton.frame = CGRectMake(255, 6, 60, 32);
+  [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+  _cancelButton.titleLabel.font = BOLD_FONT;
+  _cancelButton.titleLabel.shadowColor = [UIColor blackColor];
+  _cancelButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+  [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"navbar_focus_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+  [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"navbar_focus_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
+  [_cancelButton addTarget:_commentField action:@selector(resignFirstResponder) forControlEvents:UIControlEventTouchUpInside];
+  _cancelButton.alpha = 0.0;
+  [footerView addSubview:_cancelButton];
+  
+//  _sendCommentButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+//  _sendCommentButton.frame = CGRectMake(255, 4, 60, 36);
+//  [_sendCommentButton setTitle:@"Send" forState:UIControlStateNormal];
+//  _sendCommentButton.titleLabel.font = BOLD_FONT;
+//  _sendCommentButton.titleLabel.shadowColor = [UIColor blackColor];
+//  _sendCommentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+//  [_sendCommentButton setBackgroundImage:[[UIImage imageNamed:@"navbar_blue_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+//  [_sendCommentButton setBackgroundImage:[[UIImage imageNamed:@"navbar_blue_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
+//  [_sendCommentButton addTarget:self action:@selector(sendComment) forControlEvents:UIControlEventTouchUpInside];
+//  _sendCommentButton.enabled = NO;
+//  [footerView addSubview:_sendCommentButton];
   
   [self setupFooterWithView:footerView];
 }
 
 - (void)commentChanged:(UITextField *)textField {
-  if ([textField.text length] > 0) {
-    _sendCommentButton.enabled = YES;
-  } else {
-    _sendCommentButton.enabled = NO;
-  }
+//  if ([textField.text length] > 0) {
+//    _sendCommentButton.enabled = YES;
+//  } else {
+//    _sendCommentButton.enabled = NO;
+//  }
 }
 
 - (void)sendComment {
@@ -168,6 +192,20 @@
   _tableView.tableFooterView = footerImage;
   [footerImage release];
 }
+
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//  if ([keyPath isEqualToString:@"contentOffset"] && [object isKindOfClass:[UITableView class]]) {
+//    if ([_commentField isFirstResponder]) {
+//      [_commentField resignFirstResponder];
+//    }
+//  }
+//}
+
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+//  if ([_commentField isFirstResponder]) {
+//    [_commentField resignFirstResponder];
+//  }
+//}
 
 #pragma mark - State Machine
 - (void)updateState {
@@ -244,8 +282,12 @@
   [UIView setAnimationCurve:animationCurve];
   
   if (up) {
+    _commentField.width = 245;
+    _cancelButton.alpha = 1.0;
     self.view.height = self.view.height - keyboardFrame.size.height;
   } else {
+    _commentField.width = 310;
+    _cancelButton.alpha = 0.0;
     self.view.height = self.view.height + keyboardFrame.size.height;
   }
   
@@ -309,7 +351,8 @@
   
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_commentField);
-  RELEASE_SAFELY(_sendCommentButton);
+//  RELEASE_SAFELY(_sendCommentButton);
+  RELEASE_SAFELY(_cancelButton);
   [super dealloc];
 }
 

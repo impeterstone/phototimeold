@@ -163,7 +163,7 @@
   NSMutableDictionary *requestParams = [NSMutableDictionary dictionaryWithDictionary:params];
   
   // Send access_token as a parameter if exists
-  NSString *accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"accessToken"];
+  NSString *accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"];
   if (accessToken) {
     [requestParams setValue:accessToken forKey:@"access_token"];
   }
@@ -191,14 +191,14 @@
   [request setData:[file objectForKey:@"fileData"] withFileName:[file objectForKey:@"fileName"] andContentType:[file objectForKey:@"fileContentType"] forKey:[file objectForKey:@"fileKey"]];
   
   // Add Headers
-  [request addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-  [request addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
-  [request addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-  [request addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
-  [request addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
-  [request addRequestHeader:@"X-User-Language" value:USER_LANGUAGE];
-  [request addRequestHeader:@"X-User-Locale" value:USER_LOCALE];
-  if (APP_DELEGATE.sessionKey) [request addRequestHeader:@"X-Session-Key" value:APP_DELEGATE.sessionKey];
+//  [request addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
+//  [request addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
+//  [request addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+//  [request addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
+//  [request addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
+//  [request addRequestHeader:@"X-User-Language" value:USER_LANGUAGE];
+//  [request addRequestHeader:@"X-User-Locale" value:USER_LOCALE];
+//  if (APP_DELEGATE.sessionKey) [request addRequestHeader:@"X-Session-Key" value:APP_DELEGATE.sessionKey];
   
   // Build Custom Headers if exists
   if (headers) {
@@ -219,6 +219,10 @@
   [request setDidFinishSelector:@selector(dataCenterRequestFinished:)];
   [request setDidFailSelector:@selector(dataCenterRequestFailed:)];
   
+  // Progress
+  [request setUploadProgressDelegate:[PSProgressCenter defaultCenter]];
+  [[PSProgressCenter defaultCenter] showProgress];
+  
   // Start the Request
   [request startAsynchronous];
 }
@@ -227,6 +231,7 @@
 #pragma mark Request Finished/Failed
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
   // subclass should implement
+  
 }
 
 - (void)dataCenterRequestFailed:(ASIHTTPRequest *)request {

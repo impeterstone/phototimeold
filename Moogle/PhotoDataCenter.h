@@ -37,6 +37,11 @@
 - (void)addCommentForPhotoId:(NSString *)photoId withMessage:(NSString *)message;
 
 /**
+ Upload a Photo
+ */
+- (void)uploadPhotoForAlbumId:(NSString *)albumId withImageData:(NSData *)imageData andCaption:(NSString *)caption;
+
+/**
  Serialize server response into Photo entities
  */
 - (void)serializePhotosWithRequest:(ASIHTTPRequest *)request;

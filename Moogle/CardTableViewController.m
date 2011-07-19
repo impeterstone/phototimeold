@@ -115,7 +115,7 @@
   // Set the active scrollView
   _activeScrollView = _tableView;
   
-  [_tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
+//  [_tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 // SUBCLASS SHOULD IMPLEMENT
@@ -403,20 +403,9 @@
   if (_refreshHeaderView) {
     [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
   }
-}
-
-- (void)scrollEndedTrigger {
-  //  [self loadImagesForOnScreenRows];
-//  [self loadMoreIfAvailable];
-}
-
-// Scrolling observer
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-  if ([keyPath isEqualToString:@"contentOffset"] && [object isKindOfClass:[UITableView class]]) {
-    // Make sure we are showing the footer first before attempting to load more
-    // Once we begin loading more, this should no longer trigger
-    //  NSLog(@"check to load more: %@", NSStringFromCGPoint(_tableView.contentOffset));
-    UITableView *tableView = (UITableView *)object;
+  
+  if ([scrollView isKindOfClass:[UITableView class]]) {
+    UITableView *tableView = (UITableView *)scrollView;
     if (!_loadingMore && _hasMore && [[tableView visibleCells] count] > 0) {
       CGFloat tableOffset = tableView.contentOffset.y + tableView.height;
       CGFloat tableBottom = tableView.contentSize.height - tableView.rowHeight;
@@ -427,6 +416,29 @@
     }
   }
 }
+
+- (void)scrollEndedTrigger {
+  //  [self loadImagesForOnScreenRows];
+//  [self loadMoreIfAvailable];
+}
+
+// Scrolling observer
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//  if ([keyPath isEqualToString:@"contentOffset"] && [object isKindOfClass:[UITableView class]]) {
+//    // Make sure we are showing the footer first before attempting to load more
+//    // Once we begin loading more, this should no longer trigger
+//    //  NSLog(@"check to load more: %@", NSStringFromCGPoint(_tableView.contentOffset));
+//    UITableView *tableView = (UITableView *)object;
+//    if (!_loadingMore && _hasMore && [[tableView visibleCells] count] > 0) {
+//      CGFloat tableOffset = tableView.contentOffset.y + tableView.height;
+//      CGFloat tableBottom = tableView.contentSize.height - tableView.rowHeight;
+//      
+//      if (tableOffset >= tableBottom) {
+//        [self loadMore];
+//      }
+//    }
+//  }
+//}
 
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
@@ -470,7 +482,7 @@
 
 - (void)dealloc {
   // Remove scrolling observer
-  [_tableView removeObserver:self forKeyPath:@"contentOffset"];
+//  [_tableView removeObserver:self forKeyPath:@"contentOffset"];
   
   RELEASE_SAFELY(_tableView);
   RELEASE_SAFELY(_sectionTitles);

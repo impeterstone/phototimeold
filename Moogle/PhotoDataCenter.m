@@ -71,6 +71,21 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   [self sendRequestWithURL:likeUrl andMethod:DELETE andHeaders:nil andParams:nil andUserInfo:[NSDictionary dictionaryWithObject:@"removeLike" forKey:@"requestType"]];
 }
 
+- (void)uploadPhotoForAlbumId:(NSString *)albumId withImageData:(NSData *)imageData andCaption:(NSString *)caption {
+  NSURL *uploadUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/photos", FB_GRAPH, albumId]];
+  
+  NSMutableDictionary *fileDict = [NSMutableDictionary dictionary];
+  [fileDict setObject:@"source" forKey:@"fileKey"];
+  [fileDict setObject:@"image/jpeg" forKey:@"fileContentType"];
+  [fileDict setObject:@"source.jpg" forKey:@"fileName"];
+  [fileDict setObject:imageData forKey:@"fileData"];
+  
+  NSMutableDictionary *params = [NSMutableDictionary dictionary];
+  [params setValue:caption forKey:@"message"];
+  
+  [self sendFormRequestWithURL:uploadUrl andHeaders:nil andParams:params andFile:fileDict andUserInfo:[NSDictionary dictionaryWithObject:@"uploadPhoto" forKey:@"requestType"]];
+}
+
 #pragma mark -
 #pragma mark Serialization
 - (void)serializePhotosWithRequest:(ASIHTTPRequest *)request {
@@ -189,10 +204,15 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 
 #pragma mark -
 #pragma mark PSDataCenterDelegate
-- (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
+- (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {  
   // Check request type
   NSString *requestType = [request.userInfo objectForKey:@"requestType"];
   if ([requestType isEqualToString:@"addLike"] || [requestType isEqualToString:@"removeLike"] || [requestType isEqualToString:@"addComment"]) {
+    return;
+  }
+  
+  if ([requestType isEqualToString:@"uploadPhoto"]) {
+    [[PSProgressCenter defaultCenter] hideProgress];
     return;
   }
   

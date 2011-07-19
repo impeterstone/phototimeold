@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "CardCoreDataTableViewController.h"
 #import "PhotoCellDelegate.h"
+#import "UploadDelegate.h"
 
 @class Album;
 @class PSZoomView;
 @class PSRollupView;
 
-@interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate, UploadDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   Album *_album;
   PSRollupView *_taggedFriendsView;
   PSZoomView *_zoomView;

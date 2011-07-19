@@ -12,6 +12,7 @@
 @implementation UploadViewController
 
 @synthesize uploadImage = _uploadImage;
+@synthesize delegate = _delegate;
 
 - (id)init {
   self = [super init];
@@ -57,6 +58,10 @@
 }
 
 - (void)upload {
+  NSString *caption = ([_captionField.text length] > 0) ? _captionField.text : nil;
+  if (self.delegate && [self.delegate respondsToSelector:@selector(uploadPhotoWithData:caption:)]) {
+    [self.delegate uploadPhotoWithData:UIImageJPEGRepresentation(_uploadImage, 0.8) caption:caption];
+  }
   [self dismiss];
 }
 
@@ -92,12 +97,13 @@
   _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
   _footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
   
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg-compose-bubble.png"]] autorelease];
-  bg.top = -14;
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage stretchableImageNamed:@"bg_footer_44.png" withLeftCapWidth:1 topCapWidth:0]] autorelease];
+  //  bg.top = -14;
+  bg.width = _footerView.width;
   [_footerView insertSubview:bg atIndex:0];
   
   // Field
-  _captionField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 5, 310, 34) withInset:CGSizeMake(5, 8)];
+  _captionField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 310, 32) withInset:CGSizeMake(5, 7)];
   _captionField.delegate = self;
   //  _captionField.clearButtonMode = UITextFieldViewModeWhileEditing;
   //  _captionField.borderStyle = UITextBorderStyleNone;

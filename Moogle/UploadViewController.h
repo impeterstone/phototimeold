@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CardViewController.h"
+#import "UploadDelegate.h"
 
 @class PSTextField;
 
@@ -18,9 +19,12 @@
   
   BOOL _isKeyboardShowing;
   BOOL _isFullscreen;
+  
+  id <UploadDelegate> _delegate;
 }
 
 @property (nonatomic, retain) UIImage *uploadImage;
+@property (nonatomic, assign) id <UploadDelegate> delegate;
 
 - (void)setupCaption;
 - (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up;
