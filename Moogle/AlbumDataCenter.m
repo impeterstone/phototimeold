@@ -64,6 +64,10 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   // Reset pending requests
   _pendingRequestsToParse = 0;
   
+  // reset counters
+  _parseIndex = 0;
+  _totalAlbumsToParse = 0;
+  
   
   // This is retarded... if the user has more than batchSize friends, we'll just fire off multiple requests
   NSURL *albumsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.facebook.com/method/fql.multiquery"]];
@@ -262,11 +266,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
-        // reset counters
-        _parseIndex = 0;
-        _totalAlbumsToParse = 0;
-        
+      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {        
         // All albums downloaded
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
         
@@ -287,6 +287,17 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     id response = [[request responseData] JSONValue];
     
+    NSArray *albumArray = nil;
+    for (NSDictionary *fqlResult in response) {
+      if ([[fqlResult valueForKey:@"name"] isEqualToString:@"query1"]) {
+        albumArray = [fqlResult valueForKey:@"fql_result_set"];
+      } else {
+        // check for error
+      }
+    }
+    
+    _totalAlbumsToParse += [albumArray count];
+    
     [self serializeAlbumsWithArray:response inContext:context];
     
     // Save the context
@@ -296,10 +307,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
-        _parseIndex = 0;
-        _totalAlbumsToParse = 0;
-        
+      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {        
         // Inform Delegate if all responses are parsed
         if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
           [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
