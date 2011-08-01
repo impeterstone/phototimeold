@@ -15,15 +15,16 @@
 
 @interface LoginViewController : PSViewController <FBSessionDelegate, PSDataCenterDelegate> {
   Facebook *_facebook;
+  UIButton *_nextButton;
   UIButton *_loginButton;
   PSWelcomeView *_welcomeView;
-  UIActivityIndicatorView *_loadingIndicator;
   id <LoginDelegate> _delegate;
 }
 
 @property (nonatomic, assign) id <LoginDelegate> delegate;
-@property (nonatomic, retain) UIButton *loginButton;
 
 - (void)logout;
+- (void)next;
+- (void)prev;
 
 @end

@@ -70,6 +70,7 @@
 #define BOLD_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0]
 #define SUBTITLE_FONT [UIFont fontWithName:@"HelveticaNeue" size:12.0]
 #define TIMESTAMP_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
+#define NAV_BUTTON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0]
 
 // Colors
 // CELLS

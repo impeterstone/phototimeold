@@ -11,6 +11,7 @@
 #import "PSDataCenterDelegate.h"
 
 @class Facebook;
+@class SplashViewController;
 @class LoginViewController;
 @class LoginDataCenter;
 @class AlbumDataCenter;
@@ -18,6 +19,7 @@
 @interface MoogleAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate> {
   UIWindow *_window;
   Facebook *_facebook;
+  SplashViewController *_splashViewController;
   LoginViewController *_loginViewController;
   UINavigationController *_navController;
   

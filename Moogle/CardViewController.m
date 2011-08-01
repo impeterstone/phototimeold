@@ -9,8 +9,6 @@
 #import "CardViewController.h"
 #import "PSNullView.h"
 
-#define NAV_BUTTON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0]
-
 @interface CardViewController (Private)
 
 @end

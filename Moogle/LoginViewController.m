@@ -13,7 +13,6 @@
 @implementation LoginViewController
 
 @synthesize delegate = _delegate;
-@synthesize loginButton = _loginButton;
 
 - (id)init {
   self = [super init];
@@ -27,65 +26,95 @@
 - (void)loadView {
   [super loadView];
   
-  self.view.backgroundColor = FB_BLUE_COLOR;
-  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+//  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
+  self.view.backgroundColor = [UIColor whiteColor];
   
   // Setup Welcome
-  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(0, 0, 320, 404)] autorelease];
-  UIImageView *one = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_albums.png"]] autorelease];
-  one.frame = CGRectMake(0, 0, 280, 346);
-  one.contentMode = UIViewContentModeCenter;
-  UIImageView *two = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_more.png"]] autorelease];
-  two.frame = CGRectMake(0, 0, 280, 346);
-  two.contentMode = UIViewContentModeCenter;
-  UIImageView *three = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_search.png"]] autorelease];
-  three.frame = CGRectMake(0, 0, 280, 346);
-  three.contentMode = UIViewContentModeCenter;
-  UIImageView *four = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_photos.png"]] autorelease];
-  four.frame = CGRectMake(0, 0, 280, 346);
-  four.contentMode = UIViewContentModeCenter;
+  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(0, 26, 320, 320)] autorelease];
+  UIImageView *one = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_1.png"]] autorelease];
+  UIImageView *two = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_2.png"]] autorelease];
+  UIImageView *three = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_3.png"]] autorelease];
+  UIImageView *four = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_4.png"]] autorelease];
   NSArray *views = [NSArray arrayWithObjects:one, two, three, four, nil];
   [_welcomeView setViewArray:views];
   [self.view addSubview:_welcomeView];
   
+  // Next Button
+  _nextButton = [[UIButton alloc] initWithFrame:CGRectZero];
+  _nextButton.width = 280;
+  _nextButton.height = 41;
+  _nextButton.top = self.view.height - _nextButton.height - 20;
+  _nextButton.left = 20;
+  
+  [_nextButton setBackgroundImage:[[UIImage imageNamed:@"button_round_blue.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0] forState:UIControlStateNormal];
+  //  [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+  [_nextButton setTitle:@"Learn More About Moogle" forState:UIControlStateNormal];
+  [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+  [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+  _nextButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
+  _nextButton.titleLabel.shadowColor = [UIColor blackColor];
+  _nextButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+  [_nextButton addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+  [self.view addSubview:_nextButton];
+  
   // Setup Login Buttons
   _loginButton = [[UIButton alloc] initWithFrame:CGRectZero];
-  _loginButton.width = 280;
-  _loginButton.height = 36;
-  _loginButton.left = floor((self.view.width - _loginButton.width) / 2);
-  _loginButton.top = self.view.height - _loginButton.height - 20.0;
-  [_loginButton setBackgroundImage:[[UIImage imageNamed:@"facebook-connect.png"] stretchableImageWithLeftCapWidth:36 topCapHeight:0] forState:UIControlStateNormal];
-  [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(0, 36, 0, 0)];
-  [_loginButton setTitle:@"Login with Facebook" forState:UIControlStateNormal];
-  [_loginButton setTitle:@"Downloading Photo Albums" forState:UIControlStateDisabled];
-  [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-  _loginButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
-  _loginButton.titleLabel.shadowColor = [UIColor blackColor];
-  _loginButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-  [_loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-  [self.view addSubview:_loginButton];
+  _loginButton.width = 320;
+  _loginButton.height = 44;
+  _loginButton.top = _nextButton.bottom;
   
-  // Loading Indicator
-  _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-  _loadingIndicator.hidesWhenStopped = YES;
-  _loadingIndicator.center = self.view.center;
-//  _loadingIndicator.top = _welcomeView.bottom;
-  [self.view addSubview:_loadingIndicator];
+  [_loginButton setBackgroundImage:[[UIImage imageNamed:@"gradient_gray.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0] forState:UIControlStateNormal];
+  //  [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+  [_loginButton setTitle:@"Connect with Facebook" forState:UIControlStateNormal];
+  [_loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [_loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+  _loginButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
+  _loginButton.titleLabel.shadowColor = [UIColor whiteColor];
+//  _loginButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+  [_loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+//  [self.view addSubview:_loginButton];
   
 }
 
 #pragma mark -
 #pragma mark Button Actions
 - (void)login {
-  [_loadingIndicator startAnimating];
-  _loginButton.enabled = NO;
-  _welcomeView.hidden = YES;
   [_facebook authorize:FB_PERMISSIONS delegate:self];
 }
 
 - (void)logout {
   [_facebook logout:self];
+}
+
+- (void)next {
+  if (_welcomeView.currentPage == (_welcomeView.numPages - 1)) {
+    [self login];
+    return;
+  }
+  
+  [_welcomeView next];
+  
+  // Set button title
+  NSString *nextTitle = nil;
+  switch (_welcomeView.currentPage) {
+    case 0:
+      nextTitle = @"Moogle to the rescue";
+      break;
+    case 1:
+      nextTitle = @"There's an app for that";
+      break;
+    case 2:
+      nextTitle = @"This changes everything";
+      break;
+    case 3:
+      nextTitle = @"Connect With Facebook";
+      break;
+    default:
+      nextTitle = @"Moogle to the rescue";
+      break;
+  }
+  
+  [_nextButton setTitle:nextTitle forState:UIControlStateNormal];
 }
 
 #pragma mark -
@@ -104,9 +133,6 @@
 
 - (void)fbDidNotLogin:(BOOL)cancelled {
   [self logout];
-  [_loadingIndicator stopAnimating];
-  _loginButton.enabled = YES;
-  _welcomeView.hidden = NO;
 }
 
 - (void)fbDidLogout {
@@ -116,15 +142,12 @@
   if (self.delegate && [self.delegate respondsToSelector:@selector(userDidLogout)]) {
     [self.delegate performSelector:@selector(userDidLogout)];
   }
-  [_loadingIndicator stopAnimating];
-  _loginButton.enabled = YES;
-  _welcomeView.hidden = NO;
 }
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
+  RELEASE_SAFELY(_nextButton);
   RELEASE_SAFELY(_loginButton);
-  RELEASE_SAFELY(_loadingIndicator);
   [super dealloc];
 }
 

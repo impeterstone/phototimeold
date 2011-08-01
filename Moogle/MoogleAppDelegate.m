@@ -9,6 +9,7 @@
 #import "MoogleAppDelegate.h"
 #import "Constants.h"
 #import "FBConnect.h"
+#import "SplashViewController.h"
 #import "LoginViewController.h"
 #import "LoginDataCenter.h"
 #import "AlbumDataCenter.h"
@@ -137,6 +138,14 @@
 #pragma mark LoginDelegate
 - (void)userDidLogin:(NSDictionary *)userInfo {
   DLog(@"User Logged In");
+  // User managed to actually login, let's show a splash screen while 
+  
+  if (!_splashViewController) {
+    _splashViewController = [[SplashViewController alloc] init];
+  }
+  
+  [_loginViewController presentModalViewController:_splashViewController animated:NO];
+  
   [self getMe];
 }
 
@@ -295,6 +304,7 @@
 - (void)dealloc {
   RELEASE_SAFELY(_navController);
   RELEASE_SAFELY(_sessionKey);
+  RELEASE_SAFELY(_splashViewController);
   RELEASE_SAFELY(_loginViewController);
   RELEASE_SAFELY(_facebook);
   RELEASE_SAFELY(_window);
