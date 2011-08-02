@@ -118,7 +118,7 @@
 
 - (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo {
   [[PSProgressCenter defaultCenter] setProgress:[[userInfo objectForKey:@"progress"] floatValue]];
-  [[PSProgressCenter defaultCenter] setMessage:[NSString stringWithFormat:@"Downloading Albums: %@ of %@", [userInfo objectForKey:@"index"], [userInfo objectForKey:@"total"]]];
+  [[PSProgressCenter defaultCenter] setMessage:[NSString stringWithFormat:@"Saving Albums: %@ of %@", [userInfo objectForKey:@"index"], [userInfo objectForKey:@"total"]]];
 }
 
 #pragma mark - Login
@@ -150,9 +150,15 @@
 }
 
 - (void)userDidLogout {
-  // Delete all existing data
-  [self tryLogin];
+  // Clear all user defaults
+  [[NSUserDefaults standardUserDefaults] setPersistentDomain:[NSDictionary dictionary] forName:[[NSBundle mainBundle] bundleIdentifier]];
+  
+  // Reset persistent store
   [PSCoreDataStack resetPersistentStoreCoordinator];
+  
+  // Reset view controllers
+  
+  [self tryLogin];
 }
 
 - (void)getMe {

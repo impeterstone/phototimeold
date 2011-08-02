@@ -25,12 +25,8 @@
 - (id)init {
   self = [super init];
   if (self) {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataDidReset) name:kCoreDataDidReset object:nil];
   }
   return self;
-}
-
-- (void)coreDataDidReset {
 }
 
 #pragma mark -
@@ -309,7 +305,6 @@
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kCoreDataDidReset object:nil];
   [super dealloc];
 }
 

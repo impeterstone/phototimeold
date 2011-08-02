@@ -41,7 +41,9 @@
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
-  self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(settings) buttonType:NavButtonTypeNormal];
+//  self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal];
+  self.navigationItem.leftBarButtonItem = [self navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal];
+  
   self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(dismissModalViewControllerAnimated:) buttonType:NavButtonTypeRed];
   
   _navTitleLabel.text = @"Photo Albums";
@@ -53,6 +55,21 @@
 #pragma mark - Actions
 - (void)settings {
   [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Not Implemented" andMessage:@"In the future this will be the settings/logout screen" andDelegate:nil];
+}
+
+- (void)logout {
+  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout?" message:LOGOUT_ALERT delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+  [logoutAlert show];
+  [logoutAlert autorelease];
+}
+
+#pragma mark -
+#pragma mark AlertView
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+  if (buttonIndex != alertView.cancelButtonIndex) {
+    [self dismissModalViewControllerAnimated:YES];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+  }
 }
 
 #pragma mark - Setup

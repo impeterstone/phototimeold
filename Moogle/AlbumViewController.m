@@ -49,6 +49,15 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logoutRequested"]) {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
+    }];
+  }
+}
+
 - (void)loadView {
   [super loadView];
   
@@ -394,7 +403,7 @@
   NSArray *sortDescriptors = nil;
   NSString *fetchTemplate = nil;
   NSDictionary *substitutionVariables = nil;
-  NSString *facebookId = [[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"];
+  NSString *facebookId = [[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"] ? [[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"] : @"";
   
   switch (self.albumType) {
     case AlbumTypeMe:

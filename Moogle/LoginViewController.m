@@ -94,6 +94,10 @@
   
   [_welcomeView next];
   
+  [self updateNextButton];
+}
+
+- (void)updateNextButton {
   // Set button title
   NSString *nextTitle = nil;
   switch (_welcomeView.currentPage) {
@@ -120,6 +124,10 @@
 #pragma mark -
 #pragma mark FBSessionDelegate
 - (void)fbDidLogin {
+  // Reset welcome state
+  [_welcomeView scrollToPage:0 animated:NO];
+  [self updateNextButton];
+  
   // Store Access Token
   // ignore the expiration since we request non-expiring offline access
   [[NSUserDefaults standardUserDefaults] setObject:_facebook.accessToken forKey:@"facebookAccessToken"];
@@ -135,10 +143,7 @@
   [self logout];
 }
 
-- (void)fbDidLogout {
-  // Clear all user defaults
-  [[NSUserDefaults standardUserDefaults] setPersistentDomain:[NSDictionary dictionary] forName:[[NSBundle mainBundle] bundleIdentifier]];
-  
+- (void)fbDidLogout {  
   if (self.delegate && [self.delegate respondsToSelector:@selector(userDidLogout)]) {
     [self.delegate performSelector:@selector(userDidLogout)];
   }

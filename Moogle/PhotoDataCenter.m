@@ -33,7 +33,6 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 - (id)init {
   self = [super init];
   if (self) {
-    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataDidReset) name:kCoreDataDidReset object:nil];
   }
   return self;
 }

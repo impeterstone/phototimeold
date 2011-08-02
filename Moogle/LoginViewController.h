@@ -25,6 +25,7 @@
 
 - (void)logout;
 - (void)next;
-- (void)prev;
+//- (void)prev;
+- (void)updateNextButton;
 
 @end

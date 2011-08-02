@@ -18,5 +18,7 @@
 	<date>1970-01-01T08:00:00Z</date>
 	<key>lastAlbumType</key>
 	<integer>0</integer>
+	<key>hasDownloadedAlbums</key>
+	<false/>
 </dict>
 </plist>

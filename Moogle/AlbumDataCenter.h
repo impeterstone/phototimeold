@@ -33,4 +33,6 @@
 - (void)parseMeWithRequest:(ASIHTTPRequest *)request;
 - (void)updateParseProgress;
 
+- (BOOL)validateFacebookResponse:(id)response;
+
 @end

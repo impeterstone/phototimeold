@@ -136,7 +136,7 @@
   NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:FETCH_PHOTOS substitutionVariables:[NSDictionary dictionaryWithObject:_album.id forKey:@"desiredAlbumId"]];
   [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"tags"]];
   
-  NSArray *allPhotos = [self.context executeFetchRequest:fetchRequest error:NULL];
+  NSArray *allPhotos = [_context executeFetchRequest:fetchRequest error:NULL];
   
   if (allPhotos && [allPhotos count] > 0) {
     NSArray *taggedFriendIds = [allPhotos valueForKeyPath:@"@distinctUnionOfArrays.tags.fromId"];

@@ -18,7 +18,6 @@
 
 @implementation CardCoreDataTableViewController
 
-@synthesize context = _context;
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize sectionNameKeyPathForFetchedResultsController = _sectionNameKeyPathForFetchedResultsController;
 
@@ -98,22 +97,22 @@
 }
 
 - (void)changesSavedOnMainThread:(NSNotification *)notification {
-  if ([notification object] != self.context) {
-    [self.context mergeChangesFromContextDidSaveNotification:notification];
+  if ([notification object] != _context) {
+    [_context mergeChangesFromContextDidSaveNotification:notification];
   }
 }
 
 - (void)resetFetchedResultsController {
   RELEASE_SAFELY(_fetchedResultsController);
   
-  // Get a new context
-  self.context = [PSCoreDataStack mainThreadContext];
+  // Use main thread context here
+  _context = [PSCoreDataStack mainThreadContext];
 }
 
 - (NSFetchedResultsController*)fetchedResultsController  {
   if (_fetchedResultsController) return _fetchedResultsController;
   
-  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self getFetchRequest] managedObjectContext:self.context sectionNameKeyPath:self.sectionNameKeyPathForFetchedResultsController cacheName:nil];
+  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self getFetchRequest] managedObjectContext:_context sectionNameKeyPath:self.sectionNameKeyPathForFetchedResultsController cacheName:nil];
   _fetchedResultsController.delegate = _frcDelegate;
   
   return _fetchedResultsController;
@@ -374,6 +373,7 @@
   if (self.searchDisplayController) {
     [self.searchDisplayController setActive:NO];
   }
+  [self.tableView reloadData];
   [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 }
 

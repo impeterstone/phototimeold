@@ -11,6 +11,7 @@
 #import "Album.h"
 #import "Album+Serialize.h"
 #import "PSProgressCenter.h"
+#import "PSAlertCenter.h"
 
 static dispatch_queue_t _coreDataSerializationQueue = nil;
 
@@ -68,6 +69,11 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   _parseIndex = 0;
   _totalAlbumsToParse = 0;
   
+  // Show progress indicator if this is the first time
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedAlbums"]) {
+//    [[PSProgressCenter defaultCenter] setMessage:@"Downloading Albums"];
+//    [[PSProgressCenter defaultCenter] showProgress];
+  }
   
   // This is retarded... if the user has more than batchSize friends, we'll just fire off multiple requests
   NSURL *albumsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.facebook.com/method/fql.multiquery"]];
@@ -233,6 +239,11 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     for (ASIHTTPRequest *request in _requestsToParse) {
       id response = [[request responseData] JSONValue];
       
+      // Validate response
+      if (![self validateFacebookResponse:response]) {
+        continue;
+      }
+      
       NSArray *albumArray = nil;
       for (NSDictionary *fqlResult in response) {
         if ([[fqlResult valueForKey:@"name"] isEqualToString:@"query1"]) {
@@ -249,7 +260,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     if (_totalAlbumsToParse > 0) {
       dispatch_async(dispatch_get_main_queue(), ^{
-        [[PSProgressCenter defaultCenter] setMessage:@"Downloading Albums..."];
+        [[PSProgressCenter defaultCenter] setMessage:@"Saving Albums..."];
         [[PSProgressCenter defaultCenter] showProgress];
       });
     }
@@ -274,6 +285,8 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
         if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
           [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
           [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
+          [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedAlbums"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
           [[PSProgressCenter defaultCenter] hideProgress];
         }
       }
@@ -287,6 +300,11 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     id response = [[request responseData] JSONValue];
     
+    // Validate response
+    if (![self validateFacebookResponse:response]) {
+      return;
+    }
+    
     NSArray *albumArray = nil;
     for (NSDictionary *fqlResult in response) {
       if ([[fqlResult valueForKey:@"name"] isEqualToString:@"query1"]) {
@@ -298,6 +316,13 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     _totalAlbumsToParse += [albumArray count];
     
+    if (_totalAlbumsToParse > 0) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[PSProgressCenter defaultCenter] setMessage:@"Saving Albums..."];
+        [[PSProgressCenter defaultCenter] showProgress];
+      });
+    }
+    
     [self serializeAlbumsWithArray:response inContext:context];
     
     // Save the context
@@ -307,14 +332,32 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {        
+      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
         // Inform Delegate if all responses are parsed
         if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
           [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
         }
+        [[PSProgressCenter defaultCenter] hideProgress];
+        
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedAlbums"]) {
+          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Welcome!" andMessage:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." andDelegate:nil];
+          }];
+        }
       }
     });
   });
+}
+
+- (BOOL)validateFacebookResponse:(id)response {
+  // Check FB Error
+  if ([response isKindOfClass:[NSDictionary class]] && [response objectForKey:@"error_msg"] && [response objectForKey:@"error_code"]) {
+    // We have a FB error, probably a token invalidated
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+    return NO;
+  } else {
+    return YES;
+  }
 }
 
 #pragma mark -

@@ -28,7 +28,6 @@ typedef enum {
   id _frcDelegate;
 }
 
-@property (nonatomic, assign) NSManagedObjectContext *context;
 @property (nonatomic, retain) NSFetchedResultsController * fetchedResultsController;
 @property (nonatomic, retain) NSString * sectionNameKeyPathForFetchedResultsController;
 
