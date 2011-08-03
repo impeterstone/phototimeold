@@ -75,14 +75,14 @@
   _searchField.font = NORMAL_FONT;
   _searchField.delegate = self;
   _searchField.returnKeyType = UIReturnKeySearch;
-  _searchField.background = [UIImage stretchableImageNamed:@"searchbar_textfield_background.png" withLeftCapWidth:30 topCapWidth:0];
+  _searchField.background = [UIImage stretchableImageNamed:@"bg_searchbar_textfield.png" withLeftCapWidth:30 topCapWidth:0];
   _searchField.placeholder = @"Search for photos...";
   [_searchField addTarget:self action:@selector(searchTermChanged:) forControlEvents:UIControlEventEditingChanged];
   
 //  _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
 ////  _searchEmptyView.height -= 44; // nav bar
 ////  _searchEmptyView.height -= 216; // minus keyboard ipad: 352
-//  _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
+//  _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
 //  _searchEmptyView.alpha = 0.0;
   
 //  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
@@ -106,9 +106,12 @@
   _searchTermController.view.alpha = 0.0;
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
-//  [self addButtonWithImage:[UIImage imageNamed:@"searchbar_textfield_background.png"] withTarget:self action:@selector(search) isLeft:YES];
+//  [self addButtonWithImage:[UIImage imageNamed:@"bg_searchbar_textfield.png"] withTarget:self action:@selector(search) isLeft:YES];
   
-  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
+  //  self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal];
+  
+  _filterButton = [[self navButtonWithImage:[UIImage imageNamed:@"icon_gallery.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
+//  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
   _cancelButton = [[self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
   self.navigationItem.rightBarButtonItem = _filterButton;
   

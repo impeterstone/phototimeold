@@ -21,7 +21,7 @@ static UIImage *_like = nil;
 @synthesize delegate = _delegate;
 
 + (void)initialize {
-  _overlay = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
+  _overlay = [[UIImage imageNamed:@"bg_album_overlay.png"] retain];
   _comment = [[UIImage imageNamed:@"icon_comment.png"] retain];
   _like = [[UIImage imageNamed:@"icon_like.png"] retain];
 }
@@ -86,10 +86,9 @@ static UIImage *_like = nil;
     
     // Rollup
 //    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
-//    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg-rollup.png" withLeftCapWidth:0 topCapWidth:0]];
+//    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg_rollup.png" withLeftCapWidth:0 topCapWidth:0]];
 //    _taggedFriendsView.hidden = YES;
 
-//    _photoView.placeholderImage = [UIImage imageNamed:@"photos-large.png"];
     //    _photoView.shouldScale = YES;
     //    _photoView.layer.borderColor = [[UIColor darkGrayColor] CGColor];
     //    _photoView.layer.borderWidth = 1.0;

@@ -26,7 +26,7 @@
 - (void)loadView {
   [super loadView];
   
-//  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
+//  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   self.view.backgroundColor = [UIColor whiteColor];
   
   // Setup Welcome
@@ -42,38 +42,19 @@
   // Next Button
   _nextButton = [[UIButton alloc] initWithFrame:CGRectZero];
   _nextButton.width = 280;
-  _nextButton.height = 41;
+  _nextButton.height = 59;
   _nextButton.top = self.view.height - _nextButton.height - 20;
   _nextButton.left = 20;
   
-  [_nextButton setBackgroundImage:[[UIImage imageNamed:@"button_round_blue.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0] forState:UIControlStateNormal];
-  //  [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+  [_nextButton setBackgroundImage:[[UIImage imageNamed:@"button_sketch.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0] forState:UIControlStateNormal];
   [_nextButton setTitle:@"Learn More About Moogle" forState:UIControlStateNormal];
-  [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-  _nextButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
-  _nextButton.titleLabel.shadowColor = [UIColor blackColor];
-  _nextButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+  [_nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [_nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+  _nextButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:18.0];
+//  _nextButton.titleLabel.shadowColor = [UIColor blackColor];
+//  _nextButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
   [_nextButton addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
   [self.view addSubview:_nextButton];
-  
-  // Setup Login Buttons
-  _loginButton = [[UIButton alloc] initWithFrame:CGRectZero];
-  _loginButton.width = 320;
-  _loginButton.height = 44;
-  _loginButton.top = _nextButton.bottom;
-  
-  [_loginButton setBackgroundImage:[[UIImage imageNamed:@"gradient_gray.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0] forState:UIControlStateNormal];
-  //  [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-  [_loginButton setTitle:@"Connect with Facebook" forState:UIControlStateNormal];
-  [_loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-  [_loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-  _loginButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
-  _loginButton.titleLabel.shadowColor = [UIColor whiteColor];
-//  _loginButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-  [_loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-//  [self.view addSubview:_loginButton];
-  
 }
 
 #pragma mark -
@@ -152,7 +133,6 @@
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
   RELEASE_SAFELY(_nextButton);
-  RELEASE_SAFELY(_loginButton);
   [super dealloc];
 }
 

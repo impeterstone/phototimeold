@@ -236,13 +236,6 @@
 #pragma mark -
 #pragma mark Compose
 - (void)newComment {
-//  ComposeViewController *cvc = [[ComposeViewController alloc] init];
-//  cvc.photoId = _photo.id;
-//  cvc.pickedImage = self.photoImage;
-//  cvc.delegate = self;
-//  cvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//  [self presentModalViewController:cvc animated:YES];
-//  [cvc release];
 }
 
 #pragma mark UIKeyboard

@@ -57,7 +57,7 @@
 //  [[PSImageCache sharedCache] setCacheDirectory:NSDocumentDirectory];
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.window.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
+  self.window.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
 
   
   // Setup Facebook

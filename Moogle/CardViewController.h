@@ -10,8 +10,6 @@
 #import "PSViewController.h"
 #import "CardStateMachine.h"
 #import "PSDataCenterDelegate.h"
-#import "HeaderTabView.h"
-#import "HeaderTabViewDelegate.h"
 
 enum {
   NavButtonTypeNormal = 0,
@@ -24,10 +22,9 @@ typedef uint32_t NavButtonType;
 
 @class PSNullView;
 
-@interface CardViewController : PSViewController <CardStateMachine, PSDataCenterDelegate, HeaderTabViewDelegate> {
+@interface CardViewController : PSViewController <CardStateMachine, PSDataCenterDelegate> {
   UIScrollView *_activeScrollView; // subclasses should set this if they have a scrollView
   UILabel *_navTitleLabel;
-  HeaderTabView *_headerTabView;
   PSNullView *_nullView;
   NSString *_loadingLabel;
   NSString *_emptyLabel;
@@ -40,7 +37,6 @@ typedef uint32_t NavButtonType;
 - (void)dataSourceDidLoad;
 
 - (void)setupNullView;
-- (void)setupHeaderTabViewWithFrame:(CGRect)frame;
 
 // Nav buttons
 - (void)addBackButton;

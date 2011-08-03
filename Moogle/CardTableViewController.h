@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "CardViewController.h"
-#import "HeaderTabView.h"
 #import "EGORefreshTableHeaderView.h"
 
 @interface CardTableViewController : CardViewController <UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate, EGORefreshTableHeaderDelegate> {

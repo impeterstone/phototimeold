@@ -21,8 +21,8 @@ static UIImage *_disclosureImage = nil;
 
 + (void)initialize {
   _ribbonImage = [[[UIImage imageNamed:@"ribbon.png"] stretchableImageWithLeftCapWidth:30 topCapHeight:0] retain];
-  _overlayImage = [[UIImage imageNamed:@"bg-gradient-overlay.png"] retain];
-  _disclosureImage = [[UIImage imageNamed:@"disclosure_indicator_white.png"] retain];
+  _overlayImage = [[UIImage imageNamed:@"bg_album_overlay.png"] retain];
+  _disclosureImage = [[UIImage imageNamed:@"disclosure_indicator_white_bordered.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -121,7 +121,7 @@ static UIImage *_disclosureImage = nil;
     // Disclosure
     _disclosureView = [[UIImageView alloc] initWithImage:_disclosureImage];
     _disclosureView.contentMode = UIViewContentModeCenter;
-    _disclosureView.alpha = 0.5;
+    _disclosureView.alpha = 0.6;
     
     // Overlay
     _overlayView = [[UIImageView alloc] initWithImage:_overlayImage];
@@ -319,7 +319,7 @@ static UIImage *_disclosureImage = nil;
     [_photoView loadImageAndDownload:YES];
   } else {
     // Placeholder Image, no cover photo
-    _photoView.image = [UIImage imageNamed:@"lnkd.png"];
+    _photoView.image = [UIImage imageNamed:@"bg_no_cover.png"];
     _photoView.urlPath = nil;
   }
   

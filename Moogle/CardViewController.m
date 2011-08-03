@@ -28,7 +28,7 @@
 - (void)loadView {
   [super loadView];
   
-  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"weave-bg.png"]];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   
   // Background View
   //  UIImageView *backgroundView = [[UIImageView alloc] initWithImage:_backgroundImage];
@@ -194,15 +194,6 @@
   
 }
 
-#pragma mark HeaderTabView
-// Subclasses may call
-// Subclasses must implement the delegate
-- (void)setupHeaderTabViewWithFrame:(CGRect)frame {
-  _headerTabView = [[HeaderTabView alloc] initWithFrame:frame andButtonTitles:[NSArray arrayWithObjects:@"Followed", @"Firehose", nil]];
-  _headerTabView.delegate = self;
-  [self.view addSubview:_headerTabView];
-}
-
 // Called when the user logs out and we need to clear all cached data
 // Subclasses should override this method
 - (void)clearCachedData {
@@ -284,7 +275,6 @@
 }
 
 - (void)dealloc {
-  RELEASE_SAFELY(_headerTabView);
   RELEASE_SAFELY(_nullView);
   RELEASE_SAFELY(_navTitleLabel);
   RELEASE_SAFELY(_loadingLabel);

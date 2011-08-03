@@ -16,7 +16,6 @@
 @interface LoginViewController : PSViewController <FBSessionDelegate, PSDataCenterDelegate> {
   Facebook *_facebook;
   UIButton *_nextButton;
-  UIButton *_loginButton;
   PSWelcomeView *_welcomeView;
   id <LoginDelegate> _delegate;
 }
