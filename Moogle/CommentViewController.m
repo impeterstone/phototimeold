@@ -42,18 +42,18 @@
   CGFloat photoWidth = self.photoView.image.size.width;
   CGFloat photoHeight = self.photoView.image.size.height;
   
-  self.photoView.frame = CGRectMake(0, _photoOffset, self.view.width, floor(photoHeight / (photoWidth / self.view.width)));
+  _containerView.frame = CGRectMake(0, _photoOffset, self.view.width, floor(photoHeight / (photoWidth / self.view.width)));
   
-  [self.view insertSubview:self.photoView aboveSubview:self.tableView];
+  [self.view insertSubview:_containerView aboveSubview:self.tableView];
   self.view.alpha = 0.0;
   [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationCurveEaseOut
                    animations:^{
-                     _photoView.frame = CGRectMake(0, 0, _photoView.width, _photoView.height);
+                     _containerView.frame = CGRectMake(0, 0, _containerView.width, _containerView.height);
                      self.view.alpha = 1.0;
                    }
                    completion:^(BOOL finished) {
-                     [self.photoView removeFromSuperview];
-                     self.tableView.tableHeaderView = self.photoView;
+                     [_containerView removeFromSuperview];
+                     self.tableView.tableHeaderView = _containerView;
                    }];
   if (_composeOnAppear) {
     [_commentField becomeFirstResponder];
@@ -72,6 +72,18 @@
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
   [self executeFetch:FetchTypeCold];
+  
+  _containerView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+  _containerView.delegate = self;
+  _containerView.maximumZoomScale = 3.0;
+  _containerView.minimumZoomScale = 1.0;
+  _containerView.bouncesZoom = YES;
+  _containerView.backgroundColor = [UIColor clearColor];
+  
+  _photoView.frame = _containerView.bounds;
+  _photoView.userInteractionEnabled = YES;
+  _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  [_containerView addSubview:_photoView];
   
   // Get new from server
   // Comments don't need to fetch from server immediately, only after a new post
@@ -101,18 +113,23 @@
   }
   
   CGRect photoFrame = [self.tableView convertRect:self.tableView.tableHeaderView.frame toView:self.view];
-  self.photoView.frame = photoFrame;
+  _containerView.frame = photoFrame;
   
-  [self.view insertSubview:self.photoView aboveSubview:self.tableView];
+  [self.view insertSubview:_containerView aboveSubview:self.tableView];
   [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationCurveEaseOut
                    animations:^{
-                     _photoView.frame = CGRectMake(0, _photoOffset, _photoView.width, _photoView.height);
+                     _containerView.frame = CGRectMake(0, _photoOffset, _containerView.width, _containerView.height);
+                     _containerView.zoomScale = 1.0;
                      self.view.alpha = 0.0;
                    }
                    completion:^(BOOL finished) {
                      [self.view removeFromSuperview];
                      [self autorelease];
                    }];
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+  return _photoView;
 }
 
 #pragma mark - Footer
@@ -345,6 +362,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
   
+  RELEASE_SAFELY(_containerView);
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_commentField);
 //  RELEASE_SAFELY(_sendCommentButton);

@@ -216,6 +216,10 @@
 		28B13DE913E932E600F9E38B /* bg_table_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DE213E932E600F9E38B /* bg_table_header@2x.png */; };
 		28B13DEC13E933EE00F9E38B /* disclosure_indicator_white_bordered.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DEA13E933EE00F9E38B /* disclosure_indicator_white_bordered.png */; };
 		28B13DED13E933EE00F9E38B /* disclosure_indicator_white_bordered@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DEB13E933EE00F9E38B /* disclosure_indicator_white_bordered@2x.png */; };
+		28B13DF613E9388C00F9E38B /* LocalyticsDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B13DF013E9388C00F9E38B /* LocalyticsDatabase.m */; };
+		28B13DF713E9388C00F9E38B /* LocalyticsSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B13DF213E9388C00F9E38B /* LocalyticsSession.m */; };
+		28B13DF813E9388C00F9E38B /* UploaderThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B13DF413E9388C00F9E38B /* UploaderThread.m */; };
+		28B13DFA13E9395500F9E38B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B13DF913E9395500F9E38B /* libsqlite3.dylib */; };
 		28E6F97113E63B54002337A9 /* button_bar_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95113E63B54002337A9 /* button_bar_black.png */; };
 		28E6F97213E63B54002337A9 /* button_bar_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95213E63B54002337A9 /* button_bar_black@2x.png */; };
 		28E6F97313E63B54002337A9 /* button_bar_black_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95313E63B54002337A9 /* button_bar_black_highlighted.png */; };
@@ -602,6 +606,14 @@
 		28B13DE213E932E600F9E38B /* bg_table_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_table_header@2x.png"; sourceTree = "<group>"; };
 		28B13DEA13E933EE00F9E38B /* disclosure_indicator_white_bordered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_indicator_white_bordered.png; sourceTree = "<group>"; };
 		28B13DEB13E933EE00F9E38B /* disclosure_indicator_white_bordered@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "disclosure_indicator_white_bordered@2x.png"; sourceTree = "<group>"; };
+		28B13DEF13E9388C00F9E38B /* LocalyticsDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalyticsDatabase.h; sourceTree = "<group>"; };
+		28B13DF013E9388C00F9E38B /* LocalyticsDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalyticsDatabase.m; sourceTree = "<group>"; };
+		28B13DF113E9388C00F9E38B /* LocalyticsSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalyticsSession.h; sourceTree = "<group>"; };
+		28B13DF213E9388C00F9E38B /* LocalyticsSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalyticsSession.m; sourceTree = "<group>"; };
+		28B13DF313E9388C00F9E38B /* UploaderThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploaderThread.h; sourceTree = "<group>"; };
+		28B13DF413E9388C00F9E38B /* UploaderThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploaderThread.m; sourceTree = "<group>"; };
+		28B13DF513E9388C00F9E38B /* WebserviceConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebserviceConstants.h; sourceTree = "<group>"; };
+		28B13DF913E9395500F9E38B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		28E6F95113E63B54002337A9 /* button_bar_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_black.png; sourceTree = "<group>"; };
 		28E6F95213E63B54002337A9 /* button_bar_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_black@2x.png"; sourceTree = "<group>"; };
 		28E6F95313E63B54002337A9 /* button_bar_black_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_black_highlighted.png; sourceTree = "<group>"; };
@@ -649,6 +661,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28B13DFA13E9395500F9E38B /* libsqlite3.dylib in Frameworks */,
 				25622EF5139F16DD004945AA /* libz.dylib in Frameworks */,
 				2544ACB413788E380072C86C /* CoreVideo.framework in Frameworks */,
 				2544ACB213788E2C0072C86C /* CoreMedia.framework in Frameworks */,
@@ -901,6 +914,7 @@
 				25CEF80E1339F278006F23A7 /* Moogle */,
 				25CEF8FE133A000C006F23A7 /* Resources */,
 				25CEF90B133A0219006F23A7 /* Facebook */,
+				28B13DEE13E9388C00F9E38B /* Localytics */,
 				25FB8C1E133ACB1800C130A8 /* Fixtures */,
 				25CEF8051339F278006F23A7 /* Frameworks */,
 				25CEF8031339F278006F23A7 /* Products */,
@@ -918,6 +932,7 @@
 		25CEF8051339F278006F23A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28B13DF913E9395500F9E38B /* libsqlite3.dylib */,
 				25622EF4139F16DD004945AA /* libz.dylib */,
 				2544ACB313788E370072C86C /* CoreVideo.framework */,
 				2544ACB113788E2B0072C86C /* CoreMedia.framework */,
@@ -1290,6 +1305,20 @@
 			name = icons;
 			sourceTree = "<group>";
 		};
+		28B13DEE13E9388C00F9E38B /* Localytics */ = {
+			isa = PBXGroup;
+			children = (
+				28B13DEF13E9388C00F9E38B /* LocalyticsDatabase.h */,
+				28B13DF013E9388C00F9E38B /* LocalyticsDatabase.m */,
+				28B13DF113E9388C00F9E38B /* LocalyticsSession.h */,
+				28B13DF213E9388C00F9E38B /* LocalyticsSession.m */,
+				28B13DF313E9388C00F9E38B /* UploaderThread.h */,
+				28B13DF413E9388C00F9E38B /* UploaderThread.m */,
+				28B13DF513E9388C00F9E38B /* WebserviceConstants.h */,
+			);
+			path = Localytics;
+			sourceTree = "<group>";
+		};
 		28E6F95013E63B54002337A9 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1626,6 +1655,9 @@
 				25E8193613CEE90900134EF5 /* PSProgressCenter.m in Sources */,
 				25420ADC13D51A3600DD5A27 /* UploadViewController.m in Sources */,
 				289764AF13E36F29007E1069 /* SplashViewController.m in Sources */,
+				28B13DF613E9388C00F9E38B /* LocalyticsDatabase.m in Sources */,
+				28B13DF713E9388C00F9E38B /* LocalyticsSession.m in Sources */,
+				28B13DF813E9388C00F9E38B /* UploaderThread.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 #import "MoogleAppDelegate.h"
 #import "NetworkConstants.h"
 #import "UINavigationBar+Custom.h"
+#import "LocalyticsSession.h"
 
 #ifdef __APPLE__
   #include "TargetConditionals.h"

@@ -46,6 +46,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
+  // Localytics
+  [[LocalyticsSession sharedLocalyticsSession] startSession:@"fa74713016dc9ada26defce-5a840dee-a0e8-11e0-013d-007f58cb3154"];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLoginProgress:) name:kUpdateLoginProgress object:nil];
   
   [[AlbumDataCenter defaultCenter] setDelegate:self];
@@ -91,6 +94,11 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  // Localytics
+  [[LocalyticsSession sharedLocalyticsSession] close];
+	[[LocalyticsSession sharedLocalyticsSession] upload];
+  
 //  [[PSImageCache sharedCache] flushImageCacheToDisk];
 //  [[NSNotificationCenter defaultCenter] removeObserver:self name:kUpdateLoginProgress object:nil];
 }
@@ -98,6 +106,10 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   // Login if necessary
   [self tryLogin];
+  
+  // Localytics
+  [[LocalyticsSession sharedLocalyticsSession] resume];
+	[[LocalyticsSession sharedLocalyticsSession] upload];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -108,6 +120,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
   [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  // Localytics
+  [[LocalyticsSession sharedLocalyticsSession] close];
+  [[LocalyticsSession sharedLocalyticsSession] upload];
+  
 //  [[PSImageCache sharedCache] flushImageCacheToDisk];
 }
 
@@ -139,6 +156,8 @@
 - (void)userDidLogin:(NSDictionary *)userInfo {
   DLog(@"User Logged In");
   // User managed to actually login, let's show a splash screen while 
+  
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"User Logged In"];
   
   if (!_splashViewController) {
     _splashViewController = [[SplashViewController alloc] init];

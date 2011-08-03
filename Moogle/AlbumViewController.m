@@ -167,6 +167,7 @@
 }
 
 - (void)filter {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Filter"];
   FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
   UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
   [self presentModalViewController:fnc animated:YES];

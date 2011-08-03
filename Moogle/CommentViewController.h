@@ -16,6 +16,7 @@
 @interface CommentViewController : CardCoreDataTableViewController <UIGestureRecognizerDelegate> {
   Photo *_photo;
   CGFloat _photoOffset;
+  UIScrollView *_containerView;
   PSImageView *_photoView;
   PSTextField *_commentField;
 //  UIButton *_sendCommentButton;
