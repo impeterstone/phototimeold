@@ -220,6 +220,9 @@
 		28B13DF713E9388C00F9E38B /* LocalyticsSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B13DF213E9388C00F9E38B /* LocalyticsSession.m */; };
 		28B13DF813E9388C00F9E38B /* UploaderThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B13DF413E9388C00F9E38B /* UploaderThread.m */; };
 		28B13DFA13E9395500F9E38B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B13DF913E9395500F9E38B /* libsqlite3.dylib */; };
+		28B13DFD13ECAAF900F9E38B /* button_connect_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DFB13ECAAF900F9E38B /* button_connect_facebook.png */; };
+		28B13DFE13ECAAF900F9E38B /* button_connect_facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DFC13ECAAF900F9E38B /* button_connect_facebook@2x.png */; };
+		28B13E0413ECAEDF00F9E38B /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13E0313ECAEDF00F9E38B /* Default-Portrait.png */; };
 		28E6F97113E63B54002337A9 /* button_bar_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95113E63B54002337A9 /* button_bar_black.png */; };
 		28E6F97213E63B54002337A9 /* button_bar_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95213E63B54002337A9 /* button_bar_black@2x.png */; };
 		28E6F97313E63B54002337A9 /* button_bar_black_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95313E63B54002337A9 /* button_bar_black_highlighted.png */; };
@@ -614,6 +617,9 @@
 		28B13DF413E9388C00F9E38B /* UploaderThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploaderThread.m; sourceTree = "<group>"; };
 		28B13DF513E9388C00F9E38B /* WebserviceConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebserviceConstants.h; sourceTree = "<group>"; };
 		28B13DF913E9395500F9E38B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		28B13DFB13ECAAF900F9E38B /* button_connect_facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_connect_facebook.png; path = Resources/button_connect_facebook.png; sourceTree = SOURCE_ROOT; };
+		28B13DFC13ECAAF900F9E38B /* button_connect_facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_connect_facebook@2x.png"; path = "Resources/button_connect_facebook@2x.png"; sourceTree = SOURCE_ROOT; };
+		28B13E0313ECAEDF00F9E38B /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		28E6F95113E63B54002337A9 /* button_bar_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_black.png; sourceTree = "<group>"; };
 		28E6F95213E63B54002337A9 /* button_bar_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_black@2x.png"; sourceTree = "<group>"; };
 		28E6F95313E63B54002337A9 /* button_bar_black_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_black_highlighted.png; sourceTree = "<group>"; };
@@ -1045,6 +1051,7 @@
 				2538FF6D133B507700ACE127 /* EGO */,
 				25CEF907133A00A3006F23A7 /* Default.png */,
 				25CEF908133A00A3006F23A7 /* Default@2x.png */,
+				28B13E0313ECAEDF00F9E38B /* Default-Portrait.png */,
 				2554C4C013D78D33005344FD /* AppIcons */,
 			);
 			path = Resources;
@@ -1322,6 +1329,8 @@
 		28E6F95013E63B54002337A9 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
+				28B13DFB13ECAAF900F9E38B /* button_connect_facebook.png */,
+				28B13DFC13ECAAF900F9E38B /* button_connect_facebook@2x.png */,
 				28B13DBA13E8DC2D00F9E38B /* button_sketch.png */,
 				28B13DBB13E8DC2D00F9E38B /* button_sketch@2x.png */,
 				28E6F95113E63B54002337A9 /* button_bar_black.png */,
@@ -1534,6 +1543,9 @@
 				28B13DE913E932E600F9E38B /* bg_table_header@2x.png in Resources */,
 				28B13DEC13E933EE00F9E38B /* disclosure_indicator_white_bordered.png in Resources */,
 				28B13DED13E933EE00F9E38B /* disclosure_indicator_white_bordered@2x.png in Resources */,
+				28B13DFD13ECAAF900F9E38B /* button_connect_facebook.png in Resources */,
+				28B13DFE13ECAAF900F9E38B /* button_connect_facebook@2x.png in Resources */,
+				28B13E0413ECAEDF00F9E38B /* Default-Portrait.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

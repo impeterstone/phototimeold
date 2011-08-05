@@ -26,7 +26,11 @@
 - (void)loadView {
   [super loadView];
   
-  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+  if (isDeviceIPad()) {
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Portrait.png"]];
+  } else {
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+  }
   
   _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
   [_loadingIndicator startAnimating];

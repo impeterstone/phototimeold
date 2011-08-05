@@ -79,12 +79,6 @@
   _searchField.placeholder = @"Search for photos...";
   [_searchField addTarget:self action:@selector(searchTermChanged:) forControlEvents:UIControlEventEditingChanged];
   
-//  _searchEmptyView = [[UIView alloc] initWithFrame:self.view.bounds];
-////  _searchEmptyView.height -= 44; // nav bar
-////  _searchEmptyView.height -= 216; // minus keyboard ipad: 352
-//  _searchEmptyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
-//  _searchEmptyView.alpha = 0.0;
-  
 //  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
 //  searchLabel.numberOfLines = 8;
 //  searchLabel.text = @"Search for keywords, people, or places.\n\nTypeahead table view here";
@@ -94,14 +88,11 @@
 //  searchLabel.shadowOffset = CGSizeMake(0, 1);
 //  searchLabel.backgroundColor = [UIColor clearColor];
   
-//  [_searchEmptyView addSubview:searchLabel];
-//  [self.view addSubview:_searchEmptyView];
-  
   _searchTermController = [[SearchTermController alloc] init];
   _searchTermController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   _searchTermController.delegate = self;
   _searchTermController.view.frame = self.view.bounds;
-  _searchTermController.view.height -= 44;
+//  _searchTermController.view.height -= 44;
 //  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
   _searchTermController.view.alpha = 0.0;
   

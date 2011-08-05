@@ -74,6 +74,8 @@
 #define NAV_BUTTON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0]
 
 // Colors
+#define COLOR_CHARCOAL RGBCOLOR(60,60,60)
+
 // CELLS
 #define CELL_WHITE_COLOR [UIColor whiteColor]
 #define CELL_BLACK_COLOR [UIColor blackColor]

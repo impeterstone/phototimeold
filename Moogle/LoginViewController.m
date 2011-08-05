@@ -26,31 +26,41 @@
 - (void)loadView {
   [super loadView];
   
-//  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
   self.view.backgroundColor = [UIColor whiteColor];
   
   // Setup Welcome
-  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(0, 26, 320, 320)] autorelease];
+  _welcomeView = [[[PSWelcomeView alloc] initWithFrame:CGRectMake(0, 26, self.view.width, self.view.width)] autorelease];
   UIImageView *one = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_1.png"]] autorelease];
   UIImageView *two = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_2.png"]] autorelease];
   UIImageView *three = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_3.png"]] autorelease];
   UIImageView *four = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nux_comic_4.png"]] autorelease];
   NSArray *views = [NSArray arrayWithObjects:one, two, three, four, nil];
+  for (UIImageView *iv in views) {
+    iv.width = _welcomeView.width;
+    iv.height = _welcomeView.height;
+  }
   [_welcomeView setViewArray:views];
   [self.view addSubview:_welcomeView];
   
   // Next Button
   _nextButton = [[UIButton alloc] initWithFrame:CGRectZero];
-  _nextButton.width = 280;
-  _nextButton.height = 59;
+  
+  if (isDeviceIPad()) {
+    _nextButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:36.0];
+    _nextButton.height = 100;
+  } else {
+    _nextButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:20.0];
+    _nextButton.height = 59;
+  }
+  
+  _nextButton.width = self.view.width - 40;
   _nextButton.top = self.view.height - _nextButton.height - 20;
   _nextButton.left = 20;
   
   [_nextButton setBackgroundImage:[[UIImage imageNamed:@"button_sketch.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0] forState:UIControlStateNormal];
   [_nextButton setTitle:@"Learn More About Moogle" forState:UIControlStateNormal];
-  [_nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-  [_nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-  _nextButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:18.0];
+  [_nextButton setTitleColor:COLOR_CHARCOAL forState:UIControlStateNormal];
+  [_nextButton setTitleColor:COLOR_CHARCOAL forState:UIControlStateHighlighted];
 //  _nextButton.titleLabel.shadowColor = [UIColor blackColor];
 //  _nextButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
   [_nextButton addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
@@ -86,6 +96,7 @@
   NSString *nextTitle = nil;
   switch (_welcomeView.currentPage) {
     case 0:
+      [_nextButton setBackgroundImage:[[UIImage imageNamed:@"button_sketch.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0] forState:UIControlStateNormal];
       nextTitle = @"Moogle to the rescue";
       break;
     case 1:
@@ -95,6 +106,7 @@
       nextTitle = @"This changes everything";
       break;
     case 3:
+      [_nextButton setBackgroundImage:[[UIImage imageNamed:@"button_connect_facebook.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0] forState:UIControlStateNormal];
       nextTitle = @"Connect With Facebook";
       break;
     default:
