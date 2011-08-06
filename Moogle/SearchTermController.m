@@ -47,8 +47,8 @@
 }
 
 - (void)setupNoResultsView {
-  _noResultsView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-  _noResultsView.autoresizingMask = self.tableView.autoresizingMask;
+  _noResultsView = [[UIView alloc] initWithFrame:self.view.bounds];
+  _noResultsView.autoresizingMask = self.view.autoresizingMask;
 //  _noResultsView.backgroundColor = [UIColor grayColor];
   
   UITapGestureRecognizer *cancelGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelSearch)] autorelease];

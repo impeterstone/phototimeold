@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Moogle</string>
+	<string>PhotoTime!</string>
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>CFBundleExecutable</key>
@@ -16,9 +16,10 @@
 	<array>
 		<string>Icon.png</string>
 		<string>Icon@2x.png</string>
+		<string>Icon-72.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.sevenminuteapps.moogle</string>
+	<string>com.sevenminutelabs.phototime</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -39,7 +40,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.60</string>
+	<string>1.0.61</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>

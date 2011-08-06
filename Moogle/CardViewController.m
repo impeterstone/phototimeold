@@ -29,9 +29,9 @@
   [super loadView];
   
   if (isDeviceIPad()) {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Portrait.png"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_weave-pad.png"]];
   } else {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_weave.png"]];
   }
   
   // Background View

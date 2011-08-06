@@ -89,12 +89,12 @@
 //  searchLabel.backgroundColor = [UIColor clearColor];
   
   _searchTermController = [[SearchTermController alloc] init];
-  _searchTermController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   _searchTermController.delegate = self;
   _searchTermController.view.frame = self.view.bounds;
 //  _searchTermController.view.height -= 44;
 //  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
   _searchTermController.view.alpha = 0.0;
+  [self.view addSubview:_searchTermController.view];
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
 //  [self addButtonWithImage:[UIImage imageNamed:@"bg_searchbar_textfield.png"] withTarget:self action:@selector(search) isLeft:YES];
@@ -188,8 +188,6 @@
   _fetchTotal = _fetchLimit;
   self.navigationItem.rightBarButtonItem = _cancelButton;
   
-  [self.view addSubview:_searchTermController.view];
-  
   [self.navigationController.navigationBar bringSubviewToFront:_searchField];
   [UIView animateWithDuration:0.4
                    animations:^{
@@ -205,14 +203,14 @@
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
   _hasMore = YES;
   _fetchTotal = _fetchLimit;
+  _searchTermController.view.alpha = 0.0;
   
-  [UIView animateWithDuration:0.4
-                   animations:^{
-                     _searchTermController.view.alpha = 0.0;
-                   }
-                   completion:^(BOOL finished) {
-                     [_searchTermController.view removeFromSuperview];
-                   }];
+//  [UIView animateWithDuration:0.4
+//                   animations:^{
+//                     _searchTermController.view.alpha = 0.0;
+//                   }
+//                   completion:^(BOOL finished) {
+//                   }];
   
   return YES;
 }

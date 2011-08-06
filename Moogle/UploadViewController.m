@@ -29,6 +29,8 @@
 - (void)loadView {
   [super loadView];
   
+  self.navigationController.navigationBarHidden = NO;
+  
   self.view.backgroundColor = [UIColor blackColor];
   
   self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Upload" withTarget:self action:@selector(upload) buttonType:NavButtonTypeBlue];
@@ -66,8 +68,8 @@
 }
 
 - (void)dismiss {
-  [[self parentViewController] autorelease];
   [[self parentViewController] dismissModalViewControllerAnimated:YES];
+  [[self parentViewController] autorelease];
 }
 
 - (void)imageTapped {
