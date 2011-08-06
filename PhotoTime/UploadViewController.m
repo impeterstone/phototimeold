@@ -3,7 +3,7 @@
 //  Orca
 //
 //  Created by Peter Shih on 5/9/11.
-//  Copyright 2011 Seven Minute Labs, Inc.. All rights reserved.
+//  Copyright 2011 Seven Minute Labs. All rights reserved.
 //
 
 #import "UploadViewController.h"
