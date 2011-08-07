@@ -15,6 +15,8 @@
 
 @implementation CardViewController
 
+@synthesize navTitleLabel = _navTitleLabel;
+
 - (id)init {
   self = [super init];
   if (self) {

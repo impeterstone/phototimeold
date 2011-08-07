@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LoginDelegate.h"
 #import "PSDataCenterDelegate.h"
+#import "PSExposeController.h"
 
 @class Facebook;
 @class SplashViewController;
@@ -16,7 +17,7 @@
 @class LoginDataCenter;
 @class AlbumDataCenter;
 
-@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate> {
+@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource> {
   UIWindow *_window;
   Facebook *_facebook;
   SplashViewController *_splashViewController;

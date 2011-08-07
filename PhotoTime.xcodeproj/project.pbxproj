@@ -226,6 +226,11 @@
 		28B13DF813E9388C00F9E38B /* UploaderThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B13DF413E9388C00F9E38B /* UploaderThread.m */; };
 		28B13DFA13E9395500F9E38B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B13DF913E9395500F9E38B /* libsqlite3.dylib */; };
 		28B13E0413ECAEDF00F9E38B /* bg_weave-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13E0313ECAEDF00F9E38B /* bg_weave-pad.png */; };
+		28C8AEA313EDEC090087A06B /* PSExposeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8AEA213EDEC090087A06B /* PSExposeController.m */; };
+		28C8AEAA13EDF7D60087A06B /* bg_carbon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C8AEA813EDF7D60087A06B /* bg_carbon.png */; };
+		28C8AEAB13EDF7D60087A06B /* bg_carbon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C8AEA913EDF7D60087A06B /* bg_carbon@2x.png */; };
+		28C8AEAE13EE95000087A06B /* button_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C8AEAC13EE95000087A06B /* button_delete.png */; };
+		28C8AEAF13EE95000087A06B /* button_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C8AEAD13EE95000087A06B /* button_delete@2x.png */; };
 		28E6F97113E63B54002337A9 /* button_bar_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95113E63B54002337A9 /* button_bar_black.png */; };
 		28E6F97213E63B54002337A9 /* button_bar_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95213E63B54002337A9 /* button_bar_black@2x.png */; };
 		28E6F97313E63B54002337A9 /* button_bar_black_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F95313E63B54002337A9 /* button_bar_black_highlighted.png */; };
@@ -626,6 +631,12 @@
 		28B13DF513E9388C00F9E38B /* WebserviceConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebserviceConstants.h; sourceTree = "<group>"; };
 		28B13DF913E9395500F9E38B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		28B13E0313ECAEDF00F9E38B /* bg_weave-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_weave-pad.png"; sourceTree = "<group>"; };
+		28C8AEA113EDEC090087A06B /* PSExposeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PSExposeController.h; path = Submodules/psexposecontroller/ExposeDemo/ExposeDemo/PSExposeController.h; sourceTree = "<group>"; };
+		28C8AEA213EDEC090087A06B /* PSExposeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PSExposeController.m; path = Submodules/psexposecontroller/ExposeDemo/ExposeDemo/PSExposeController.m; sourceTree = "<group>"; };
+		28C8AEA813EDF7D60087A06B /* bg_carbon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_carbon.png; sourceTree = "<group>"; };
+		28C8AEA913EDF7D60087A06B /* bg_carbon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_carbon@2x.png"; sourceTree = "<group>"; };
+		28C8AEAC13EE95000087A06B /* button_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_delete.png; path = Resources/button_delete.png; sourceTree = SOURCE_ROOT; };
+		28C8AEAD13EE95000087A06B /* button_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_delete@2x.png"; path = "Resources/button_delete@2x.png"; sourceTree = SOURCE_ROOT; };
 		28E6F95113E63B54002337A9 /* button_bar_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_black.png; sourceTree = "<group>"; };
 		28E6F95213E63B54002337A9 /* button_bar_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_black@2x.png"; sourceTree = "<group>"; };
 		28E6F95313E63B54002337A9 /* button_bar_black_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_black_highlighted.png; sourceTree = "<group>"; };
@@ -923,6 +934,7 @@
 		25CEF7F71339F278006F23A7 = {
 			isa = PBXGroup;
 			children = (
+				28C8AE9F13EDEBDC0087A06B /* PSExposeController */,
 				2570A47A13B490DD006CBCFE /* SevenMinuteLibrary */,
 				25CEF80E1339F278006F23A7 /* PhotoTime */,
 				25CEF8FE133A000C006F23A7 /* Resources */,
@@ -1288,6 +1300,8 @@
 		28B13DDA13E9324100F9E38B /* bg */ = {
 			isa = PBXGroup;
 			children = (
+				28C8AEA813EDF7D60087A06B /* bg_carbon.png */,
+				28C8AEA913EDF7D60087A06B /* bg_carbon@2x.png */,
 				25CEF907133A00A3006F23A7 /* bg_weave.png */,
 				25CEF908133A00A3006F23A7 /* bg_weave@2x.png */,
 				28B13E0313ECAEDF00F9E38B /* bg_weave-pad.png */,
@@ -1344,9 +1358,20 @@
 			path = Localytics;
 			sourceTree = "<group>";
 		};
+		28C8AE9F13EDEBDC0087A06B /* PSExposeController */ = {
+			isa = PBXGroup;
+			children = (
+				28C8AEA113EDEC090087A06B /* PSExposeController.h */,
+				28C8AEA213EDEC090087A06B /* PSExposeController.m */,
+			);
+			name = PSExposeController;
+			sourceTree = "<group>";
+		};
 		28E6F95013E63B54002337A9 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
+				28C8AEAC13EE95000087A06B /* button_delete.png */,
+				28C8AEAD13EE95000087A06B /* button_delete@2x.png */,
 				28B13DBA13E8DC2D00F9E38B /* button_sketch.png */,
 				28B13DBB13E8DC2D00F9E38B /* button_sketch@2x.png */,
 				284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */,
@@ -1566,6 +1591,10 @@
 				28A0310813ECD943003592E6 /* Default@2x.png in Resources */,
 				2852EFA313EDB25800444ACD /* iTunesArtwork in Resources */,
 				284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */,
+				28C8AEAA13EDF7D60087A06B /* bg_carbon.png in Resources */,
+				28C8AEAB13EDF7D60087A06B /* bg_carbon@2x.png in Resources */,
+				28C8AEAE13EE95000087A06B /* button_delete.png in Resources */,
+				28C8AEAF13EE95000087A06B /* button_delete@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1690,6 +1719,7 @@
 				28B13DF713E9388C00F9E38B /* LocalyticsSession.m in Sources */,
 				28B13DF813E9388C00F9E38B /* UploaderThread.m in Sources */,
 				284F941E13EDB9620033F4A9 /* PhotoTime.xcdatamodeld in Sources */,
+				28C8AEA313EDEC090087A06B /* PSExposeController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

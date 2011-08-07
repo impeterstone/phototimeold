@@ -1,3 +1,6 @@
 [submodule "Submodules/sevenminutelibrary"]
 	path = Submodules/sevenminutelibrary
-	url = git@github.com:pshih/sevenminutelibrary.git
+	url = git@github.com:sevenminutelabs/sevenminutelibrary.git
+[submodule "Submodules/psexposecontroller"]
+	path = Submodules/psexposecontroller
+	url = git@github.com:sevenminutelabs/psexposecontroller.git

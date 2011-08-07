@@ -15,6 +15,7 @@
 #import "AlbumDataCenter.h"
 #import "PSImageCache.h"
 #import "PSProgressCenter.h"
+#import "PSExposeController.h"
 
 #import "AlbumViewController.h"
 
@@ -68,13 +69,33 @@
   _loginViewController = [[LoginViewController alloc] init];
   _loginViewController.delegate = self;
   
+  // Expose Controller
+  [[PSExposeController sharedController] setDelegate:self];
+  [[PSExposeController sharedController] setDataSource:self];
+  
   // Album VC
-  AlbumViewController *avc = [[[AlbumViewController alloc] init] autorelease];
+  AlbumViewController *me = [[[AlbumViewController alloc] init] autorelease];
+  me.albumType = AlbumTypeMe;
   
-  // Nav Controller
-  _navController = [[UINavigationController alloc] initWithRootViewController:avc];
+  AlbumViewController *friends = [[[AlbumViewController alloc] init] autorelease];
+  friends.albumType = AlbumTypeFriends;
   
-  [self.window addSubview:_navController.view];
+  AlbumViewController *mobile = [[[AlbumViewController alloc] init] autorelease];
+  mobile.albumType = AlbumTypeMobile;
+  
+  AlbumViewController *profile = [[[AlbumViewController alloc] init] autorelease];
+  profile.albumType = AlbumTypeProfile;
+  
+  AlbumViewController *wall = [[[AlbumViewController alloc] init] autorelease];
+  wall.albumType = AlbumTypeWall;
+  
+  AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
+  favorites.albumType = AlbumTypeFavorites;
+
+  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObjects:[[[UINavigationController alloc] initWithRootViewController:me] autorelease], [[[UINavigationController alloc] initWithRootViewController:friends] autorelease], [[[UINavigationController alloc] initWithRootViewController:mobile] autorelease], [[[UINavigationController alloc] initWithRootViewController:profile] autorelease], [[[UINavigationController alloc] initWithRootViewController:wall] autorelease], [[[UINavigationController alloc] initWithRootViewController:favorites] autorelease], nil]];
+//  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObject:[[[UINavigationController alloc] initWithRootViewController:me] autorelease]]];
+  
+  [self.window addSubview:[[PSExposeController sharedController] view]];
   [self.window makeKeyAndVisible];
   
   // Login if necessary
@@ -126,6 +147,56 @@
 //  [[PSImageCache sharedCache] flushImageCacheToDisk];
 }
 
+#pragma mark - PSExposeControllerDelegate
+- (UIView *)backgroundViewForExposeController:(PSExposeController *)exposeController {
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_carbon.png"]] autorelease];
+  bg.frame = [[UIScreen mainScreen] bounds];
+  return bg;
+}
+
+- (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
+  AlbumType albumType = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] albumType];
+  
+  NSString *label = nil;
+  switch (albumType) {
+    case AlbumTypeMe:
+      label = @"Your Albums";
+      break;
+    case AlbumTypeFriends:
+      label = @"Your Friends";
+      break;
+    case AlbumTypeMobile:
+      label = @"Mobile Uploads";
+      break;
+    case AlbumTypeProfile:
+      label = @"Profile Pictures";
+      break;
+    case AlbumTypeWall:
+      label = @"Wall Photos";
+      break;
+    case AlbumTypeFavorites:
+      label = @"Favorites";
+      break;
+    default:
+      label = @"Epic Photo time";
+      break;
+  }
+  
+  return label;
+}
+
+//- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
+//  
+//  UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewController.view.bounds.size.width, viewController.view.bounds.size.height)];
+//  [v setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
+//  NSString *s = [self exposeController:exposeController labelTextForViewController:viewController];
+//  [v setText:s];
+//  [v setTextColor:[UIColor whiteColor]];
+//  [v setTextAlignment:UITextAlignmentCenter];
+//  [v setFont:[UIFont boldSystemFontOfSize:24]];
+//  return [v autorelease];
+//}
+
 #pragma mark - Notifications
 - (void)updateLoginProgress:(NSNotification *)notification {
   [self performSelectorOnMainThread:@selector(updateLoginProgressOnMainThread:) withObject:[notification userInfo] waitUntilDone:NO];
@@ -139,8 +210,8 @@
 #pragma mark - Login
 - (void)tryLogin {
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    if (![_navController.modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
-      [_navController presentModalViewController:_loginViewController animated:NO];
+    if (![[PSExposeController sharedController].modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
+      [[PSExposeController sharedController] presentModalViewController:_loginViewController animated:NO];
     }
   } else {
     _facebook.accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"];
@@ -296,8 +367,8 @@
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {  
   // Session/Register request finished
-  if ([_navController.modalViewController isEqual:_loginViewController]) {
-    [_navController dismissModalViewControllerAnimated:YES];
+  if ([[PSExposeController sharedController].modalViewController isEqual:_loginViewController]) {
+    [[PSExposeController sharedController] dismissModalViewControllerAnimated:YES];
   }
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];

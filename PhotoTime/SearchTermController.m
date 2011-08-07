@@ -37,6 +37,8 @@
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   
+  self.tableView.scrollsToTop = NO;
+  
   [self setupNoResultsView];
 }
 

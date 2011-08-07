@@ -30,6 +30,8 @@ typedef uint32_t NavButtonType;
   NSString *_emptyLabel;
 }
 
+@property (nonatomic, retain) UILabel *navTitleLabel;
+
 - (void)clearCachedData;
 - (void)unloadCardController;
 - (void)reloadCardController;

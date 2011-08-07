@@ -15,6 +15,7 @@
 #import "SearchTermController.h"
 #import "SearchTermDelegate.h"
 #import "PSSearchCenter.h"
+#import "PSExposeController.h"
 
 @implementation AlbumViewController
 
@@ -70,7 +71,7 @@
 //  self.tableView.rowHeight = 120.0;
   
   // Custom Search
-  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 26, 60, 30) withInset:CGSizeMake(30, 6)];
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 6)];
   _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
   _searchField.font = NORMAL_FONT;
   _searchField.delegate = self;
@@ -159,9 +160,11 @@
 
 - (void)filter {
   [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Filter"];
-  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
-  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
-  [self presentModalViewController:fnc animated:YES];
+//  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
+//  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
+//  [self presentModalViewController:fnc animated:YES];
+  
+  [[PSExposeController sharedController] toggleExpose];
 }
 
 - (void)search {  
