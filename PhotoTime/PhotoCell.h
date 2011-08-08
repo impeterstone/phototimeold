@@ -11,7 +11,8 @@
 #import "Photo.h"
 #import "PhotoCellDelegate.h"
 #import "PSURLCacheImageView.h"
-@interface PhotoCell : PSCell {
+
+@interface PhotoCell : PSCell <UIGestureRecognizerDelegate> {
   PSURLCacheImageView *_photoView; // optional
   UIView *_captionView;
   UILabel *_captionLabel;

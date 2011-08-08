@@ -79,6 +79,9 @@
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
     _sortKey = [@"position" retain];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
   }
   return self;
 }
@@ -116,6 +119,41 @@
   } else {
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
   }
+  
+  // Comment Field
+  _commentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
+  _commentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+  _commentView.alpha = 0.0;
+  
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage stretchableImageNamed:@"bg_footer_44.png" withLeftCapWidth:1 topCapWidth:0]] autorelease];
+  bg.width = _commentView.width;
+  [_commentView insertSubview:bg atIndex:0];
+  
+  // Field (310 <-> 245)
+  _commentField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, self.view.width, 32) withInset:CGSizeMake(5, 7)];
+  //  _commentField.clearButtonMode = UITextFieldViewModeWhileEditing;
+  //  _commentField.borderStyle = UITextBorderStyleNone;
+  _commentField.background = [UIImage stretchableImageNamed:@"bg_textfield.png" withLeftCapWidth:12 topCapWidth:15];
+  _commentField.font = NORMAL_FONT;
+  _commentField.placeholder = @"Write a comment...";
+  _commentField.returnKeyType = UIReturnKeySend;
+  [_commentField addTarget:self action:@selector(commentChanged:) forControlEvents:UIControlEventEditingChanged];
+  _commentField.delegate = self;
+  [_commentView addSubview:_commentField];
+  
+  _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+  _cancelButton.frame = CGRectMake(255, 6, 60, 32);
+  [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+  _cancelButton.titleLabel.font = BOLD_FONT;
+  _cancelButton.titleLabel.shadowColor = [UIColor blackColor];
+  _cancelButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+  [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"navbar_focus_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+  [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"navbar_focus_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted];
+  [_cancelButton addTarget:_commentField action:@selector(resignFirstResponder) forControlEvents:UIControlEventTouchUpInside];
+  _cancelButton.alpha = 0.0;
+  [_commentView addSubview:_cancelButton];
+  
+  [self.view addSubview:_commentView];
   
   // Pull Refresh
 //  [self setupPullRefresh];
@@ -283,8 +321,34 @@
 //  NSLog(@"wdc sec: %d, row: %d", indexPath.section, indexPath.row);
 }
 
+- (void)commentChanged:(UITextField *)textField {
+  //  if ([textField.text length] > 0) {
+  //    _sendCommentButton.enabled = YES;
+  //  } else {
+  //    _sendCommentButton.enabled = NO;
+  //  }
+}
+
+- (void)sendComment {
+  [_commentField resignFirstResponder];
+  [[PhotoDataCenter defaultCenter] addCommentForPhotoId:_photoToComment.id withMessage:_commentField.text];
+  _commentField.text = nil;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [self sendComment];
+  return YES;
+}
+
 #pragma mark -
 #pragma mark PhotoCellDelegate
+- (void)addCommentForCell:(PhotoCell *)cell {
+  NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  _photoToComment = photo;
+  [_commentField becomeFirstResponder];
+}
+
 - (void)commentsSelectedForCell:(PhotoCell *)cell {
   NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -368,7 +432,67 @@
   return fetchRequest;
 }
 
+#pragma mark UIKeyboard
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+  [self moveTextViewForKeyboard:aNotification up:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+  [self moveTextViewForKeyboard:aNotification up:NO]; 
+}
+
+- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up {
+  NSDictionary* userInfo = [aNotification userInfo];
+  
+  // Get animation info from userInfo
+  NSTimeInterval animationDuration;
+  UIViewAnimationCurve animationCurve;
+  
+  CGRect keyboardEndFrame;
+  
+  [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+  [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+  
+  
+  CGRect keyboardFrame = CGRectZero;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 30200
+  // code for iOS below 3.2
+  [[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardEndFrame];
+  keyboardFrame = keyboardEndFrame;
+#else
+  // code for iOS 3.2 ++
+  [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
+  keyboardFrame = [UIScreen convertRect:keyboardEndFrame toView:self.view];
+#endif  
+  
+  // Animate up or down
+  NSString *dir = up ? @"up" : @"down";
+  [UIView beginAnimations:dir context:nil];
+  [UIView setAnimationDuration:animationDuration];
+  [UIView setAnimationCurve:animationCurve];
+  
+  if (up) {
+    _commentView.alpha = 1.0;
+    _commentField.width = self.view.width - 75;
+    _cancelButton.alpha = 1.0;
+    self.view.height = self.view.height - keyboardFrame.size.height;
+  } else {
+    _commentView.alpha = 0.0;
+    _commentField.width = self.view.width - 10;
+    _cancelButton.alpha = 0.0;
+    self.view.height = self.view.height + keyboardFrame.size.height;
+  }
+  
+  [UIView commitAnimations];
+}
+
 - (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+
+  RELEASE_SAFELY(_commentField);
+  RELEASE_SAFELY(_cancelButton);
+  RELEASE_SAFELY(_commentView);
   RELEASE_SAFELY(_zoomView);
   RELEASE_SAFELY(_taggedFriendsView);
   RELEASE_SAFELY(_sortKey);

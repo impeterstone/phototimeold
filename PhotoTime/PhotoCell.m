@@ -65,7 +65,7 @@ static UIImage *_like = nil;
     
     // Comment Button
     _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
+    [_commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
     [_commentButton setBackgroundImage:_comment forState:UIControlStateNormal];
     _commentButton.titleLabel.font = [UIFont systemFontOfSize:10];
     [_commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -123,10 +123,19 @@ static UIImage *_like = nil;
     [zoomGesture release];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showComments)];
+    tapGesture.delegate = self;
     [_captionView addGestureRecognizer:tapGesture];
     [tapGesture release];
   }
   return self;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+  if ([touch.view isKindOfClass:[UIButton class]]) {
+    return NO;
+  } else {
+    return YES;
+  }
 }
 
 - (void)pinchZoom:(UIPinchGestureRecognizer *)sender {
@@ -159,6 +168,7 @@ static UIImage *_like = nil;
   _photoWidth = 0;
   _photoHeight = 0;
   [_commentsView removeSubviews];
+  _commentsView.contentSize = _commentsView.bounds.size;
 }
 
 - (void)layoutSubviews {
@@ -197,7 +207,7 @@ static UIImage *_like = nil;
   if ([_captionLabel.text length] > 0) {    
     _captionLabel.hidden = NO;
     // Caption
-    desiredSize = [UILabel sizeForText:_captionLabel.text width:(textWidth - _commentButton.width - (MARGIN_X * 2)) font:_captionLabel.font numberOfLines:3 lineBreakMode:_captionLabel.lineBreakMode];
+    desiredSize = [UILabel sizeForText:_captionLabel.text width:(textWidth - _commentButton.width - MARGIN_X) font:_captionLabel.font numberOfLines:3 lineBreakMode:_captionLabel.lineBreakMode];
     _captionLabel.width = desiredSize.width;
     _captionLabel.height = CAPTION_HEIGHT - (MARGIN_Y * 2);
     _captionLabel.left = MARGIN_X;
@@ -303,9 +313,17 @@ static UIImage *_like = nil;
   [_photoView loadImageAndDownload:YES];
 }
 
+- (void)addComment {
+  if (self.delegate && [self.delegate respondsToSelector:@selector(addCommentForCell:)]) {
+    [self.delegate addCommentForCell:self];
+  }
+}
+
 - (void)showComments {
-  if (self.delegate && [self.delegate respondsToSelector:@selector(commentsSelectedForCell:)]) {
-    [self.delegate commentsSelectedForCell:self];
+  if ([_photo.comments count] > 0) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(commentsSelectedForCell:)]) {
+      [self.delegate commentsSelectedForCell:self];
+    }
   }
 }
 
