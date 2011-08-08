@@ -10,14 +10,17 @@
 #import "LoginDelegate.h"
 #import "PSDataCenterDelegate.h"
 #import "PSExposeController.h"
+#import "SearchTermDelegate.h"
+#import "PSTextField.h"
 
 @class Facebook;
 @class SplashViewController;
 @class LoginViewController;
 @class LoginDataCenter;
 @class AlbumDataCenter;
+@class SearchTermController;
 
-@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource> {
+@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource, UITextFieldDelegate, SearchTermDelegate, UINavigationControllerDelegate> {
   UIWindow *_window;
   Facebook *_facebook;
   SplashViewController *_splashViewController;
@@ -28,6 +31,13 @@
   
   // Session
   NSString *_sessionKey;
+  
+  // Search
+  PSTextField *_searchField;
+  UIBarButtonItem *_filterButton;
+  UIBarButtonItem *_cancelButton;
+  SearchTermController *_searchTermController;
+  BOOL _searchActive;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -49,5 +59,12 @@
 
 - (void)updateLoginProgress:(NSNotification *)notification;
 - (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
+
+// Search
+- (void)setupSearch;
+- (void)filter;
+- (void)search;
+- (void)cancelSearch;
+- (void)searchWithText:(NSString *)searchText;
 
 @end

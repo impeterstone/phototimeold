@@ -66,7 +66,7 @@
   self.navigationItem.titleView = navTitleView;
   [navTitleView release];
   
-  self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+//  self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
   
   //  self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-logo.png"]] autorelease];
 }
@@ -107,92 +107,6 @@
   [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];  
   UIBarButtonItem *backButton = [[[UIBarButtonItem alloc] initWithCustomView:back] autorelease];
   self.navigationItem.leftBarButtonItem = backButton;
-}
-
-- (UIBarButtonItem *)navButtonWithTitle:(NSString *)title withTarget:(id)target action:(SEL)action buttonType:(NavButtonType)buttonType {
-  UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-  button.frame = CGRectMake(0, 0, 60, self.navigationController.navigationBar.height - 14);
-  [button setTitle:title forState:UIControlStateNormal];
-  button.titleLabel.font = NAV_BUTTON_FONT;
-  button.titleLabel.shadowColor = [UIColor blackColor];
-  button.titleLabel.shadowOffset = CGSizeMake(0, 1);
-  
-  UIImage *bg = nil;
-  UIImage *bgHighlighted = nil;
-  switch (buttonType) {
-    case NavButtonTypeNormal:
-      bg = [[UIImage imageNamed:@"navbar_normal_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_normal_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeBlue:
-      bg = [[UIImage imageNamed:@"navbar_blue_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_blue_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeRed:
-      bg = [[UIImage imageNamed:@"navbar_red_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_red_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeGreen:
-      bg = [[UIImage imageNamed:@"navbar_green_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_green_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeSilver:
-      bg = [[UIImage imageNamed:@"navbar_focus_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_focus_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    default:
-      bg = [[UIImage imageNamed:@"navbar_normal_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_normal_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-  }
-  
-  [button setBackgroundImage:bg forState:UIControlStateNormal];
-  [button setBackgroundImage:bgHighlighted forState:UIControlStateHighlighted];
-  [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];  
-  UIBarButtonItem *navButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-  return navButton;
-}
-
-- (UIBarButtonItem *)navButtonWithImage:(UIImage *)image withTarget:(id)target action:(SEL)action buttonType:(NavButtonType)buttonType {
-  UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-  button.frame = CGRectMake(0, 0, 60, self.navigationController.navigationBar.height - 14);
-  [button setImage:image forState:UIControlStateNormal];
-  [button setImage:image forState:UIControlStateHighlighted];
-  
-  UIImage *bg = nil;
-  UIImage *bgHighlighted = nil;
-  switch (buttonType) {
-    case NavButtonTypeNormal:
-      bg = [[UIImage imageNamed:@"navbar_normal_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_normal_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeBlue:
-      bg = [[UIImage imageNamed:@"navbar_blue_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_blue_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeRed:
-      bg = [[UIImage imageNamed:@"navbar_red_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_red_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeGreen:
-      bg = [[UIImage imageNamed:@"navbar_green_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_green_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    case NavButtonTypeSilver:
-      bg = [[UIImage imageNamed:@"navbar_focus_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_focus_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-    default:
-      bg = [[UIImage imageNamed:@"navbar_normal_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      bgHighlighted = [[UIImage imageNamed:@"navbar_normal_highlighted_button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-      break;
-  }
-  
-  [button setBackgroundImage:bg forState:UIControlStateNormal];
-  [button setBackgroundImage:bgHighlighted forState:UIControlStateHighlighted];
-  [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];  
-  UIBarButtonItem *navButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-  return navButton;
 }
 
 // Subclasses may implement

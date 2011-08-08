@@ -12,10 +12,6 @@
 #import "FilterViewController.h"
 #import "AlbumCell.h"
 #import "Album.h"
-#import "SearchTermController.h"
-#import "SearchTermDelegate.h"
-#import "PSSearchCenter.h"
-#import "PSExposeController.h"
 
 @implementation AlbumViewController
 
@@ -29,7 +25,6 @@
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
 //    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-    _searchTapped = NO;
   }
   return self;
 }
@@ -39,13 +34,10 @@
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
 //  [self reloadCardController];
-  [self.navigationController.view addSubview:_searchField];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  
-  [_searchField removeFromSuperview];
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
 }
@@ -70,15 +62,7 @@
   
 //  self.tableView.rowHeight = 120.0;
   
-  // Custom Search
-  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 6)];
-  _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
-  _searchField.font = NORMAL_FONT;
-  _searchField.delegate = self;
-  _searchField.returnKeyType = UIReturnKeySearch;
-  _searchField.background = [UIImage stretchableImageNamed:@"bg_searchbar_textfield.png" withLeftCapWidth:30 topCapWidth:0];
-  _searchField.placeholder = @"Search for photos...";
-  [_searchField addTarget:self action:@selector(searchTermChanged:) forControlEvents:UIControlEventEditingChanged];
+
   
 //  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
 //  searchLabel.numberOfLines = 8;
@@ -89,23 +73,17 @@
 //  searchLabel.shadowOffset = CGSizeMake(0, 1);
 //  searchLabel.backgroundColor = [UIColor clearColor];
   
-  _searchTermController = [[SearchTermController alloc] init];
-  _searchTermController.delegate = self;
-  _searchTermController.view.frame = self.view.bounds;
+
 //  _searchTermController.view.height -= 44;
 //  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
-  _searchTermController.view.alpha = 0.0;
-  [self.view addSubview:_searchTermController.view];
+
   
 //  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
 //  [self addButtonWithImage:[UIImage imageNamed:@"bg_searchbar_textfield.png"] withTarget:self action:@selector(search) isLeft:YES];
   
   //  self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal];
   
-  _filterButton = [[self navButtonWithImage:[UIImage imageNamed:@"icon_gallery.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
-//  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
-  _cancelButton = [[self navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
-  self.navigationItem.rightBarButtonItem = _filterButton;
+
   
 //  _navTitleLabel.text = @"PhotoTime";
   
@@ -158,137 +136,6 @@
   [super unloadCardController];
 }
 
-- (void)filter {
-  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Filter"];
-//  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
-//  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
-//  [self presentModalViewController:fnc animated:YES];
-  
-  [[PSExposeController sharedController] toggleExpose];
-}
-
-- (void)search {  
-}
-
-- (void)cancelSearch {
-  [UIView animateWithDuration:0.4
-                   animations:^{
-                     _searchField.width = 60;
-                   }
-                   completion:^(BOOL finished) {
-                   }];
-  
-  _searchPredicate = nil;
-  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-  [self executeFetchOnMainThread];
-  self.navigationItem.rightBarButtonItem = _filterButton;
-  [_searchField resignFirstResponder];
-}
-
-#pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-  _hasMore = YES;
-  _fetchTotal = _fetchLimit;
-  self.navigationItem.rightBarButtonItem = _cancelButton;
-  
-  [self.navigationController.navigationBar bringSubviewToFront:_searchField];
-  [UIView animateWithDuration:0.4
-                   animations:^{
-                     _searchField.width = self.view.width - 80;
-                     _searchTermController.view.alpha = 1.0;
-                   }
-                   completion:^(BOOL finished) {
-                   }];
-  
-  return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
-  _hasMore = YES;
-  _fetchTotal = _fetchLimit;
-  _searchTermController.view.alpha = 0.0;
-  
-//  [UIView animateWithDuration:0.4
-//                   animations:^{
-//                     _searchTermController.view.alpha = 0.0;
-//                   }
-//                   completion:^(BOOL finished) {
-//                   }];
-  
-  return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-  if (_searchTapped) {
-    _searchTapped = NO;
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    [self searchWithText:textField.text];
-  }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  if ([textField.text length] == 0) {
-    // Empty search
-    [self cancelSearch];
-  } else {
-    _searchTapped = YES;
-    [textField resignFirstResponder];
-  }
-  
-  return YES;
-}
-
-- (void)searchTermChanged:(UITextField *)textField {
-  [_searchTermController searchWithTerm:textField.text];
-}
-
-//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-//  return YES;
-//}
-
-- (void)searchWithText:(NSString *)searchText {
-  // Store search term
-  [[PSSearchCenter defaultCenter] addTerm:searchText];
-  
-  static NSCharacterSet *separatorCharacterSet = nil;
-  if (!separatorCharacterSet) {
-    separatorCharacterSet = [[[NSCharacterSet alphanumericCharacterSet] invertedSet] retain];
-  }
-
-  NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
-  //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];
-  
-  NSString *tmp = [[searchText componentsSeparatedByCharactersInSet:separatorCharacterSet] componentsJoinedByString:@" "];
-  NSArray *searchTerms = [tmp componentsSeparatedByString:@" "];
-  
-  for (NSString *searchTerm in searchTerms) {
-    if ([searchTerm length] == 0) continue;
-    NSString *searchValue = searchTerm;
-    // search any
-    [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
-  }
-  
-  if (_searchPredicate) {
-    RELEASE_SAFELY(_searchPredicate);
-  }
-  _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
-  
-  [self executeSearchOnMainThread];
-//  [self executeFetch:FetchTypeRefresh];
-}
-
-#pragma mark - SearchTermDelegate
-- (void)searchTermSelected:(NSString *)searchTerm {
-  _searchField.text = searchTerm;
-  [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-  [self searchWithText:_searchField.text];
-  [_searchField resignFirstResponder];
-}
-
-- (void)searchCancelled {
-  [self cancelSearch];
-}
-
 #pragma mark - TableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -327,7 +174,8 @@
     pvc.sortKey = @"timestamp";
   }
   
-  [self.navigationController pushViewController:pvc animated:YES];
+//  [self.navigationController pushViewController:pvc animated:YES];
+  [[PSExposeController sharedController] pushViewController:pvc animated:YES];
   [pvc release];
 }
 
@@ -458,10 +306,6 @@
 }
 
 - (void)dealloc {
-  RELEASE_SAFELY(_searchField);
-  RELEASE_SAFELY(_filterButton);
-  RELEASE_SAFELY(_cancelButton);
-  RELEASE_SAFELY(_searchTermController);
   [super dealloc];
 }
 

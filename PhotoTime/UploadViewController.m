@@ -33,7 +33,7 @@
   
   self.view.backgroundColor = [UIColor blackColor];
   
-  self.navigationItem.rightBarButtonItem = [self navButtonWithTitle:@"Upload" withTarget:self action:@selector(upload) buttonType:NavButtonTypeBlue];
+  self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Upload" withTarget:self action:@selector(upload) buttonType:NavButtonTypeBlue];
   
   _navTitleLabel.text = @"Upload Photo";
   

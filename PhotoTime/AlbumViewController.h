@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CardCoreDataTableViewController.h"
-#import "SearchTermDelegate.h"
+
 
 typedef enum {
   AlbumTypeMe = 0,
@@ -23,26 +23,10 @@ typedef enum {
   AlbumTypeClassmates = 9
 } AlbumType;
 
-@class SearchTermController;
-
-@interface AlbumViewController : CardCoreDataTableViewController <UITextFieldDelegate, SearchTermDelegate> {
+@interface AlbumViewController : CardCoreDataTableViewController {
   AlbumType _albumType;
-  PSTextField *_searchField;
-  UIBarButtonItem *_filterButton;
-  UIBarButtonItem *_cancelButton;
-  SearchTermController *_searchTermController;
-  
-  // This is a hack for uitextfield autocorrected -> return key
-  // When the return key is tapped and an autocorrect bubble is still visible,
-  // the delegate callback doesn't account for the autocorrect
-  BOOL _searchTapped;
 }
 
 @property (nonatomic, assign) AlbumType albumType;
-
-- (void)filter;
-- (void)search;
-- (void)cancelSearch;
-- (void)searchWithText:(NSString *)searchText;
 
 @end

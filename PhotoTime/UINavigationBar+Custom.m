@@ -19,6 +19,7 @@
 - (void)willMoveToWindow:(UIWindow *)newWindow{
   [super willMoveToWindow:newWindow];
   [self applyDropShadow];
+  self.tintColor = [UIColor darkGrayColor];
 }
 
 - (void)applyDropShadow {

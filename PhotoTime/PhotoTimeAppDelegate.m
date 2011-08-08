@@ -19,6 +19,12 @@
 
 #import "AlbumViewController.h"
 
+#import "SearchTermController.h"
+#import "SearchTermDelegate.h"
+#import "PSSearchCenter.h"
+#import "UIImage+SML.h"
+#import "UIBarButtonItem+SML.h"
+
 @implementation PhotoTimeAppDelegate
 
 @synthesize window = _window;
@@ -92,16 +98,60 @@
   AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
   favorites.albumType = AlbumTypeFavorites;
 
-  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObjects:[[[UINavigationController alloc] initWithRootViewController:me] autorelease], [[[UINavigationController alloc] initWithRootViewController:friends] autorelease], [[[UINavigationController alloc] initWithRootViewController:mobile] autorelease], [[[UINavigationController alloc] initWithRootViewController:profile] autorelease], [[[UINavigationController alloc] initWithRootViewController:wall] autorelease], [[[UINavigationController alloc] initWithRootViewController:favorites] autorelease], nil]];
+  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObjects:me, friends, nil]];
 //  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObject:[[[UINavigationController alloc] initWithRootViewController:me] autorelease]]];
   
   [self.window addSubview:[[PSExposeController sharedController] view]];
   [self.window makeKeyAndVisible];
   
+  // Setup Search
+  [self setupSearch];
+  
+  [[[PSExposeController sharedController] navigationController] setDelegate:self];
+  
   // Login if necessary
   [self tryLogin];
   
   return YES;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  if ([[navigationController viewControllers] count] > 1) {
+    [_searchField removeFromSuperview];
+  } else {
+    [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
+    if (_searchActive) {
+      [_searchField becomeFirstResponder];
+    }
+  }
+}
+
+- (void)setupSearch {
+  _searchActive = NO;
+  
+  // Custom Search
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 6)];
+  _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
+  _searchField.font = NORMAL_FONT;
+  _searchField.delegate = self;
+  _searchField.returnKeyType = UIReturnKeySearch;
+  _searchField.background = [UIImage stretchableImageNamed:@"bg_searchbar_textfield.png" withLeftCapWidth:30 topCapWidth:0];
+  _searchField.placeholder = @"Search for photos...";
+  [_searchField addTarget:self action:@selector(searchTermChanged:) forControlEvents:UIControlEventEditingChanged];
+  
+  _searchTermController = [[SearchTermController alloc] init];
+  _searchTermController.delegate = self;
+  _searchTermController.view.frame = self.window.bounds;
+  _searchTermController.view.top = 64;
+  _searchTermController.view.height -= 64;
+  _searchTermController.view.alpha = 0.0;
+  [self.window addSubview:_searchTermController.view];
+  
+  _filterButton = [[UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
+  //  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
+  _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
+  [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_filterButton];
+  [[[PSExposeController sharedController] navItem] setTitle:@"asdf"];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -155,7 +205,7 @@
 }
 
 - (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
-  AlbumType albumType = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] albumType];
+  AlbumType albumType = [(AlbumViewController *)viewController albumType];
   
   NSString *label = nil;
   switch (albumType) {
@@ -377,6 +427,135 @@
 - (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
 }
 
+#pragma mark - Search
+- (void)filter {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Filter"];
+  //  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
+  //  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
+  //  [self presentModalViewController:fnc animated:YES];
+  
+  [[PSExposeController sharedController] toggleExpose];
+}
+
+- (void)search {  
+}
+
+- (void)cancelSearch {
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _searchField.width = 60;
+                   }
+                   completion:^(BOOL finished) {
+                   }];
+  
+  [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_filterButton];
+  [_searchField resignFirstResponder];
+  _searchActive = NO;
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+  [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_cancelButton];
+
+  [[[[PSExposeController sharedController] navigationController] navigationBar] bringSubviewToFront:_searchField];
+
+  [UIView animateWithDuration:0.4
+                   animations:^{
+                     _searchField.width = self.window.width - 80;
+                     _searchTermController.view.alpha = 1.0;
+                   }
+                   completion:^(BOOL finished) {
+                   }];
+  
+  return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
+  _searchTermController.view.alpha = 0.0;
+  
+  //  [UIView animateWithDuration:0.4
+  //                   animations:^{
+  //                     _searchTermController.view.alpha = 0.0;
+  //                   }
+  //                   completion:^(BOOL finished) {
+  //                   }];
+  
+  return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [textField resignFirstResponder];
+  if (![textField isEditing]) {
+    [textField becomeFirstResponder];
+  }
+  if ([textField.text length] == 0) {
+    // Empty search
+    [self cancelSearch];
+  } else {
+    [self searchWithText:textField.text];
+  }
+  
+  return YES;
+}
+
+- (void)searchTermChanged:(UITextField *)textField {
+  [_searchTermController searchWithTerm:textField.text];
+}
+
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//  return YES;
+//}
+
+- (void)searchWithText:(NSString *)searchText {
+  _searchActive = YES;
+  
+  // Store search term
+  [[PSSearchCenter defaultCenter] addTerm:searchText];
+  
+  static NSCharacterSet *separatorCharacterSet = nil;
+  if (!separatorCharacterSet) {
+    separatorCharacterSet = [[[NSCharacterSet alphanumericCharacterSet] invertedSet] retain];
+  }
+  
+  NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
+  //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];
+  
+  NSString *tmp = [[searchText componentsSeparatedByCharactersInSet:separatorCharacterSet] componentsJoinedByString:@" "];
+  NSArray *searchTerms = [tmp componentsSeparatedByString:@" "];
+  
+  for (NSString *searchTerm in searchTerms) {
+    if ([searchTerm length] == 0) continue;
+    NSString *searchValue = searchTerm;
+    // search any
+    [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
+  }
+  
+//  if (_searchPredicate) {
+//    RELEASE_SAFELY(_searchPredicate);
+//  }
+//  _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
+  
+//  [self executeSearchOnMainThread];
+  //  [self executeFetch:FetchTypeRefresh];
+  AlbumViewController *avc = [[AlbumViewController alloc] init];
+  [[PSExposeController sharedController] pushViewController:avc animated:YES];
+  [avc release];
+}
+
+#pragma mark - SearchTermDelegate
+- (void)searchTermSelected:(NSString *)searchTerm {
+  _searchField.text = searchTerm;
+  [self searchWithText:_searchField.text];
+}
+
+- (void)searchCancelled {
+  [self cancelSearch];
+}
+
+
 #pragma mark -
 #pragma mark Animations
 - (void)animateHideLogin {
@@ -396,6 +575,10 @@
 }
 
 - (void)dealloc {
+  RELEASE_SAFELY(_searchTermController);
+  RELEASE_SAFELY(_searchField);
+  RELEASE_SAFELY(_filterButton);
+  RELEASE_SAFELY(_cancelButton);
   RELEASE_SAFELY(_navController);
   RELEASE_SAFELY(_sessionKey);
   RELEASE_SAFELY(_splashViewController);

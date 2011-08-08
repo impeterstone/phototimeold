@@ -188,6 +188,9 @@
 		25FCA3A813996862009CD59C /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = 25FCA3A713996862009CD59C /* Tag.m */; };
 		25FCA3AC13996896009CD59C /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 25FCA3AB13996896009CD59C /* Photo.m */; };
 		25FF620413440D1C001EF441 /* ShareCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25FF620313440D1B001EF441 /* ShareCell.m */; };
+		28314D9B13EF983D007516B2 /* UIBarButtonItem+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 28314D9A13EF983C007516B2 /* UIBarButtonItem+SML.m */; };
+		28314DA013EFA62D007516B2 /* icon_expose.png in Resources */ = {isa = PBXBuildFile; fileRef = 28314D9F13EFA62D007516B2 /* icon_expose.png */; };
+		28314DA213EFA6D2007516B2 /* icon_expose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28314DA113EFA6D2007516B2 /* icon_expose@2x.png */; };
 		284F941E13EDB9620033F4A9 /* PhotoTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 284F941C13EDB9620033F4A9 /* PhotoTime.xcdatamodeld */; };
 		284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */; };
 		2852EFA313EDB25800444ACD /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 2852EFA213EDB25800444ACD /* iTunesArtwork */; };
@@ -588,6 +591,10 @@
 		25FCA3AB13996896009CD59C /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		25FF620213440D1A001EF441 /* ShareCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareCell.h; sourceTree = "<group>"; };
 		25FF620313440D1B001EF441 /* ShareCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareCell.m; sourceTree = "<group>"; };
+		28314D9913EF983C007516B2 /* UIBarButtonItem+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+SML.h"; sourceTree = "<group>"; };
+		28314D9A13EF983C007516B2 /* UIBarButtonItem+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+SML.m"; sourceTree = "<group>"; };
+		28314D9F13EFA62D007516B2 /* icon_expose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_expose.png; sourceTree = "<group>"; };
+		28314DA113EFA6D2007516B2 /* icon_expose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_expose@2x.png"; sourceTree = "<group>"; };
 		284F941D13EDB9620033F4A9 /* PhotoTime.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoTime.xcdatamodel; sourceTree = "<group>"; };
 		284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_sketch-pad.png"; path = "Resources/button_sketch-pad.png"; sourceTree = SOURCE_ROOT; };
 		2852EFA213EDB25800444ACD /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
@@ -864,6 +871,8 @@
 				2570A4BD13B490F4006CBCFE /* UIScreen+SML.m */,
 				2570A4BE13B490F4006CBCFE /* UIView+SML.h */,
 				2570A4BF13B490F4006CBCFE /* UIView+SML.m */,
+				28314D9913EF983C007516B2 /* UIBarButtonItem+SML.h */,
+				28314D9A13EF983C007516B2 /* UIBarButtonItem+SML.m */,
 			);
 			name = SevenMinuteLibrary;
 			path = Submodules/sevenminutelibrary/src;
@@ -1328,6 +1337,8 @@
 		28B13DDB13E9325100F9E38B /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				28314D9F13EFA62D007516B2 /* icon_expose.png */,
+				28314DA113EFA6D2007516B2 /* icon_expose@2x.png */,
 				25E0BC5C13CFA9BF0062D99C /* icon_like.png */,
 				25E0BC5D13CFA9BF0062D99C /* icon_like@2x.png */,
 				2593D51113CD1B6500C065E9 /* icon_comment.png */,
@@ -1595,6 +1606,8 @@
 				28C8AEAB13EDF7D60087A06B /* bg_carbon@2x.png in Resources */,
 				28C8AEAE13EE95000087A06B /* button_delete.png in Resources */,
 				28C8AEAF13EE95000087A06B /* button_delete@2x.png in Resources */,
+				28314DA013EFA62D007516B2 /* icon_expose.png in Resources */,
+				28314DA213EFA6D2007516B2 /* icon_expose@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1720,6 +1733,7 @@
 				28B13DF813E9388C00F9E38B /* UploaderThread.m in Sources */,
 				284F941E13EDB9620033F4A9 /* PhotoTime.xcdatamodeld in Sources */,
 				28C8AEA313EDEC090087A06B /* PSExposeController.m in Sources */,
+				28314D9B13EF983D007516B2 /* UIBarButtonItem+SML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
