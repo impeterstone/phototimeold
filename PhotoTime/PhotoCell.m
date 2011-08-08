@@ -11,6 +11,8 @@
 #import "PSRollupView.h"
 #import "CommentView.h"
 
+#define CAPTION_HEIGHT 40.0
+
 static UIImage *_overlay = nil;
 static UIImage *_comment = nil;
 static UIImage *_like = nil;
@@ -18,12 +20,11 @@ static UIImage *_like = nil;
 @implementation PhotoCell
 
 @synthesize photoView = _photoView;
-@synthesize captionLabel = _captionLabel;
 @synthesize delegate = _delegate;
 
 + (void)initialize {
-  _overlay = [[UIImage imageNamed:@"bg_album_overlay.png"] retain];
-  _comment = [[UIImage imageNamed:@"icon_comment.png"] retain];
+  _overlay = [[UIImage stretchableImageNamed:@"bg_caption.png" withLeftCapWidth:0 topCapWidth:1] retain];
+  _comment = [[UIImage imageNamed:@"comment_indicator.png"] retain];
   _like = [[UIImage imageNamed:@"icon_like.png"] retain];
 }
 
@@ -55,25 +56,22 @@ static UIImage *_like = nil;
     
     // Shadows
     _captionLabel.shadowColor = [UIColor blackColor];
-    _captionLabel.shadowOffset = CGSizeMake(0, 1);
+    _captionLabel.shadowOffset = CGSizeMake(1, 1);
     
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _photoView.shouldAnimate = YES;
     
-    // Overlay Gradient
-    _overlayView = [[UIImageView alloc] initWithImage:_overlay];
-    _overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
     // Comment Button
     _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     [_commentButton setBackgroundImage:_comment forState:UIControlStateNormal];
-    _commentButton.titleLabel.font = CAPTION_FONT;
-    _commentButton.titleLabel.shadowColor = [UIColor blackColor];
-    _commentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-    _commentButton.titleEdgeInsets = UIEdgeInsetsMake(-5, 2, 0, 0);
+    _commentButton.titleLabel.font = [UIFont systemFontOfSize:10];
+    [_commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    _commentButton.titleLabel.shadowColor = [UIColor whiteColor];
+//    _commentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    _commentButton.titleEdgeInsets = UIEdgeInsetsMake(-3, 1, 0, 0);
     
     _commentButton.width = _comment.size.width;
     _commentButton.height = _comment.size.height;
@@ -86,7 +84,7 @@ static UIImage *_like = nil;
     _likeButton.width = _like.size.width;
     _likeButton.height = _like.size.height;
     
-    _commentsFrame = [[UIImageView alloc] initWithImage:[UIImage stretchableImageNamed:@"bg_footer_44.png" withLeftCapWidth:0 topCapWidth:0]];
+    _commentsFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_comment.png"]];
     
     _commentsView = [[UIScrollView alloc] initWithFrame:CGRectZero];
     _commentsView.clipsToBounds = NO;
@@ -105,21 +103,28 @@ static UIImage *_like = nil;
     //    _photoView.layer.borderColor = [[UIColor darkGrayColor] CGColor];
     //    _photoView.layer.borderWidth = 1.0;
     
+    // Caption
+    _captionView = [[UIView alloc] initWithFrame:CGRectZero];
+    UIImageView *cbg = [[[UIImageView alloc] initWithImage:_overlay] autorelease];
+    cbg.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [_captionView addSubview:cbg];
+    [_captionView addSubview:_captionLabel];
+    [_captionView addSubview:_commentButton];
+    
     // Add to contentView
     [self.contentView addSubview:_photoView];
-    [self.contentView addSubview:_overlayView];
-    [self.contentView addSubview:_commentButton];
     [self.contentView addSubview:_likeButton];
+    [self.contentView addSubview:_captionView];
     [self.contentView addSubview:_commentsFrame];
     [self.contentView addSubview:_commentsView];
-//    [self.contentView addSubview:_taggedFriendsView];
-    
-    // Add labels
-    [self.contentView addSubview:_captionLabel];
         
     UIPinchGestureRecognizer *zoomGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchZoom:)];
     [self addGestureRecognizer:zoomGesture];
     [zoomGesture release];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showComments)];
+    [_captionView addGestureRecognizer:tapGesture];
+    [tapGesture release];
   }
   return self;
 }
@@ -154,7 +159,6 @@ static UIImage *_like = nil;
   _photoWidth = 0;
   _photoHeight = 0;
   [_commentsView removeSubviews];
-//  _taggedFriendsView.hidden = YES;
 }
 
 - (void)layoutSubviews {
@@ -162,7 +166,6 @@ static UIImage *_like = nil;
   
   // Photo
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, floor(_photoHeight / (_photoWidth / self.contentView.width)));
-  _overlayView.frame = CGRectMake(0, _photoView.bottom - _overlayView.height, _overlayView.width, _overlayView.height);
   
   CGFloat top = 0;
   CGFloat bottom = _photoView.bottom;
@@ -182,27 +185,32 @@ static UIImage *_like = nil;
 //    _taggedFriendsView.hidden = YES;
 //  }
   
-  // Comment Button
-  _commentButton.top = MARGIN_Y * 2;
-  _commentButton.left = self.contentView.width - _commentButton.width - (MARGIN_X * 2);
-  
   // Like Button
   _likeButton.top = MARGIN_Y * 2;
   _likeButton.left = MARGIN_X * 2;
+  
+  // Comment Button
+  _commentButton.top = floorf((CAPTION_HEIGHT - _commentButton.height) / 2);
+  _commentButton.left = self.contentView.width - _commentButton.width - MARGIN_X;
   
   // Caption Label
   if ([_captionLabel.text length] > 0) {    
     _captionLabel.hidden = NO;
     // Caption
-    desiredSize = [UILabel sizeForText:_captionLabel.text width:textWidth font:_captionLabel.font numberOfLines:3 lineBreakMode:_captionLabel.lineBreakMode];
+    desiredSize = [UILabel sizeForText:_captionLabel.text width:(textWidth - _commentButton.width - (MARGIN_X * 2)) font:_captionLabel.font numberOfLines:3 lineBreakMode:_captionLabel.lineBreakMode];
     _captionLabel.width = desiredSize.width;
-    _captionLabel.height = desiredSize.height;
-    _captionLabel.top = bottom - _captionLabel.height - MARGIN_Y;
-    _captionLabel.left = left;
-    
+    _captionLabel.height = CAPTION_HEIGHT - (MARGIN_Y * 2);
+    _captionLabel.left = MARGIN_X;
+    _captionLabel.top = MARGIN_Y;
   } else {
     _captionLabel.hidden = YES;
   }
+  
+  // Caption View
+  _captionView.width = self.contentView.width;
+  _captionView.height = CAPTION_HEIGHT;
+  _captionView.left = 0;
+  _captionView.top = bottom - _captionView.height;
   
   top = _photoView.bottom;
   
@@ -309,13 +317,13 @@ static UIImage *_like = nil;
 
 - (void)dealloc {
   RELEASE_SAFELY(_photoView);
+  RELEASE_SAFELY(_captionView);
   RELEASE_SAFELY(_captionLabel);
-  RELEASE_SAFELY(_overlayView);
+  RELEASE_SAFELY(_taggedLabel);
   RELEASE_SAFELY(_commentButton);
   RELEASE_SAFELY(_likeButton);
   RELEASE_SAFELY(_commentsView);
   RELEASE_SAFELY(_commentsFrame);
-//  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }
 

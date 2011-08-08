@@ -45,9 +45,9 @@
   
   // Picture
   _pictureView.left = left;
-  _pictureView.top = top;
-  _pictureView.width = 50;
-  _pictureView.height = 50;
+  _pictureView.top = top + 5;
+  _pictureView.width = 40;
+  _pictureView.height = 40;
   
   left = _pictureView.right + 5;
   textWidth = textWidth - _pictureView.width - 5;

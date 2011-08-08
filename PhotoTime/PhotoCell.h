@@ -11,16 +11,13 @@
 #import "Photo.h"
 #import "PhotoCellDelegate.h"
 #import "PSURLCacheImageView.h"
-
-@class PSRollupView;
-
 @interface PhotoCell : PSCell {
   PSURLCacheImageView *_photoView; // optional
+  UIView *_captionView;
   UILabel *_captionLabel;
-  UIImageView *_overlayView;
+  UILabel *_taggedLabel;
   UIButton *_commentButton;
   UIButton *_likeButton;
-  PSRollupView *_taggedFriendsView;
   UIImageView *_commentsFrame;
   UIScrollView *_commentsView;
   
@@ -32,7 +29,6 @@
 }
 
 @property (nonatomic, assign) PSURLCacheImageView *photoView;
-@property (nonatomic, assign) UILabel *captionLabel;
 @property (nonatomic, assign) id <PhotoCellDelegate> delegate;
 
 - (void)pinchZoom:(UIPinchGestureRecognizer *)gesture;
