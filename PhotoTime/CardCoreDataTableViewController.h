@@ -30,6 +30,7 @@ typedef enum {
 
 @property (nonatomic, retain) NSFetchedResultsController * fetchedResultsController;
 @property (nonatomic, retain) NSString * sectionNameKeyPathForFetchedResultsController;
+@property (nonatomic, retain) NSPredicate *searchPredicate;
 
 
 - (void)tableView:(UITableView *)tableView configureCell:(id)cell atIndexPath:(NSIndexPath *)indexPath;

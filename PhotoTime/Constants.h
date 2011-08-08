@@ -47,6 +47,7 @@
 #define FETCH_WALL @"fetchWall"
 #define FETCH_PROFILE @"fetchProfile"
 #define FETCH_FAVORITES @"fetchFavorites"
+#define FETCH_SEARCH @"fetchSearch"
 
 #define FETCH_COMMENTS @"fetchComments"
 

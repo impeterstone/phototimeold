@@ -126,6 +126,12 @@
   }
 }
 
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  if ([[navigationController viewControllers] count] == 1) {
+    [[[[PSExposeController sharedController] navigationController] navigationBar] bringSubviewToFront:_searchField];
+  }
+}
+
 - (void)setupSearch {
   _searchActive = NO;
   
@@ -151,7 +157,6 @@
   //  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
   _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
   [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_filterButton];
-  [[[PSExposeController sharedController] navItem] setTitle:@"asdf"];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -457,8 +462,6 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
   [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_cancelButton];
 
-  [[[[PSExposeController sharedController] navigationController] navigationBar] bringSubviewToFront:_searchField];
-
   [UIView animateWithDuration:0.4
                    animations:^{
                      _searchField.width = self.window.width - 80;
@@ -532,15 +535,10 @@
     // search any
     [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
   }
-  
-//  if (_searchPredicate) {
-//    RELEASE_SAFELY(_searchPredicate);
-//  }
-//  _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
-  
-//  [self executeSearchOnMainThread];
-  //  [self executeFetch:FetchTypeRefresh];
+
   AlbumViewController *avc = [[AlbumViewController alloc] init];
+  avc.albumType = AlbumTypeSearch;
+  avc.searchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
   [[PSExposeController sharedController] pushViewController:avc animated:YES];
   [avc release];
 }

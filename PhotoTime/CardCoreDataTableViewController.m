@@ -20,6 +20,7 @@
 
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize sectionNameKeyPathForFetchedResultsController = _sectionNameKeyPathForFetchedResultsController;
+@synthesize searchPredicate = _searchPredicate;
 
 - (id)init {
   self = [super init];

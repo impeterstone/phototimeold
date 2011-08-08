@@ -62,6 +62,9 @@
   
 //  self.tableView.rowHeight = 120.0;
   
+  if (self.albumType == AlbumTypeSearch) {
+    [self addBackButton];
+  }
 
   
 //  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
@@ -118,6 +121,8 @@
     case AlbumTypeFavorites:
       _navTitleLabel.text = @"Favorites";
       break;
+    case AlbumTypeSearch:
+      _navTitleLabel.text = @"Search Results";
     default:
       break;
   }
@@ -199,49 +204,6 @@
 }
 
 #pragma mark -
-#pragma mark UISearchDisplayDelegate
-- (void)delayedFilterContentWithTimer:(NSTimer *)timer {
-  static NSCharacterSet *separatorCharacterSet = nil;
-  if (!separatorCharacterSet) {
-    separatorCharacterSet = [[[NSCharacterSet alphanumericCharacterSet] invertedSet] retain];
-  }
-  
-  NSDictionary *userInfo = [timer userInfo];
-  NSString *searchText = [userInfo objectForKey:@"searchText"];
-  NSString *scope = [userInfo objectForKey:@"scope"];
-
-  NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:1];
-  //  predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchText];
-  
-  NSString *tmp = [[searchText componentsSeparatedByCharactersInSet:separatorCharacterSet] componentsJoinedByString:@" "];
-  NSArray *searchTerms = [tmp componentsSeparatedByString:@" "];
-  
-  for (NSString *searchTerm in searchTerms) {
-    if ([searchTerm length] == 0) continue;
-    NSString *searchValue = searchTerm;
-    if ([scope isEqualToString:@"Author"]) {
-      // search friend's full name
-      [subpredicates addObject:[NSPredicate predicateWithFormat:@"fromName CONTAINS[cd] %@", searchValue]];
-    } else if ([scope isEqualToString:@"Album"]) {
-      // search album name
-      [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchValue]];
-    } else if ([scope isEqualToString:@"Location"]) {
-      [subpredicates addObject:[NSPredicate predicateWithFormat:@"location CONTAINS[cd] %@", searchValue]];
-    } else {
-      // search any
-      [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
-    }
-  }
-  
-  if (_searchPredicate) {
-    RELEASE_SAFELY(_searchPredicate);
-  }
-  _searchPredicate = [[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates] retain];
-  
-  [self executeFetch:FetchTypeRefresh];
-}
-
-#pragma mark -
 #pragma mark FetchRequest
 - (NSFetchRequest *)getFetchRequest {
   NSArray *sortDescriptors = nil;
@@ -277,6 +239,11 @@
       break;
     case AlbumTypeFavorites:
       fetchTemplate = FETCH_FAVORITES;
+      substitutionVariables = [NSDictionary dictionary];
+      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
+      break;
+    case AlbumTypeSearch:
+      fetchTemplate = FETCH_SEARCH;
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;

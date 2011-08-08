@@ -20,7 +20,8 @@ typedef enum {
   AlbumTypeHistory = 6,
   AlbumTypeBoys = 7,
   AlbumTypeGirls = 8,
-  AlbumTypeClassmates = 9
+  AlbumTypeClassmates = 9,
+  AlbumTypeSearch = 10
 } AlbumType;
 
 @interface AlbumViewController : CardCoreDataTableViewController {
