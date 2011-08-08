@@ -25,6 +25,7 @@
   if (self) {    
     _items = [[NSMutableArray alloc] initWithCapacity:1];
     _sectionTitles = [[NSMutableArray alloc] initWithCapacity:1];
+    _selectedIndexes = [[NSMutableDictionary alloc] initWithCapacity:1];
     _loadingMore = NO;
     _hasMore = YES;
   }
@@ -291,6 +292,11 @@
   return _reloading;
 }
 
+- (BOOL)cellIsSelected:(NSIndexPath *)indexPath {
+	// Return whether the cell at the specified index path is selected or not
+	NSNumber *selectedIndex = [_selectedIndexes objectForKey:indexPath];
+	return selectedIndex == nil ? NO : [selectedIndex boolValue];
+}
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -484,6 +490,7 @@
   
   RELEASE_SAFELY(_tableView);
   RELEASE_SAFELY(_sectionTitles);
+  RELEASE_SAFELY(_selectedIndexes);
   RELEASE_SAFELY(_items);
   RELEASE_SAFELY(_searchItems);
   RELEASE_SAFELY(_searchBar);

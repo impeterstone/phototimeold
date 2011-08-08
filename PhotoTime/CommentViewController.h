@@ -7,33 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardCoreDataTableViewController.h"
+#import "CardTableViewController.h"
 
 @class Photo;
-@class PSImageView;
-@class PSTextField;
 
-@interface CommentViewController : CardCoreDataTableViewController <UIGestureRecognizerDelegate> {
+@interface CommentViewController : CardTableViewController {
   Photo *_photo;
-  CGFloat _photoOffset;
-  UIScrollView *_containerView;
-  PSImageView *_photoView;
-  PSTextField *_commentField;
-//  UIButton *_sendCommentButton;
-  UIButton *_cancelButton;
-  
-  BOOL _composeOnAppear;
 }
 
 @property (nonatomic, assign) Photo *photo;
-@property (nonatomic, assign) CGFloat photoOffset;
-@property (nonatomic, retain) PSImageView *photoView;
-@property (nonatomic, assign) BOOL composeOnAppear;
 
-- (void)setupFooter;
-- (void)commentChanged:(UITextField *)textField;
-- (void)sendComment;
-
-- (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up;
+- (void)loadComments;
+- (void)unloadComments;
 
 @end

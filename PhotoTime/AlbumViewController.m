@@ -33,7 +33,7 @@
   [super viewWillAppear:animated];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
-//  [self reloadCardController];
+  [self reloadCardController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

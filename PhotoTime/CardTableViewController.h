@@ -15,6 +15,7 @@
   NSMutableArray *_sectionTitles;
   NSMutableArray *_items;
   NSMutableArray *_searchItems;
+  NSMutableDictionary *_selectedIndexes;
   NSArray *_visibleCells;
   NSArray *_visibleIndexPaths;
   
@@ -50,6 +51,8 @@
 
 - (void)updateLoadMore;
 - (void)loadMore;
+
+- (BOOL)cellIsSelected:(NSIndexPath *)indexPath;
 
 - (void)loadImagesForOnScreenRows;
 

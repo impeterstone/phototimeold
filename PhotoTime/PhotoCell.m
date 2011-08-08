@@ -9,6 +9,7 @@
 #import "PhotoCell.h"
 #import "Comment.h"
 #import "PSRollupView.h"
+#import "CommentView.h"
 
 static UIImage *_overlay = nil;
 static UIImage *_comment = nil;
@@ -29,6 +30,7 @@ static UIImage *_like = nil;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
   self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
   if (self) {
+    self.clipsToBounds = YES;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     _photoWidth = 0;
@@ -84,6 +86,16 @@ static UIImage *_like = nil;
     _likeButton.width = _like.size.width;
     _likeButton.height = _like.size.height;
     
+    _commentsFrame = [[UIImageView alloc] initWithImage:[UIImage stretchableImageNamed:@"bg_footer_44.png" withLeftCapWidth:0 topCapWidth:0]];
+    
+    _commentsView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    _commentsView.clipsToBounds = NO;
+    _commentsView.backgroundColor = [UIColor clearColor];
+    _commentsView.scrollsToTop = NO;
+    _commentsView.showsVerticalScrollIndicator = NO;
+    _commentsView.showsHorizontalScrollIndicator = NO;
+    _commentsView.pagingEnabled = YES;
+    
     // Rollup
 //    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
 //    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg_rollup.png" withLeftCapWidth:0 topCapWidth:0]];
@@ -98,6 +110,8 @@ static UIImage *_like = nil;
     [self.contentView addSubview:_overlayView];
     [self.contentView addSubview:_commentButton];
     [self.contentView addSubview:_likeButton];
+    [self.contentView addSubview:_commentsFrame];
+    [self.contentView addSubview:_commentsView];
 //    [self.contentView addSubview:_taggedFriendsView];
     
     // Add labels
@@ -139,6 +153,7 @@ static UIImage *_like = nil;
   _photoView.image = nil;
   _photoWidth = 0;
   _photoHeight = 0;
+  [_commentsView removeSubviews];
 //  _taggedFriendsView.hidden = YES;
 }
 
@@ -149,6 +164,7 @@ static UIImage *_like = nil;
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, floor(_photoHeight / (_photoWidth / self.contentView.width)));
   _overlayView.frame = CGRectMake(0, _photoView.bottom - _overlayView.height, _overlayView.width, _overlayView.height);
   
+  CGFloat top = 0;
   CGFloat bottom = _photoView.bottom;
   CGFloat left = MARGIN_X;
   CGFloat textWidth = self.contentView.width - MARGIN_X * 2;
@@ -187,6 +203,38 @@ static UIImage *_like = nil;
   } else {
     _captionLabel.hidden = YES;
   }
+  
+  top = _photoView.bottom;
+  
+  _commentsFrame.top = top;
+  _commentsFrame.left = 0;
+  _commentsFrame.width = self.contentView.width;
+  _commentsFrame.height = 60;
+  
+  _commentsView.top = top;
+  _commentsView.left = 0;
+  _commentsView.width = self.contentView.width - 20;
+  _commentsView.height = 60;
+  
+  // If expanded, show comments    
+  NSUInteger numComments = [_photo.comments count];
+  if (numComments > 0 && [self isExpanded]) {
+    if ([[_commentsView subviews] count] > 0) return;
+    _commentsView.contentSize = CGSizeMake(_commentsView.width * numComments, _commentsView.height);
+    int i = 0;
+    for (Comment *comment in [_photo.comments allObjects]) {
+      CommentView *c = [[CommentView alloc] initWithFrame:CGRectZero];
+      c.width = _commentsView.width;
+      c.height = _commentsView.height;
+      c.left = i * c.width;
+      [c loadCommentsWithObject:comment];
+      [_commentsView addSubview:c];
+      [c release];
+      i++;
+    }
+  } else {
+    [_commentsView removeSubviews];
+  }
 }
 
 + (CGFloat)rowHeightForObject:(id)object forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -204,6 +252,22 @@ static UIImage *_like = nil;
   CGFloat photoHeight = [photo.height floatValue];  
   
   desiredHeight += floor(photoHeight / (photoWidth / rowWidth));
+  
+  return desiredHeight;
+}
+
++ (CGFloat)rowHeightForObject:(id)object expanded:(BOOL)expanded forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  Photo *photo = (Photo *)object;
+  
+  CGFloat origHeight = [[self class] rowHeightForObject:object forInterfaceOrientation:interfaceOrientation];
+  CGFloat desiredHeight = 0;
+
+  desiredHeight += origHeight;
+  
+  // Add the comments table
+  if (expanded) {
+    desiredHeight += 60;
+  }
   
   return desiredHeight;
 }
@@ -249,6 +313,8 @@ static UIImage *_like = nil;
   RELEASE_SAFELY(_overlayView);
   RELEASE_SAFELY(_commentButton);
   RELEASE_SAFELY(_likeButton);
+  RELEASE_SAFELY(_commentsView);
+  RELEASE_SAFELY(_commentsFrame);
 //  RELEASE_SAFELY(_taggedFriendsView);
   [super dealloc];
 }

@@ -21,6 +21,8 @@
   UIButton *_commentButton;
   UIButton *_likeButton;
   PSRollupView *_taggedFriendsView;
+  UIImageView *_commentsFrame;
+  UIScrollView *_commentsView;
   
   CGFloat _photoWidth;
   CGFloat _photoHeight;

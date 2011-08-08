@@ -234,8 +234,8 @@
   if (urlPath) {
     [[PSImageCache sharedCache] cacheImageForURLPath:urlPath withDelegate:nil];
   }
-
-  return [PhotoCell rowHeightForObject:photo forInterfaceOrientation:[self interfaceOrientation]];
+  
+  return [PhotoCell rowHeightForObject:photo expanded:[self cellIsSelected:indexPath] forInterfaceOrientation:[self interfaceOrientation]];
 }
 
 - (void)tableView:(UITableView *)tableView configureCell:(id)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -267,14 +267,14 @@
   
   CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
   
-  CommentViewController *cvc = [[CommentViewController alloc] init];
-  cvc.photo = photo;
-  cvc.photoOffset = photoFrame.origin.y + 44;
-  cvc.photoView.image = cell.photoView.image;
+//  CommentViewController *cvc = [[CommentViewController alloc] init];
+//  cvc.photo = photo;
+//  cvc.photoOffset = photoFrame.origin.y + 44;
+//  cvc.photoView.image = cell.photoView.image;
   //  cvc.photoView.image = cell.photoView.image;
   
-  [self.navigationController.view addSubview:cvc.view];
-  [cvc viewWillAppear:YES];
+//  [self.navigationController.view addSubview:cvc.view];
+//  [cvc viewWillAppear:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -289,21 +289,33 @@
   NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
-  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
+  // Toggle 'selected' state
+	BOOL isSelected = ![self cellIsSelected:indexPath];
+	
+	// Store cell 'selected' state keyed on indexPath
+	NSNumber *selectedIndex = [NSNumber numberWithBool:isSelected];
+	[_selectedIndexes setObject:selectedIndex forKey:indexPath];	
+  [cell setIsExpanded:isSelected];
   
-  CommentViewController *cvc = [[CommentViewController alloc] init];
-  cvc.photo = photo;
-  cvc.photoOffset = photoFrame.origin.y + 44;
-  cvc.photoView.image = cell.photoView.image;
+	// This is where magic happens...
+	[_tableView beginUpdates];
+	[_tableView endUpdates];
+  
+//  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
+//  
+//  CommentViewController *cvc = [[CommentViewController alloc] init];
+//  cvc.photo = photo;
+//  cvc.photoOffset = photoFrame.origin.y + 44;
 //  cvc.photoView.image = cell.photoView.image;
-  
-  // If there are no comments, compose on appear
-  if ([photo.comments count] == 0) {
-    cvc.composeOnAppear = YES;
-  }
-  
-  [self.navigationController.view addSubview:cvc.view];
-  [cvc viewWillAppear:YES];
+////  cvc.photoView.image = cell.photoView.image;
+//  
+//  // If there are no comments, compose on appear
+//  if ([photo.comments count] == 0) {
+//    cvc.composeOnAppear = YES;
+//  }
+//  
+//  [self.navigationController.view addSubview:cvc.view];
+//  [cvc viewWillAppear:YES];
 }
 
 - (void)addRemoveLikeForCell:(PhotoCell *)cell {

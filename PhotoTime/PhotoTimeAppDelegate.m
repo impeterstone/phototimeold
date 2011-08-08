@@ -98,7 +98,7 @@
   AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
   favorites.albumType = AlbumTypeFavorites;
 
-  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObjects:me, friends, nil]];
+  [[PSExposeController sharedController] setViewControllers:[NSMutableArray arrayWithObjects:me, friends, mobile, profile, wall, nil]];
 //  [[PSExposeController sharedController] setViewControllers:[NSArray arrayWithObject:[[[UINavigationController alloc] initWithRootViewController:me] autorelease]]];
   
   [self.window addSubview:[[PSExposeController sharedController] view]];
@@ -114,31 +114,6 @@
   [self tryLogin];
   
   return YES;
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-  if ([[navigationController viewControllers] count] > 1) {
-    [_searchField removeFromSuperview];
-  } else {
-    [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
-    _searchField.alpha = 0.0;
-    [UIView animateWithDuration:0.4
-                     animations:^{
-                       _searchField.alpha = 1.0;
-                     }
-                     completion:^(BOOL finished) {
-                     }];
-
-    if (_searchActive) {
-      [_searchField becomeFirstResponder];
-    }
-  }
-}
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-  if ([[navigationController viewControllers] count] == 1) {
-    [[[[PSExposeController sharedController] navigationController] navigationBar] bringSubviewToFront:_searchField];
-  }
 }
 
 - (void)setupSearch {
@@ -218,7 +193,39 @@
   return bg;
 }
 
-- (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
+//- (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
+//  AlbumType albumType = [(AlbumViewController *)viewController albumType];
+//  
+//  NSString *label = nil;
+//  switch (albumType) {
+//    case AlbumTypeMe:
+//      label = @"Your Albums";
+//      break;
+//    case AlbumTypeFriends:
+//      label = @"Your Friends";
+//      break;
+//    case AlbumTypeMobile:
+//      label = @"Mobile Uploads";
+//      break;
+//    case AlbumTypeProfile:
+//      label = @"Profile Pictures";
+//      break;
+//    case AlbumTypeWall:
+//      label = @"Wall Photos";
+//      break;
+//    case AlbumTypeFavorites:
+//      label = @"Favorites";
+//      break;
+//    default:
+//      label = @"Epic Photo time";
+//      break;
+//  }
+//  
+//  return label;
+//}
+
+- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
+  
   AlbumType albumType = [(AlbumViewController *)viewController albumType];
   
   NSString *label = nil;
@@ -246,20 +253,25 @@
       break;
   }
   
-  return label;
+  UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewController.view.bounds.size.width, viewController.view.bounds.size.height)];
+  [v setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
+//  NSString *s = [self exposeController:exposeController labelTextForViewController:viewController];
+  [v setText:label];
+  [v setTextColor:[UIColor whiteColor]];
+  [v setShadowColor:[UIColor blackColor]];
+  [v setShadowOffset:CGSizeMake(1, 1)];
+  [v setTextAlignment:UITextAlignmentCenter];
+  [v setFont:[UIFont boldSystemFontOfSize:36]];
+  return [v autorelease];
 }
 
-//- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
-//  
-//  UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewController.view.bounds.size.width, viewController.view.bounds.size.height)];
-//  [v setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
-//  NSString *s = [self exposeController:exposeController labelTextForViewController:viewController];
-//  [v setText:s];
-//  [v setTextColor:[UIColor whiteColor]];
-//  [v setTextAlignment:UITextAlignmentCenter];
-//  [v setFont:[UIFont boldSystemFontOfSize:24]];
-//  return [v autorelease];
-//}
+- (BOOL)exposeController:(PSExposeController *)exposeController canDeleteViewController:(UIViewController *)viewController {
+  return YES;
+}
+
+- (BOOL)canAddViewControllersForExposeController:(PSExposeController *)exposeController {
+  return NO;
+}
 
 #pragma mark - Notifications
 - (void)updateLoginProgress:(NSNotification *)notification {
@@ -274,8 +286,8 @@
 #pragma mark - Login
 - (void)tryLogin {
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    if (![[PSExposeController sharedController].modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
-      [[PSExposeController sharedController] presentModalViewController:_loginViewController animated:NO];
+    if (![[PSExposeController sharedController].navigationController.modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
+      [[PSExposeController sharedController].navigationController presentModalViewController:_loginViewController animated:NO];
     }
   } else {
     _facebook.accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"];
@@ -431,8 +443,8 @@
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {  
   // Session/Register request finished
-  if ([[PSExposeController sharedController].modalViewController isEqual:_loginViewController]) {
-    [[PSExposeController sharedController] dismissModalViewControllerAnimated:YES];
+  if ([[PSExposeController sharedController].navigationController.modalViewController isEqual:_loginViewController]) {
+    [[PSExposeController sharedController].navigationController dismissModalViewControllerAnimated:YES];
   }
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
@@ -441,9 +453,18 @@
 - (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
 }
 
-#pragma mark - Search
+- (void)exposeControllerWillExpand:(PSExposeController *)exposeController {
+  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal]];
+  [_searchField removeFromSuperview];
+}
+
+- (void)exposeControllerWillCollapse:(PSExposeController *)exposeController {
+  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:nil];
+  [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
+}
+
 - (void)filter {
-  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Filter"];
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Expose"];
   //  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
   //  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
   //  [self presentModalViewController:fnc animated:YES];
@@ -451,6 +472,22 @@
   [[PSExposeController sharedController] toggleExpose];
 }
 
+- (void)logout {
+  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout?" message:LOGOUT_ALERT delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+  [logoutAlert show];
+  [logoutAlert autorelease];
+}
+
+#pragma mark -
+#pragma mark AlertView
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+  if (buttonIndex != alertView.cancelButtonIndex) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+    [[PSExposeController sharedController] toggleExpose];
+  }
+}
+
+#pragma mark - Search
 - (void)search {  
 }
 
@@ -465,6 +502,31 @@
   [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_filterButton];
   [_searchField resignFirstResponder];
   _searchActive = NO;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  if ([[navigationController viewControllers] count] > 1) {
+    [_searchField removeFromSuperview];
+  } else {
+    [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
+    _searchField.alpha = 0.0;
+    [UIView animateWithDuration:0.4
+                     animations:^{
+                       _searchField.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                     }];
+    
+    if (_searchActive) {
+      [_searchField becomeFirstResponder];
+    }
+  }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  if ([[navigationController viewControllers] count] == 1) {
+    [[[[PSExposeController sharedController] navigationController] navigationBar] bringSubviewToFront:_searchField];
+  }
 }
 
 #pragma mark - UITextFieldDelegate
