@@ -108,6 +108,7 @@
   [self setupSearch];
   
   [[[PSExposeController sharedController] navigationController] setDelegate:self];
+  [[[PSExposeController sharedController] navItem] setTitle:@"Epic Photo Time"];
   
   // Login if necessary
   [self tryLogin];
@@ -120,6 +121,14 @@
     [_searchField removeFromSuperview];
   } else {
     [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
+    _searchField.alpha = 0.0;
+    [UIView animateWithDuration:0.4
+                     animations:^{
+                       _searchField.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                     }];
+
     if (_searchActive) {
       [_searchField becomeFirstResponder];
     }

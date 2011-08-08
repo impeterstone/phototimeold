@@ -64,6 +64,8 @@
   
   if (self.albumType == AlbumTypeSearch) {
     [self addBackButton];
+    
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Save" withTarget:self action:@selector(save) buttonType:NavButtonTypeBlue];
   }
 
   
@@ -96,6 +98,10 @@
 //  [self setupLoadMoreView];
   
   [self executeFetch:FetchTypeCold];
+}
+
+- (void)save {
+  
 }
 
 - (void)updateState {
@@ -256,20 +262,6 @@
   [fetchRequest setFetchBatchSize:10];
   [fetchRequest setFetchLimit:_fetchTotal];
   return fetchRequest;
-}
-
-- (void)logout {
-  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout?" message:LOGOUT_ALERT delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-  [logoutAlert show];
-  [logoutAlert autorelease];
-}
-
-#pragma mark -
-#pragma mark AlertView
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-  if (buttonIndex != alertView.cancelButtonIndex) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
-  }
 }
 
 - (void)dealloc {

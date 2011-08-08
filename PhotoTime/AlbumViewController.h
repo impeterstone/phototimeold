@@ -30,4 +30,6 @@ typedef enum {
 
 @property (nonatomic, assign) AlbumType albumType;
 
+- (void)save;
+
 @end
