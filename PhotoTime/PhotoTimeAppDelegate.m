@@ -270,7 +270,12 @@
 }
 
 - (BOOL)canAddViewControllersForExposeController:(PSExposeController *)exposeController {
-  return NO;
+  return YES;
+}
+
+- (UIViewController *)newViewControllerForExposeController:(PSExposeController *)exposeController {
+  AlbumViewController *avc = [[AlbumViewController alloc] init];
+  return [avc autorelease];
 }
 
 #pragma mark - Notifications
