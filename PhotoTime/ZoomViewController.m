@@ -40,18 +40,18 @@
 }
 
 - (void)loadView {
-  [super loadView];
   
-  _containerView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+  _containerView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   _containerView.autoresizingMask = ~UIViewAutoresizingNone;
   _containerView.delegate = self;
   _containerView.maximumZoomScale = 3.0;
   _containerView.minimumZoomScale = 1.0;
   _containerView.bouncesZoom = YES;
   _containerView.backgroundColor = [UIColor clearColor];
+  _containerView.showsVerticalScrollIndicator = NO;
+  _containerView.showsHorizontalScrollIndicator = NO;
   
   _imageView = [[PSImageView alloc] initWithFrame:_containerView.bounds];
-  _imageView.autoresizingMask = ~UIViewAutoresizingNone;
   _imageView.backgroundColor = [UIColor clearColor];
   _imageView.contentMode = UIViewContentModeScaleAspectFit;
   _imageView.userInteractionEnabled = YES;
@@ -59,7 +59,9 @@
   _imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   [_containerView addSubview:_imageView];
   
-  [self.view addSubview:_containerView];
+  self.view = _containerView;
+  
+  [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
   
   UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
   [_containerView addGestureRecognizer:tapGesture];
@@ -74,12 +76,13 @@
   [self dismissModalViewControllerAnimated:YES];
 }
 
--(void) receivedRotate: (NSNotification *) notification {
+- (void)receivedRotate:(NSNotification *)notification {
   
   UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
   
   [UIView animateWithDuration:0.4
                    animations:^{
+                     _containerView.zoomScale = 1.0;
                      if(interfaceOrientation == UIDeviceOrientationPortrait) {
                        self.view.transform = CGAffineTransformMakeRotation(RADIANS(0));
                        self.view.bounds = CGRectMake(0, 0, 320, 480);
