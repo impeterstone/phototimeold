@@ -18,6 +18,7 @@
 #import "PSRollupView.h"
 #import "PSToastCenter.h"
 #import "UploadViewController.h"
+#import "ZoomViewController.h"
 
 #import <MobileCoreServices/UTCoreTypes.h>
 
@@ -304,6 +305,11 @@
   Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
   CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
+  
+  ZoomViewController *zvc = [[ZoomViewController alloc] init];
+  [self presentModalViewController:zvc animated:YES];
+  zvc.imageView.image = [cell.photoView.image copy];
+  [zvc release];
   
 //  CommentViewController *cvc = [[CommentViewController alloc] init];
 //  cvc.photo = photo;

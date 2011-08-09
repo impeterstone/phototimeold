@@ -198,6 +198,7 @@
 		28A0310613ECD943003592E6 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310313ECD943003592E6 /* Default-Portrait.png */; };
 		28A0310713ECD943003592E6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310413ECD943003592E6 /* Default.png */; };
 		28A0310813ECD943003592E6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310513ECD943003592E6 /* Default@2x.png */; };
+		28A1B26013F0B09300EB971E /* ZoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A1B25F13F0B09300EB971E /* ZoomViewController.m */; };
 		28B13DB913E8D39500F9E38B /* bg_album_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DB813E8D39500F9E38B /* bg_album_overlay.png */; };
 		28B13DBC13E8DC2D00F9E38B /* button_sketch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DBA13E8DC2D00F9E38B /* button_sketch.png */; };
 		28B13DBD13E8DC2D00F9E38B /* button_sketch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DBB13E8DC2D00F9E38B /* button_sketch@2x.png */; };
@@ -610,6 +611,8 @@
 		28A0310313ECD943003592E6 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		28A0310413ECD943003592E6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		28A0310513ECD943003592E6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		28A1B25E13F0B09300EB971E /* ZoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomViewController.h; sourceTree = "<group>"; };
+		28A1B25F13F0B09300EB971E /* ZoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZoomViewController.m; sourceTree = "<group>"; };
 		28B13DB813E8D39500F9E38B /* bg_album_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_album_overlay.png; sourceTree = "<group>"; };
 		28B13DBA13E8DC2D00F9E38B /* button_sketch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_sketch.png; path = Resources/button_sketch.png; sourceTree = SOURCE_ROOT; };
 		28B13DBB13E8DC2D00F9E38B /* button_sketch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_sketch@2x.png"; path = "Resources/button_sketch@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -1269,6 +1272,8 @@
 				2511A8FB1365FA0C00C9CF9A /* PhotoViewController.m */,
 				25B9C757138C8882003FEE96 /* CommentViewController.h */,
 				25B9C758138C8882003FEE96 /* CommentViewController.m */,
+				28A1B25E13F0B09300EB971E /* ZoomViewController.h */,
+				28A1B25F13F0B09300EB971E /* ZoomViewController.m */,
 				25960F2913CD791400B44845 /* SearchTermController.h */,
 				25960F2A13CD791400B44845 /* SearchTermController.m */,
 				25960F2C13CD85D600B44845 /* SearchTermDelegate.h */,
@@ -1764,6 +1769,7 @@
 				28C8AEA313EDEC090087A06B /* PSExposeController.m in Sources */,
 				28314D9B13EF983D007516B2 /* UIBarButtonItem+SML.m in Sources */,
 				28E3827713F071340006EE0D /* CommentView.m in Sources */,
+				28A1B26013F0B09300EB971E /* ZoomViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
