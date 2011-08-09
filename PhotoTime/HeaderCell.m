@@ -36,7 +36,7 @@ static UIImage *_bgImage = nil;
     _userNameLabel.textColor = [UIColor whiteColor];
     
     _timestampLabel.font = SMALL_ITALIC_FONT;
-    _timestampLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
+    _timestampLabel.textColor = [UIColor whiteColor];
     
     _timestampLabel.textAlignment = UITextAlignmentRight;
     

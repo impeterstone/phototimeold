@@ -12,31 +12,23 @@
 #import "UINavigationBar+Custom.h"
 #import "LocalyticsSession.h"
 
-#ifdef __APPLE__
-  #include "TargetConditionals.h"
-#endif
-
-#define CORE_DATA_SQL_FILE @"PhotoTime.sqlite"
+// Core Data (From PSConstants.h)
+#define CORE_DATA_SQL_FILE @"phototime.sqlite"
 #define CORE_DATA_MOM @"PhotoTime"
 
-//#define CLEAR_ALL_CACHED_DATA_ON_WARNING
-
-#define USER_LANGUAGE [[NSLocale preferredLanguages] objectAtIndex:0]
-#define USER_LOCALE [[NSLocale autoupdatingCurrentLocale] localeIdentifier]
+// App Delegate Macro
+#define APP_DELEGATE ((PhotoTimeAppDelegate *)[[UIApplication sharedApplication] delegate])
 
 // Notifications
 #define kReloadPhotoController @"ReloadPhotoController"
 #define kReloadAlbumController @"ReloadAlbumController"
 #define kLocationAcquired @"LocationAcquired"
 #define kLogoutRequested @"LogoutRequested"
-#define kCoreDataDidReset @"CoreDataDidReset"
 //#define kComposeDidFinish @"ComposeDidFinish"
 //#define kComposeDidFail @"ComposeDidFail"
 #define kHeaderTabSelected @"HeaderTabSelected"
-#define kImageCached @"CoreDataImageCached"
 #define kOrientationChanged @"OrientationChangedNotification"
 #define kUpdateLoginProgress @"UpdateLoginProgress"
-#define kPSImageCacheDidCacheImage @"PSImageCacheDidCacheImage"
 #define kAlbumDownloadComplete @"AlbumDownloadComplete"
 
 // Fetch Templates
@@ -124,39 +116,3 @@
 #define RGBCOLOR(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1.0]
 #define RGBACOLOR(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
 
-// App Delegate Macro
-#define APP_DELEGATE ((PhotoTimeAppDelegate *)[[UIApplication sharedApplication] delegate])
-
-// Logging Macros
-#ifdef DEBUG
-#	define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#	define DLog(...)
-#endif
-
-//#define VERBOSE_DEBUG
-#ifdef VERBOSE_DEBUG
-#define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define VLog(...)
-#endif
-
-// ALog always displays output regardless of the DEBUG setting
-#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-
-// Safe releases
-#define RELEASE_SAFELY(__POINTER) { [__POINTER release]; __POINTER = nil; }
-#define INVALIDATE_TIMER(__TIMER) { [__TIMER invalidate]; __TIMER = nil; }
-
-// Release a CoreFoundation object safely.
-#define RELEASE_CF_SAFELY(__REF) { if (nil != (__REF)) { CFRelease(__REF); __REF = nil; } }
-
-// Detect Device Type
-static BOOL isDeviceIPad() {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
-  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    return YES; 
-  }
-#endif
-  return NO;
-}
