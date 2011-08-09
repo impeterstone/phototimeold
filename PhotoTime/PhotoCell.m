@@ -306,7 +306,11 @@ static UIImage *_like = nil;
   [_commentButton setTitle:comments forState:UIControlStateNormal];
   
   // Caption
-  _captionLabel.text = photo.name;
+  if ([photo.name length] > 0) {
+    _captionLabel.text = photo.name;
+  } else {
+    _captionLabel.text = [NSString stringWithFormat:@"Photo uploaded on %@", [NSDate stringForDisplayFromDate:photo.timestamp]];
+  }
 }
 
 - (void)loadPhoto {
