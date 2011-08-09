@@ -25,6 +25,7 @@ typedef enum {
   NSPredicate *_searchPredicate;
   NSInteger _fetchLimit;
   NSInteger _fetchTotal;
+  BOOL _isFetching;
   id _frcDelegate;
 }
 

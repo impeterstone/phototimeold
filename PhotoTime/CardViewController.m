@@ -45,6 +45,7 @@
   _nullView = [[PSNullView alloc] initWithFrame:self.view.bounds];
   [_nullView setLoadingLabel:_loadingLabel];
   [_nullView setEmptyLabel:_emptyLabel];
+  [_nullView setState:PSNullViewStateDisabled];
   [self.view addSubview:_nullView];
   
   //  self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];

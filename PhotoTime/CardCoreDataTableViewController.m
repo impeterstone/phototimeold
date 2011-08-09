@@ -30,6 +30,7 @@
     _sectionNameKeyPathForFetchedResultsController = nil;
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
+    _isFetching = NO;
     _frcDelegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changesSaved:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -49,6 +50,10 @@
 #pragma mark State Machine
 - (BOOL)dataIsAvailable {
   return (_fetchedResultsController && _fetchedResultsController.fetchedObjects.count > 0);
+}
+
+- (BOOL)dataIsLoading {
+  return _isFetching || _reloading;
 }
 
 - (void)updateState {
@@ -120,6 +125,8 @@
 }
 
 - (void)executeFetch:(FetchType)fetchType {
+  _isFetching = YES;
+  
   if (fetchType == FetchTypeCold) {
     _fetchTotal = _fetchLimit;
   }
@@ -189,6 +196,7 @@
             [_tableView reloadData];
           }
         }
+        _isFetching = NO;
         [self updateState];
       } else {
         VLog(@"Fetch failed with error: %@", [error localizedDescription]);
