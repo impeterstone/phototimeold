@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardTableViewController.h"
+#import "PSTableViewController.h"
 #import "SearchTermDelegate.h"
 
-@interface SearchTermController : CardTableViewController {
+@interface SearchTermController : PSTableViewController {
   UIView *_noResultsView;
   id <SearchTermDelegate> _delegate;
 }

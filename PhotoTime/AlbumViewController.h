@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardCoreDataTableViewController.h"
+#import "PSCoreDataTableViewController.h"
 
 
 typedef enum {
@@ -24,7 +24,7 @@ typedef enum {
   AlbumTypeSearch = 10
 } AlbumType;
 
-@interface AlbumViewController : CardCoreDataTableViewController {
+@interface AlbumViewController : PSCoreDataTableViewController {
   AlbumType _albumType;
 }
 

@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardViewController.h"
+#import "PSBaseViewController.h"
 #import "UploadDelegate.h"
 
 @class PSTextField;
 
-@interface UploadViewController : CardViewController <UITextFieldDelegate> {
+@interface UploadViewController : PSBaseViewController <UITextFieldDelegate> {
   UIImage *_uploadImage;
   PSTextField *_captionField;
   UIView *_footerView;

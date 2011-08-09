@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardTableViewController.h"
+#import "PSTableViewController.h"
 
-@interface FilterViewController : CardTableViewController {
+@interface FilterViewController : PSTableViewController {
   
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardCoreDataTableViewController.h"
+#import "PSCoreDataTableViewController.h"
 #import "PhotoCellDelegate.h"
 #import "UploadDelegate.h"
 
@@ -17,7 +17,7 @@
 @class PSRollupView;
 @class PSTextField;
 
-@interface PhotoViewController : CardCoreDataTableViewController <PhotoCellDelegate, UploadDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate> {
+@interface PhotoViewController : PSCoreDataTableViewController <PhotoCellDelegate, UploadDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate> {
   Album *_album;
   Photo *_photoToComment;
   PSRollupView *_taggedFriendsView;

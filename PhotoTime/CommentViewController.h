@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardTableViewController.h"
+#import "PSTableViewController.h"
 
 @class Photo;
 
-@interface CommentViewController : CardTableViewController {
+@interface CommentViewController : PSTableViewController {
   Photo *_photo;
 }
 
