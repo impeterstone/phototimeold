@@ -308,7 +308,7 @@
   
   ZoomViewController *zvc = [[ZoomViewController alloc] init];
   [self presentModalViewController:zvc animated:YES];
-  zvc.imageView.image = [cell.photoView.image copy];
+  zvc.imageView.image = cell.photoView.image;
   [zvc release];
   
 //  CommentViewController *cvc = [[CommentViewController alloc] init];
