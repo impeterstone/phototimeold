@@ -57,8 +57,7 @@
   [self resetFetchedResultsController];
   
   // Table
-  CGRect tableFrame = self.view.bounds;
-  [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
+  [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
 //  self.tableView.rowHeight = 120.0;
   

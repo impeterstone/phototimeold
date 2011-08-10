@@ -360,8 +360,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   }
 }
 
-#pragma mark -
-#pragma mark PSDataCenterDelegate
+#pragma mark - PSDataCenterDelegate
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
   // Me request
   if ([[request.userInfo objectForKey:@"albumRequestType"] isEqualToString:@"me"]) {

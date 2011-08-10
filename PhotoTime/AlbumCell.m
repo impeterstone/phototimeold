@@ -14,14 +14,12 @@
 #define RIBBON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0]
 
 static UIImage *_ribbonImage = nil;
-static UIImage *_overlayImage = nil;
 static UIImage *_disclosureImage = nil;
 
 @implementation AlbumCell
 
 + (void)initialize {
   _ribbonImage = [[[UIImage imageNamed:@"ribbon.png"] stretchableImageWithLeftCapWidth:30 topCapHeight:0] retain];
-  _overlayImage = [[UIImage imageNamed:@"bg_album_overlay.png"] retain];
   _disclosureImage = [[UIImage imageNamed:@"disclosure_indicator_white_bordered.png"] retain];
 }
 
@@ -36,7 +34,6 @@ static UIImage *_disclosureImage = nil;
     _photoHeight = 0;
     
     _nameLabel = [[UILabel alloc] init];
-//    _captionLabel = [[UILabel alloc] init];
     _fromLabel = [[UILabel alloc] init];
     _locationLabel = [[UILabel alloc] init];
     _countLabel = [[UILabel alloc] init];
@@ -44,7 +41,6 @@ static UIImage *_disclosureImage = nil;
     
     // Background Color
     _nameLabel.backgroundColor = [UIColor clearColor];
-//    _captionLabel.backgroundColor = [UIColor clearColor];
     _fromLabel.backgroundColor = [UIColor clearColor];
     _locationLabel.backgroundColor = [UIColor clearColor];
     _countLabel.backgroundColor = [UIColor clearColor];
@@ -52,7 +48,6 @@ static UIImage *_disclosureImage = nil;
     
     // Font
     _nameLabel.font = TITLE_FONT;
-//    _captionLabel.font = CAPTION_FONT;
     _fromLabel.font = SUBTITLE_FONT;
     _locationLabel.font = SUBTITLE_FONT;
     _countLabel.font = RIBBON_FONT;
@@ -60,7 +55,6 @@ static UIImage *_disclosureImage = nil;
     
     // Text Color
     _nameLabel.textColor = [UIColor whiteColor];
-//    _captionLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
     _fromLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
     _locationLabel.textColor = FB_COLOR_VERY_LIGHT_BLUE;
     _countLabel.textColor = [UIColor whiteColor];
@@ -74,7 +68,6 @@ static UIImage *_disclosureImage = nil;
     
     // Line Break Mode
     _nameLabel.lineBreakMode = UILineBreakModeTailTruncation;
-//    _captionLabel.lineBreakMode = UILineBreakModeTailTruncation;
     _fromLabel.lineBreakMode = UILineBreakModeTailTruncation;
     _locationLabel.lineBreakMode = UILineBreakModeTailTruncation;
     _countLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -82,7 +75,6 @@ static UIImage *_disclosureImage = nil;
     
     // Number of Lines
     _nameLabel.numberOfLines = 1;
-//    _captionLabel.numberOfLines = 1;
     _fromLabel.numberOfLines = 1;
     _locationLabel.numberOfLines = 1;
     _countLabel.numberOfLines = 1;
@@ -91,26 +83,12 @@ static UIImage *_disclosureImage = nil;
     // Shadows
     _nameLabel.shadowColor = [UIColor blackColor];
     _nameLabel.shadowOffset = CGSizeMake(0, -1);
-//    _captionLabel.shadowColor = [UIColor blackColor];
-//    _captionLabel.shadowOffset = CGSizeMake(0, -1);
     _fromLabel.shadowColor = [UIColor blackColor];
     _fromLabel.shadowOffset = CGSizeMake(0, -1);
     _countLabel.shadowColor = [UIColor blackColor];
     _countLabel.shadowOffset = CGSizeMake(1, 1);
     
-    // Caption
-//    _captionView = [[UIView alloc] initWithFrame:CGRectZero];
-//    _captionView.backgroundColor = [UIColor blueColor];
-//    _captionView.layer.opacity = 0.0;
-    
-    // Photo
-//    CGFloat cellHeight = 0.0;
-//    if (isDeviceIPad()) {
-//      cellHeight = 288.0;
-//    } else {
-//      cellHeight = 120.0;
-//    }
-    
+    // Photo    
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.shouldScale = YES;
     _photoView.shouldAnimate = NO;
@@ -118,13 +96,14 @@ static UIImage *_disclosureImage = nil;
 //    _photoView.placeholderImage = [UIImage imageNamed:@"album-placeholder.png"];
 //    _photoView = [[PSImageView alloc] initWithFrame:CGRectZero];
     
+    // Overlay
+    _overlayView = [[UIView alloc] initWithFrame:CGRectZero];
+    _overlayView.backgroundColor = [UIColor clearColor];
+    
     // Disclosure
     _disclosureView = [[UIImageView alloc] initWithImage:_disclosureImage];
     _disclosureView.contentMode = UIViewContentModeCenter;
     _disclosureView.alpha = 0.6;
-    
-    // Overlay
-    _overlayView = [[UIImageView alloc] initWithImage:_overlayImage];
 
     // Ribbon
     _ribbonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 68, 24)];
@@ -137,13 +116,11 @@ static UIImage *_disclosureImage = nil;
     // Add to contentView
     [self.contentView addSubview:_photoView];
     [self.contentView addSubview:_overlayView];
-//    [self.contentView addSubview:_captionView];
     [self.contentView addSubview:_ribbonView];
     [self.contentView addSubview:_disclosureView];
     
     // Add labels
     [self.contentView addSubview:_nameLabel];
-//    [self.contentView addSubview:_captionLabel];
     [self.contentView addSubview:_fromLabel];
     [self.contentView addSubview:_locationLabel];
     [self.contentView addSubview:_dateLabel];
@@ -162,7 +139,6 @@ static UIImage *_disclosureImage = nil;
   }
   
   _nameLabel.text = nil;
-//  _captionLabel.text = nil;
   _fromLabel.text = nil;
   _locationLabel.text = nil;
   _dateLabel.text = nil;
@@ -185,9 +161,18 @@ static UIImage *_disclosureImage = nil;
   
   // Set Frames
   _photoView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
-  _overlayView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
   _ribbonView.frame = CGRectMake(self.contentView.width - 68, 10, 68, 24);
   _disclosureView.frame = CGRectMake(self.contentView.width - _disclosureView.width - MARGIN_X, 0, _disclosureView.width, self.contentView.height);
+  _overlayView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
+  
+  // Add Gradient Overlay
+  if (![[[_overlayView.layer sublayers] lastObject] isKindOfClass:[CAGradientLayer class]]) {
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = _overlayView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[RGBACOLOR(0, 0, 0, 0.9) CGColor], (id)[RGBACOLOR(0, 0, 0, 1.0) CGColor], nil];
+    gradient.locations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.99], [NSNumber numberWithFloat:1.0], nil];
+    [_overlayView.layer addSublayer:gradient];
+  }
   
   CGFloat top = cellHeight - 34;
   CGFloat left = MARGIN_X;
@@ -216,15 +201,6 @@ static UIImage *_disclosureImage = nil;
   _dateLabel.left = self.contentView.width - desiredSize.width - MARGIN_X - 1;
   _dateLabel.width = desiredSize.width;
   _dateLabel.height = desiredSize.height;
-  
-//  if ([_captionLabel.text length] > 0) {    
-//    // Caption
-//    desiredSize = [UILabel sizeForText:_captionLabel.text width:textWidth font:_captionLabel.font numberOfLines:1 lineBreakMode:_captionLabel.lineBreakMode];
-//    _captionLabel.top = top - 2; // -2
-//    _captionLabel.left = left;
-//    _captionLabel.width = desiredSize.width;
-//    _captionLabel.height = desiredSize.height;
-//  }
 }
 
 
@@ -305,7 +281,6 @@ static UIImage *_disclosureImage = nil;
   
   // Labels
   _nameLabel.text = album.name;
-//  _captionLabel.text = album.caption;
   _fromLabel.text = [NSString stringWithFormat:@"by %@", album.fromName];
 //  _locationLabel.text = [NSString stringWithFormat:@"%@", album.location];
   _dateLabel.text = [NSDate stringForDisplayFromDate:album.timestamp];
@@ -353,12 +328,10 @@ static UIImage *_disclosureImage = nil;
 - (void)dealloc {
   RELEASE_SAFELY(_photoView);
   RELEASE_SAFELY(_overlayView);
-//  RELEASE_SAFELY(_captionView);
   RELEASE_SAFELY(_ribbonView);
   RELEASE_SAFELY(_disclosureView);
   
   RELEASE_SAFELY(_nameLabel);
-//  RELEASE_SAFELY(_captionLabel);
   RELEASE_SAFELY(_fromLabel);
   RELEASE_SAFELY(_locationLabel);
   RELEASE_SAFELY(_countLabel);
