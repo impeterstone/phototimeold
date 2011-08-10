@@ -24,7 +24,6 @@
 		2544ACB213788E2C0072C86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACB113788E2B0072C86C /* CoreMedia.framework */; };
 		2544ACB413788E380072C86C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544ACB313788E370072C86C /* CoreVideo.framework */; };
 		2546E8BA138226A200BD8757 /* Like.m in Sources */ = {isa = PBXBuildFile; fileRef = 2546E8B9138226A200BD8757 /* Like.m */; };
-		2547ADB413B1535F00167F9E /* PSDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2547ADB313B1535F00167F9E /* PSDataCenter.m */; };
 		25544F211384B1A700948E2C /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25544F201384B1A700948E2C /* ISO8601DateFormatter.m */; };
 		2554C4C313D78D50005344FD /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 2554C4C213D78D4F005344FD /* Icon-72.png */; };
 		255920391385350E00557E70 /* ribbon.png in Resources */ = {isa = PBXBuildFile; fileRef = 255920371385350E00557E70 /* ribbon.png */; };
@@ -276,6 +275,7 @@
 		28E6F99E13E64835002337A9 /* nux_comic_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F99613E64835002337A9 /* nux_comic_3@2x.png */; };
 		28E6F99F13E64835002337A9 /* nux_comic_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F99713E64835002337A9 /* nux_comic_4.png */; };
 		28E6F9A013E64835002337A9 /* nux_comic_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F99813E64835002337A9 /* nux_comic_4@2x.png */; };
+		28F7490B13F202100056D111 /* PSDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F7490913F202100056D111 /* PSDataCenter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -302,8 +302,6 @@
 		2544ACB313788E370072C86C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		2546E8B8138226A200BD8757 /* Like.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Like.h; sourceTree = "<group>"; };
 		2546E8B9138226A200BD8757 /* Like.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Like.m; sourceTree = "<group>"; };
-		2547ADB213B1535F00167F9E /* PSDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenter.h; sourceTree = "<group>"; };
-		2547ADB313B1535F00167F9E /* PSDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSDataCenter.m; sourceTree = "<group>"; };
 		25544F1F1384B1A700948E2C /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
 		25544F201384B1A700948E2C /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
 		2554C4C213D78D4F005344FD /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
@@ -434,7 +432,6 @@
 		25F10F531397907F00445B36 /* Album.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Album.m; sourceTree = "<group>"; };
 		25FB8B53133A03A100C130A8 /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
 		25FB8B54133A03A100C130A8 /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
-		25FB8B99133A069E00C130A8 /* PSDataCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenterDelegate.h; sourceTree = "<group>"; };
 		25FB8BB3133A0D3C00C130A8 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		25FB8BB4133A0D3D00C130A8 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		25FB8BCF133A1B9400C130A8 /* InitialDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InitialDefaults.plist; sourceTree = "<group>"; };
@@ -686,6 +683,9 @@
 		28E6F99613E64835002337A9 /* nux_comic_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_comic_3@2x.png"; sourceTree = "<group>"; };
 		28E6F99713E64835002337A9 /* nux_comic_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nux_comic_4.png; sourceTree = "<group>"; };
 		28E6F99813E64835002337A9 /* nux_comic_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_comic_4@2x.png"; sourceTree = "<group>"; };
+		28F7490813F202100056D111 /* PSDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenter.h; sourceTree = "<group>"; };
+		28F7490913F202100056D111 /* PSDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSDataCenter.m; sourceTree = "<group>"; };
+		28F7490A13F202100056D111 /* PSDataCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenterDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -741,9 +741,12 @@
 			children = (
 				2814E22713F1EF1D00D7A85A /* Categories */,
 				2814E24213F1EF1D00D7A85A /* Controllers */,
+				2814E24E13F1EF1D00D7A85A /* PSConstants.h */,
 				2814E24C13F1EF1D00D7A85A /* PSAlertCenter.h */,
 				2814E24D13F1EF1D00D7A85A /* PSAlertCenter.m */,
-				2814E24E13F1EF1D00D7A85A /* PSConstants.h */,
+				28F7490813F202100056D111 /* PSDataCenter.h */,
+				28F7490913F202100056D111 /* PSDataCenter.m */,
+				28F7490A13F202100056D111 /* PSDataCenterDelegate.h */,
 				2814E24F13F1EF1D00D7A85A /* PSCoreDataImageCache.h */,
 				2814E25013F1EF1D00D7A85A /* PSCoreDataImageCache.m */,
 				2814E25113F1EF1D00D7A85A /* PSCoreDataStack.h */,
@@ -1063,8 +1066,6 @@
 		25FB8B96133A065200C130A8 /* DataCenters */ = {
 			isa = PBXGroup;
 			children = (
-				2547ADB213B1535F00167F9E /* PSDataCenter.h */,
-				2547ADB313B1535F00167F9E /* PSDataCenter.m */,
 				25EFD3FD1343E18D000108B8 /* LoginDataCenter.h */,
 				25EFD3FE1343E18E000108B8 /* LoginDataCenter.m */,
 				25DC5F2D136626EC00868001 /* AlbumDataCenter.h */,
@@ -1102,7 +1103,6 @@
 			isa = PBXGroup;
 			children = (
 				25FB8BD3133A1DE400C130A8 /* LoginDelegate.h */,
-				25FB8B99133A069E00C130A8 /* PSDataCenterDelegate.h */,
 				25961C9E134D46CD00A3D4CD /* MeDelegate.h */,
 				2564404A138902F30050D948 /* PhotoCellDelegate.h */,
 				25D4D28F13B077C900A21C4C /* ComposeDelegate.h */,
@@ -1683,7 +1683,6 @@
 				25FCA3AC13996896009CD59C /* Photo.m in Sources */,
 				2578373F139968ED00712B8B /* Tag+Serialize.m in Sources */,
 				25D4D2AF13B084D400A21C4C /* UITabBarController+Autorotate.m in Sources */,
-				2547ADB413B1535F00167F9E /* PSDataCenter.m in Sources */,
 				25E353ED13CA648F00734BB5 /* FilterViewController.m in Sources */,
 				258777CC13CBDBFB00990C71 /* FilterCell.m in Sources */,
 				25960F1E13CD72EA00B44845 /* Search.m in Sources */,
@@ -1762,6 +1761,7 @@
 				2814E2F413F1EF1D00D7A85A /* PSWelcomeView.m in Sources */,
 				2814E2F513F1EF1D00D7A85A /* PSZoomView.m in Sources */,
 				2814E3D613F1F0C300D7A85A /* EGORefreshTableHeaderView.m in Sources */,
+				28F7490B13F202100056D111 /* PSDataCenter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
