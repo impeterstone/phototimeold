@@ -14,7 +14,6 @@
 #import "HeaderCell.h"
 #import "PhotoCell.h"
 #import "PSZoomView.h"
-#import "CommentViewController.h"
 #import "PSRollupView.h"
 #import "PSToastCenter.h"
 #import "UploadViewController.h"
@@ -104,8 +103,6 @@
 - (void)loadView {
   [super loadView];
   
-  [self resetFetchedResultsController];
-  
   // Title and Buttons
   _navTitleLabel.text = _album.name;
   
@@ -153,16 +150,35 @@
   [_cancelButton addTarget:_commentField action:@selector(resignFirstResponder) forControlEvents:UIControlEventTouchUpInside];
   _cancelButton.alpha = 0.0;
   [_commentView addSubview:_cancelButton];
-  
+
   [self.view addSubview:_commentView];
   
-  // Pull Refresh
-//  [self setupPullRefresh];
-  
+  [self loadDataSource];
+}
+
+#pragma mark - State Machine
+- (void)loadDataSource {
+  [super loadDataSource];
   [self executeFetch:FetchTypeCold];
-  
-  // Get new from server
-  [self reloadCardController];
+  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
+}
+
+- (void)dataSourceDidLoad {
+  [super dataSourceDidLoad];
+}
+
+- (void)updateState {
+  [super updateState];
+  [self getTaggedFriends];
+}
+
+#pragma mark - PSDataCenterDelegate
+- (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {
+  [self dataSourceDidLoad];
+}
+
+- (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
+  [self dataSourceDidLoad];
 }
 
 #pragma mark - UploadDelegate
@@ -206,32 +222,6 @@
       }
     }
   }
-}
-
-#pragma mark - State Machine
-- (void)updateState {
-  [super updateState];
-  [self getTaggedFriends];
-}
-
-- (void)reloadCardController {
-  [super reloadCardController];
-
-  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
-}
-
-- (void)unloadCardController {
-  [super unloadCardController];
-}
-
-#pragma mark -
-#pragma mark PSDataCenterDelegate
-- (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {
-  [self dataSourceDidLoad];
-}
-
-- (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
-  [self dataSourceDidLoad];
 }
 
 #pragma mark - Actions
@@ -310,15 +300,6 @@
   [self presentModalViewController:zvc animated:YES];
   zvc.imageView.image = cell.photoView.image;
   [zvc release];
-  
-//  CommentViewController *cvc = [[CommentViewController alloc] init];
-//  cvc.photo = photo;
-//  cvc.photoOffset = photoFrame.origin.y + 44;
-//  cvc.photoView.image = cell.photoView.image;
-  //  cvc.photoView.image = cell.photoView.image;
-  
-//  [self.navigationController.view addSubview:cvc.view];
-//  [cvc viewWillAppear:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -370,22 +351,6 @@
 	// This is where magic happens...
 	[_tableView beginUpdates];
 	[_tableView endUpdates];
-  
-//  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
-//  
-//  CommentViewController *cvc = [[CommentViewController alloc] init];
-//  cvc.photo = photo;
-//  cvc.photoOffset = photoFrame.origin.y + 44;
-//  cvc.photoView.image = cell.photoView.image;
-////  cvc.photoView.image = cell.photoView.image;
-//  
-//  // If there are no comments, compose on appear
-//  if ([photo.comments count] == 0) {
-//    cvc.composeOnAppear = YES;
-//  }
-//  
-//  [self.navigationController.view addSubview:cvc.view];
-//  [cvc viewWillAppear:YES];
 }
 
 - (void)addRemoveLikeForCell:(PhotoCell *)cell {

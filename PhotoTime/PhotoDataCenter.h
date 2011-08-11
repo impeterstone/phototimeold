@@ -14,8 +14,6 @@
 @interface PhotoDataCenter : PSDataCenter {
 }
 
-+ (PhotoDataCenter *)defaultCenter;
-
 /**
  Get photos from Server
  */

@@ -9,7 +9,6 @@
 #import "AlbumViewController.h"
 #import "AlbumDataCenter.h"
 #import "PhotoViewController.h"
-#import "FilterViewController.h"
 #import "AlbumCell.h"
 #import "Album.h"
 
@@ -25,21 +24,14 @@
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
 //    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDataSource) name:kReloadAlbumController object:nil];
   }
   return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCardController) name:kReloadAlbumController object:nil];
-  [self reloadCardController];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-  [super viewWillDisappear:animated];
-  
+- (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
+  [super dealloc];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -54,53 +46,28 @@
 - (void)loadView {
   [super loadView];
   
-  [self resetFetchedResultsController];
-  
   // Table
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-//  self.tableView.rowHeight = 120.0;
-  
   if (self.albumType == AlbumTypeSearch) {
-    [self addBackButton];
-    
+    [self addBackButton]; 
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Save" withTarget:self action:@selector(save) buttonType:NavButtonTypeBlue];
   }
-
-  
-//  UILabel *searchLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44.0 - (isDeviceIPad() ? 352 : 216))] autorelease];
-//  searchLabel.numberOfLines = 8;
-//  searchLabel.text = @"Search for keywords, people, or places.\n\nTypeahead table view here";
-//  searchLabel.textAlignment = UITextAlignmentCenter;
-//  searchLabel.textColor = [UIColor whiteColor];
-//  searchLabel.shadowColor = [UIColor blackColor];
-//  searchLabel.shadowOffset = CGSizeMake(0, 1);
-//  searchLabel.backgroundColor = [UIColor clearColor];
-  
-
-//  _searchTermController.view.height -= 44;
-//  _searchTermController.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - (isDeviceIPad() ? 352 : 216) - 44);
-
-  
-//  [self addButtonWithTitle:@"Logout" andSelector:@selector(logout) isLeft:YES];
-//  [self addButtonWithImage:[UIImage imageNamed:@"bg_searchbar_textfield.png"] withTarget:self action:@selector(search) isLeft:YES];
-  
-  //  self.navigationItem.leftBarButtonItem = [self navButtonWithImage:[UIImage imageNamed:@"icon_gear.png"] withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal];
-  
-
   
 //  _navTitleLabel.text = @"PhotoTime";
   
-  // Pull Refresh
-//  [self setupPullRefresh];
-  
-//  [self setupLoadMoreView];
-  
-  [self executeFetch:FetchTypeCold];
+  [self loadDataSource];
 }
 
-- (void)save {
-  
+#pragma mark - State Machine
+- (void)loadDataSource {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
+    [super loadDataSource];
+    _hasMore = YES;
+    _fetchTotal = _fetchLimit;
+    [self executeFetch:FetchTypeCold];
+    [self dataSourceDidLoad];
+  }
 }
 
 - (void)updateState {
@@ -133,17 +100,8 @@
   }
 }
 
-- (void)reloadCardController {
-  [super reloadCardController];
-  _hasMore = YES;
-  _fetchTotal = _fetchLimit;
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    [self dataSourceDidLoad];
-  }
-}
-
-- (void)unloadCardController {
-  [super unloadCardController];
+- (void)save {
+  
 }
 
 #pragma mark - TableView
@@ -261,10 +219,6 @@
   [fetchRequest setFetchBatchSize:10];
   [fetchRequest setFetchLimit:_fetchTotal];
   return fetchRequest;
-}
-
-- (void)dealloc {
-  [super dealloc];
 }
 
 @end

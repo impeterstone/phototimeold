@@ -75,7 +75,6 @@
 		259C7B4E1349735D00C37AE1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259C7B4D1349735D00C37AE1 /* CFNetwork.framework */; };
 		259C7B71134A915000C37AE1 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259C7B70134A914800C37AE1 /* MediaPlayer.framework */; };
 		25B9C74E138C6FEA003FEE96 /* Comment+Serialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B9C74D138C6FEA003FEE96 /* Comment+Serialize.m */; };
-		25B9C759138C8882003FEE96 /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B9C758138C8882003FEE96 /* CommentViewController.m */; };
 		25B9C769138DCC38003FEE96 /* bg_searchbar_textfield@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B9C767138DCC38003FEE96 /* bg_searchbar_textfield@2x.png */; };
 		25B9C76A138DCC38003FEE96 /* bg_searchbar_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B9C768138DCC38003FEE96 /* bg_searchbar_textfield.png */; };
 		25B9C76D138DD701003FEE96 /* disclosure_indicator_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B9C76B138DD700003FEE96 /* disclosure_indicator_white@2x.png */; };
@@ -106,7 +105,6 @@
 		25DC5F3B136648A300868001 /* NSDictionary+Merge.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DC5F3A136648A300868001 /* NSDictionary+Merge.m */; };
 		25E0BC5E13CFA9BF0062D99C /* icon_like.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E0BC5C13CFA9BF0062D99C /* icon_like.png */; };
 		25E0BC5F13CFA9BF0062D99C /* icon_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E0BC5D13CFA9BF0062D99C /* icon_like@2x.png */; };
-		25E353ED13CA648F00734BB5 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E353EC13CA648F00734BB5 /* FilterViewController.m */; };
 		25EFD3861341E438000108B8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EFD3851341E438000108B8 /* MobileCoreServices.framework */; };
 		25EFD3FF1343E18E000108B8 /* LoginDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EFD3FE1343E18E000108B8 /* LoginDataCenter.m */; };
 		25EFD4051343E774000108B8 /* HashValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EFD4041343E774000108B8 /* HashValue.m */; };
@@ -198,6 +196,9 @@
 		28A0310613ECD943003592E6 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310313ECD943003592E6 /* Default-Portrait.png */; };
 		28A0310713ECD943003592E6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310413ECD943003592E6 /* Default.png */; };
 		28A0310813ECD943003592E6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310513ECD943003592E6 /* Default@2x.png */; };
+		28A0618013F3EE6E00DF60A7 /* PSStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0617E13F3EE6E00DF60A7 /* PSStyleSheet.m */; };
+		28A0618113F3EE6E00DF60A7 /* PSStyleSheet.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28A0617F13F3EE6E00DF60A7 /* PSStyleSheet.plist */; };
+		28A0619113F3F06E00DF60A7 /* UIColor+SML.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0619013F3F06E00DF60A7 /* UIColor+SML.m */; };
 		28A1B26013F0B09300EB971E /* ZoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A1B25F13F0B09300EB971E /* ZoomViewController.m */; };
 		28A9FABC13F2701500EFB191 /* PSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A9FABB13F2701500EFB191 /* PSCell.m */; };
 		28B13DBC13E8DC2D00F9E38B /* button_sketch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B13DBA13E8DC2D00F9E38B /* button_sketch.png */; };
@@ -370,8 +371,6 @@
 		259C7B70134A914800C37AE1 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		25B9C74C138C6FEA003FEE96 /* Comment+Serialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Comment+Serialize.h"; sourceTree = "<group>"; };
 		25B9C74D138C6FEA003FEE96 /* Comment+Serialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Comment+Serialize.m"; sourceTree = "<group>"; };
-		25B9C757138C8882003FEE96 /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
-		25B9C758138C8882003FEE96 /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
 		25B9C767138DCC38003FEE96 /* bg_searchbar_textfield@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_searchbar_textfield@2x.png"; sourceTree = "<group>"; };
 		25B9C768138DCC38003FEE96 /* bg_searchbar_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_searchbar_textfield.png; sourceTree = "<group>"; };
 		25B9C76B138DD700003FEE96 /* disclosure_indicator_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "disclosure_indicator_white@2x.png"; sourceTree = "<group>"; };
@@ -419,8 +418,6 @@
 		25DC5F3A136648A300868001 /* NSDictionary+Merge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Merge.m"; sourceTree = "<group>"; };
 		25E0BC5C13CFA9BF0062D99C /* icon_like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_like.png; sourceTree = "<group>"; };
 		25E0BC5D13CFA9BF0062D99C /* icon_like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_like@2x.png"; sourceTree = "<group>"; };
-		25E353EB13CA648F00734BB5 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
-		25E353EC13CA648F00734BB5 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		25EFD3851341E438000108B8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		25EFD3FD1343E18D000108B8 /* LoginDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDataCenter.h; sourceTree = "<group>"; };
 		25EFD3FE1343E18E000108B8 /* LoginDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LoginDataCenter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -597,6 +594,11 @@
 		28A0310313ECD943003592E6 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		28A0310413ECD943003592E6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		28A0310513ECD943003592E6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		28A0617D13F3EE6E00DF60A7 /* PSStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSStyleSheet.h; sourceTree = "<group>"; };
+		28A0617E13F3EE6E00DF60A7 /* PSStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSStyleSheet.m; sourceTree = "<group>"; };
+		28A0617F13F3EE6E00DF60A7 /* PSStyleSheet.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PSStyleSheet.plist; sourceTree = "<group>"; };
+		28A0618F13F3F06E00DF60A7 /* UIColor+SML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SML.h"; sourceTree = "<group>"; };
+		28A0619013F3F06E00DF60A7 /* UIColor+SML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SML.m"; sourceTree = "<group>"; };
 		28A1B25E13F0B09300EB971E /* ZoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomViewController.h; sourceTree = "<group>"; };
 		28A1B25F13F0B09300EB971E /* ZoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZoomViewController.m; sourceTree = "<group>"; };
 		28A9FABA13F2701500EFB191 /* PSCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSCell.h; sourceTree = "<group>"; };
@@ -715,8 +717,6 @@
 		250B3182133EBD840011EEDD /* Modals */ = {
 			isa = PBXGroup;
 			children = (
-				25E353EB13CA648F00734BB5 /* FilterViewController.h */,
-				25E353EC13CA648F00734BB5 /* FilterViewController.m */,
 				25420ADA13D51A3600DD5A27 /* UploadViewController.h */,
 				25420ADB13D51A3600DD5A27 /* UploadViewController.m */,
 			);
@@ -740,6 +740,9 @@
 				2814E22713F1EF1D00D7A85A /* Categories */,
 				2814E24213F1EF1D00D7A85A /* Controllers */,
 				2814E24E13F1EF1D00D7A85A /* PSConstants.h */,
+				28A0617D13F3EE6E00DF60A7 /* PSStyleSheet.h */,
+				28A0617E13F3EE6E00DF60A7 /* PSStyleSheet.m */,
+				28A0617F13F3EE6E00DF60A7 /* PSStyleSheet.plist */,
 				2814E24C13F1EF1D00D7A85A /* PSAlertCenter.h */,
 				2814E24D13F1EF1D00D7A85A /* PSAlertCenter.m */,
 				28F7490813F202100056D111 /* PSDataCenter.h */,
@@ -1086,8 +1089,6 @@
 				2511A8F71365F9FD00C9CF9A /* AlbumViewController.m */,
 				2511A8FA1365FA0B00C9CF9A /* PhotoViewController.h */,
 				2511A8FB1365FA0C00C9CF9A /* PhotoViewController.m */,
-				25B9C757138C8882003FEE96 /* CommentViewController.h */,
-				25B9C758138C8882003FEE96 /* CommentViewController.m */,
 				28A1B25E13F0B09300EB971E /* ZoomViewController.h */,
 				28A1B25F13F0B09300EB971E /* ZoomViewController.m */,
 				25960F2913CD791400B44845 /* SearchTermController.h */,
@@ -1131,6 +1132,8 @@
 		2814E22713F1EF1D00D7A85A /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				28A0618F13F3F06E00DF60A7 /* UIColor+SML.h */,
+				28A0619013F3F06E00DF60A7 /* UIColor+SML.m */,
 				2814E22813F1EF1D00D7A85A /* NSArray+SML.h */,
 				2814E22913F1EF1D00D7A85A /* NSArray+SML.m */,
 				2814E22A13F1EF1D00D7A85A /* NSData+SML.h */,
@@ -1634,6 +1637,7 @@
 				2814E3DC13F1F0C300D7A85A /* grayArrow@2x.png in Resources */,
 				2814E3DD13F1F0C300D7A85A /* whiteArrow.png in Resources */,
 				2814E3DE13F1F0C300D7A85A /* whiteArrow@2x.png in Resources */,
+				28A0618113F3EE6E00DF60A7 /* PSStyleSheet.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1671,7 +1675,6 @@
 				254097451383527600EBE848 /* UISearchBar+Custom.m in Sources */,
 				25544F211384B1A700948E2C /* ISO8601DateFormatter.m in Sources */,
 				25B9C74E138C6FEA003FEE96 /* Comment+Serialize.m in Sources */,
-				25B9C759138C8882003FEE96 /* CommentViewController.m in Sources */,
 				25B9C771138DDBCE003FEE96 /* CommentCell.m in Sources */,
 				252F70C61393B04B007C7D4A /* Comment.m in Sources */,
 				25F10F541397907F00445B36 /* Album.m in Sources */,
@@ -1679,7 +1682,6 @@
 				25FCA3AC13996896009CD59C /* Photo.m in Sources */,
 				2578373F139968ED00712B8B /* Tag+Serialize.m in Sources */,
 				25D4D2AF13B084D400A21C4C /* UITabBarController+Autorotate.m in Sources */,
-				25E353ED13CA648F00734BB5 /* FilterViewController.m in Sources */,
 				258777CC13CBDBFB00990C71 /* FilterCell.m in Sources */,
 				25960F1E13CD72EA00B44845 /* Search.m in Sources */,
 				25960F2213CD731400B44845 /* Search+Serialize.m in Sources */,
@@ -1758,6 +1760,8 @@
 				2814E3D613F1F0C300D7A85A /* EGORefreshTableHeaderView.m in Sources */,
 				28F7490B13F202100056D111 /* PSDataCenter.m in Sources */,
 				28A9FABC13F2701500EFB191 /* PSCell.m in Sources */,
+				28A0618013F3EE6E00DF60A7 /* PSStyleSheet.m in Sources */,
+				28A0619113F3F06E00DF60A7 /* UIColor+SML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

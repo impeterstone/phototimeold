@@ -16,8 +16,6 @@
   NSUInteger _parseIndex;
 }
 
-+ (AlbumDataCenter *)defaultCenter;
-
 /**
  Get albums from Server
  */

@@ -10,14 +10,6 @@
 
 @implementation LoginDataCenter
 
-+ (LoginDataCenter *)defaultCenter {
-  static LoginDataCenter *defaultCenter = nil;
-  if (!defaultCenter) {
-    defaultCenter = [[self alloc] init];
-  }
-  return defaultCenter;
-}
-
 - (void)getMe {
   NSURL *meUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me", FB_GRAPH]];
   

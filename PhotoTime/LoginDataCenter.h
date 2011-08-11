@@ -13,8 +13,6 @@
 
 }
 
-+ (LoginDataCenter *)defaultCenter;
-
 //- (void)startFacebookLogin;
 - (void)getMe;
 - (void)getFriends;
