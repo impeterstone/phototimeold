@@ -13,7 +13,6 @@
 
 #define CAPTION_HEIGHT 40.0
 
-static UIImage *_overlay = nil;
 static UIImage *_comment = nil;
 static UIImage *_like = nil;
 
@@ -23,7 +22,6 @@ static UIImage *_like = nil;
 @synthesize delegate = _delegate;
 
 + (void)initialize {
-  _overlay = [[UIImage stretchableImageNamed:@"bg_caption.png" withLeftCapWidth:0 topCapWidth:1] retain];
   _comment = [[UIImage imageNamed:@"comment_indicator.png"] retain];
   _like = [[UIImage imageNamed:@"icon_like.png"] retain];
 }
@@ -105,8 +103,10 @@ static UIImage *_like = nil;
     
     // Caption
     _captionView = [[UIView alloc] initWithFrame:CGRectZero];
-    UIImageView *cbg = [[[UIImageView alloc] initWithImage:_overlay] autorelease];
-    cbg.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    UIImageView *cbg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_caption.png"]] autorelease];
+    _captionView.backgroundColor = [UIColor clearColor];
+    cbg.frame = _captionView.bounds;
+    cbg.autoresizingMask = ~UIViewAutoresizingNone;
     [_captionView addSubview:cbg];
     [_captionView addSubview:_captionLabel];
     [_captionView addSubview:_commentButton];
