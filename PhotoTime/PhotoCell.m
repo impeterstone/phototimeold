@@ -364,10 +364,8 @@ static UIImage *_like = nil;
 }
 
 - (void)showComments {
-  if ([_photo.comments count] > 0) {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(commentsSelectedForCell:)]) {
-      [self.delegate commentsSelectedForCell:self];
-    }
+  if (self.delegate && [self.delegate respondsToSelector:@selector(commentsSelectedForCell:)]) {
+    [self.delegate commentsSelectedForCell:self];
   }
 }
 
