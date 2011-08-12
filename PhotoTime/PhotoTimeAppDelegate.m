@@ -229,6 +229,7 @@
       break;
   }
   UIImageView *overlayView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:img]] autorelease];
+  overlayView.autoresizingMask = ~UIViewAutoresizingNone;
   overlayView.contentMode = UIViewContentModeScaleAspectFit;
   return overlayView;
 }

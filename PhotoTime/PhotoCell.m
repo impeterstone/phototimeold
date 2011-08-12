@@ -10,6 +10,7 @@
 #import "Comment.h"
 #import "PSRollupView.h"
 #import "CommentView.h"
+#import "UIButton+SML.h"
 
 #define CAPTION_HEIGHT 40.0
 
@@ -63,7 +64,7 @@ static UIImage *_like = nil;
     
     // Comment Button
     _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    [_commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
+    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     [_commentButton setBackgroundImage:_comment forState:UIControlStateNormal];
     _commentButton.titleLabel.font = [UIFont systemFontOfSize:10];
     [_commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -113,7 +114,7 @@ static UIImage *_like = nil;
     
     // Add to contentView
     [self.contentView addSubview:_photoView];
-    [self.contentView addSubview:_likeButton];
+//    [self.contentView addSubview:_likeButton];
     [self.contentView addSubview:_captionView];
     [self.contentView addSubview:_commentsFrame];
     [self.contentView addSubview:_commentsView];
@@ -236,10 +237,31 @@ static UIImage *_like = nil;
   
   // If expanded, show comments    
   NSUInteger numComments = [_photo.comments count];
-  if (numComments > 0 && [self isExpanded]) {
+  if ([self isExpanded]) {
     if ([[_commentsView subviews] count] > 0) return;
     _commentsView.contentSize = CGSizeMake(_commentsView.width * numComments, _commentsView.height);
-    int i = 0;
+    // add Like and Comment Button
+    UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    likeButton.frame = CGRectMake(15, 15, 120, 29);
+    [likeButton addTarget:self action:@selector(addRemoveLike) forControlEvents:UIControlEventTouchUpInside];
+    [likeButton setBackgroundImage:[UIImage imageNamed:@"button_drawer.png"] forState:UIControlStateNormal];
+    [likeButton setBackgroundImage:[UIImage imageNamed:@"button_drawer_highlighted.png"] forState:UIControlStateHighlighted];
+    [likeButton setTitle:@"Like this Photo" forState:UIControlStateNormal];
+    [likeButton setTitleColor:FB_COLOR_DARK_GRAY_BLUE forState:UIControlStateNormal];
+    [likeButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [_commentsView addSubview:likeButton];
+    
+    UIButton *commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    commentButton.frame = CGRectMake(150, 15, 120, 29);
+    [commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
+    [commentButton setBackgroundImage:[UIImage imageNamed:@"button_drawer.png"] forState:UIControlStateNormal];
+    [commentButton setBackgroundImage:[UIImage imageNamed:@"button_drawer_highlighted.png"] forState:UIControlStateHighlighted];
+    [commentButton setTitle:@"Add a Comment" forState:UIControlStateNormal];
+    [commentButton setTitleColor:FB_COLOR_DARK_GRAY_BLUE forState:UIControlStateNormal];
+    [commentButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [_commentsView addSubview:commentButton];
+    
+    int i = 1;
     for (Comment *comment in [_photo.comments allObjects]) {
       CommentView *c = [[CommentView alloc] initWithFrame:CGRectZero];
       c.width = _commentsView.width;
@@ -253,6 +275,24 @@ static UIImage *_like = nil;
   } else {
     [_commentsView removeSubviews];
   }
+  
+//  if (numComments > 0 && [self isExpanded]) {
+//    if ([[_commentsView subviews] count] > 0) return;
+//    _commentsView.contentSize = CGSizeMake(_commentsView.width * numComments, _commentsView.height);
+//    int i = 0;
+//    for (Comment *comment in [_photo.comments allObjects]) {
+//      CommentView *c = [[CommentView alloc] initWithFrame:CGRectZero];
+//      c.width = _commentsView.width;
+//      c.height = _commentsView.height;
+//      c.left = i * c.width;
+//      [c loadCommentsWithObject:comment];
+//      [_commentsView addSubview:c];
+//      [c release];
+//      i++;
+//    }
+//  } else {
+//    [_commentsView removeSubviews];
+//  }
 }
 
 + (CGFloat)rowHeightForObject:(id)object forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
