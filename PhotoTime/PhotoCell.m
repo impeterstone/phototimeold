@@ -239,7 +239,7 @@ static UIImage *_like = nil;
   NSUInteger numComments = [_photo.comments count];
   if ([self isExpanded]) {
     if ([[_commentsView subviews] count] > 0) return;
-    _commentsView.contentSize = CGSizeMake(_commentsView.width * numComments, _commentsView.height);
+    _commentsView.contentSize = CGSizeMake(_commentsView.width * (numComments + 1), _commentsView.height);
     // add Like and Comment Button
     UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     likeButton.frame = CGRectMake(15, 15, 120, 29);

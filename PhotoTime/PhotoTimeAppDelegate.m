@@ -29,6 +29,7 @@
 
 @synthesize window = _window;
 @synthesize facebook = _facebook;
+@synthesize searchField = _searchField;
 
 + (void)initialize {
   [self setupDefaults];
@@ -96,22 +97,24 @@
   AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
   favorites.albumType = AlbumTypeFavorites;
 
-  [[PSExposeController sharedController] setViewControllers:[NSMutableArray arrayWithObjects:me, friends, mobile, wall, profile, nil]];
+  NSMutableArray *albumControllers = [NSMutableArray arrayWithObjects:me, friends, mobile, wall, nil];
+  NSMutableArray *navControllers = [NSMutableArray array];
+  for (AlbumViewController *avc in albumControllers) {
+    UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
+    nc.delegate = self;
+    [navControllers addObject:nc];
+  }
+  [[PSExposeController sharedController] setViewControllers:navControllers];
   
+  // Global Nav Buttons
   [self setupSearchField];
+  _filterButton = [[UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
+  _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
   
   // Window
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   [self.window addSubview:[[PSExposeController sharedController] view]];
   [self.window makeKeyAndVisible];
-  
-  // Config ExposeController after it's view has loaded
-  [[[PSExposeController sharedController] navigationController] setDelegate:self];
-  _filterButton = [[UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
-  //  _filterButton = [[self navButtonWithTitle:@"More" withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
-  _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
-  [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_filterButton];
-  [[[PSExposeController sharedController] navItem] setTitleView:[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease]];
   
   // Setup Search Controller
   [self setupSearch];
@@ -180,13 +183,17 @@
 
 #pragma mark - PSExposeControllerDelegate
 - (void)exposeControllerWillExpand:(PSExposeController *)exposeController {
-  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal]];
-  [_searchField removeFromSuperview];
+  [_searchField removeFromSuperview];  
+  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:nil];
+  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setLeftBarButtonItem:nil];
+//  
+//  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setLeftBarButtonItem:[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal]];
 }
 
 - (void)exposeControllerWillCollapse:(PSExposeController *)exposeController {
-  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:nil];
-  [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
+  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:_filterButton];
+  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setLeftBarButtonItem:nil];
+  [[[[PSExposeController sharedController] selectedNavigationController] navigationBar] addSubview:_searchField];
 }
 
 - (UIView *)backgroundViewForExposeController:(PSExposeController *)exposeController {
@@ -198,7 +205,7 @@
 - (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
   NSString *label = nil;
   if ([viewController isKindOfClass:[AlbumViewController class]]) {
-    label = [(AlbumViewController *)viewController navTitleLabel].text;
+    label = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] navTitleLabel].text;
   } else {
     label = @"Bacon!";
   }
@@ -206,7 +213,7 @@
 }
 
 - (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
-  AlbumType albumType = [(AlbumViewController *)viewController albumType];
+  AlbumType albumType = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] albumType];
   NSString *img = nil;
   switch (albumType) {
     case AlbumTypeMe:
@@ -235,11 +242,11 @@
 }
 
 - (BOOL)exposeController:(PSExposeController *)exposeController canDeleteViewController:(UIViewController *)viewController {
-  return YES;
+  return NO;
 }
 
 - (BOOL)canAddViewControllersForExposeController:(PSExposeController *)exposeController {
-  return YES;
+  return NO;
 }
 
 - (UIViewController *)newViewControllerForExposeController:(PSExposeController *)exposeController {
@@ -424,9 +431,6 @@
 }
 
 #pragma mark - Search
-- (void)search {  
-}
-
 - (void)cancelSearch {
   [UIView animateWithDuration:0.4
                    animations:^{
@@ -435,18 +439,21 @@
                    completion:^(BOOL finished) {
                    }];
   
-  [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_filterButton];
+  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:_filterButton];
   [_searchField resignFirstResponder];
   _searchActive = NO;
 }
 
+#pragma mark - Navigation Delegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
   if ([[navigationController viewControllers] count] > 1) {
     [_searchField removeFromSuperview];
   } else {
-    [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
     _searchField.alpha = 0.0;
+    [[[[PSExposeController sharedController] selectedNavigationController] navigationBar] addSubview:_searchField];
     [UIView animateWithDuration:0.4
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseOut
                      animations:^{
                        _searchField.alpha = 1.0;
                      }
@@ -461,13 +468,13 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
   if ([[navigationController viewControllers] count] == 1) {
-    [[[[PSExposeController sharedController] navigationController] navigationBar] bringSubviewToFront:_searchField];
+    [[[[PSExposeController sharedController] selectedNavigationController] navigationBar] bringSubviewToFront:_searchField];
   }
 }
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-  [[[PSExposeController sharedController] navItem] setRightBarButtonItem:_cancelButton];
+  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:_cancelButton];
 
   [UIView animateWithDuration:0.4
                    animations:^{
@@ -481,15 +488,7 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {  
-  _searchTermController.view.alpha = 0.0;
-  
-  //  [UIView animateWithDuration:0.4
-  //                   animations:^{
-  //                     _searchTermController.view.alpha = 0.0;
-  //                   }
-  //                   completion:^(BOOL finished) {
-  //                   }];
-  
+  _searchTermController.view.alpha = 0.0;  
   return YES;
 }
 
@@ -548,7 +547,7 @@
   AlbumViewController *avc = [[AlbumViewController alloc] init];
   avc.albumType = AlbumTypeSearch;
   avc.searchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
-  [[PSExposeController sharedController] pushViewController:avc animated:YES];
+  [[[PSExposeController sharedController] selectedNavigationController] pushViewController:avc animated:YES];
   [avc release];
 }
 

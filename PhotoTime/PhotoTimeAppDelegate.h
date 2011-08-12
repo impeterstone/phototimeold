@@ -39,6 +39,7 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (readonly) Facebook *facebook;
+@property (nonatomic, assign) PSTextField *searchField;
 
 // Private
 + (void)setupDefaults;
@@ -59,7 +60,6 @@
 - (void)setupSearchField;
 - (void)setupSearch;
 - (void)filter;
-- (void)search;
 - (void)cancelSearch;
 - (void)searchWithText:(NSString *)searchText;
 

@@ -162,12 +162,13 @@
 #pragma mark - State Machine
 - (void)loadDataSource {
   [super loadDataSource];
+  [self executeFetch:FetchTypeCold];
   [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
 }
 
 - (void)dataSourceDidLoad {
+  [self executeFetch:FetchTypeRefresh];
   [super dataSourceDidLoad];
-  [self executeFetch:FetchTypeCold];
 }
 
 - (void)updateState {

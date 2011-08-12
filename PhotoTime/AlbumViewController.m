@@ -34,6 +34,14 @@
   [super dealloc];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logoutRequested"]) {
@@ -46,6 +54,9 @@
 - (void)loadView {
   [super loadView];
   
+  // Nullview
+  [_nullView setLoadingTitle:@"Loading" loadingSubtitle:@"Getting albums from Facebook..." emptyTitle:@"No Photos Found" emptySubtitle:@"Epic Fail Time!" image:[UIImage imageNamed:@"nullview_search.png"]];
+  
   // Table
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
@@ -53,6 +64,8 @@
     [self addBackButton]; 
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Save" withTarget:self action:@selector(save) buttonType:NavButtonTypeBlue];
   }
+  
+  self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
   
 //  _navTitleLabel.text = @"PhotoTime";
   
@@ -76,32 +89,6 @@
 
 - (void)updateState {
   [super updateState];
-  
-  // Update Nav Title
-  switch (self.albumType) {
-    case AlbumTypeMe:
-      _navTitleLabel.text = @"Me";
-      break;
-    case AlbumTypeFriends:
-      _navTitleLabel.text = @"Friends";
-      break;
-    case AlbumTypeMobile:
-      _navTitleLabel.text = @"Mobile";
-      break;
-    case AlbumTypeProfile:
-      _navTitleLabel.text = @"Profile";
-      break;
-    case AlbumTypeWall:
-      _navTitleLabel.text = @"Wall";
-      break;
-    case AlbumTypeFavorites:
-      _navTitleLabel.text = @"Favorites";
-      break;
-    case AlbumTypeSearch:
-      _navTitleLabel.text = @"Search Results";
-    default:
-      break;
-  }
 }
 
 - (void)save {
@@ -146,8 +133,7 @@
     pvc.sortKey = @"timestamp";
   }
   
-//  [self.navigationController pushViewController:pvc animated:YES];
-  [[PSExposeController sharedController] pushViewController:pvc animated:YES];
+  [self.navigationController pushViewController:pvc animated:YES];
   [pvc release];
 }
 
