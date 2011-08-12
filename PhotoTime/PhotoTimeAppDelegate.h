@@ -32,6 +32,7 @@
   // Expose
   UINavigationItem *_headerNavItem;
   UINavigationBar *_headerNavBar;
+  UINavigationController *_activeNavController;
   
   // Search
   PSTextField *_searchField;
@@ -48,6 +49,8 @@
 
 // Private
 + (void)setupDefaults;
+
+- (void)back;
 
 - (void)startSession;
 - (void)startDownloadAlbums;

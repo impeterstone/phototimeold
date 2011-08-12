@@ -294,12 +294,11 @@
   PhotoCell *cell = (PhotoCell *)[tableView cellForRowAtIndexPath:indexPath];
 //  [self commentsSelectedForCell:cell];
   
-  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  
-  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
+//  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
   
   ZoomViewController *zvc = [[ZoomViewController alloc] init];
-  [self presentModalViewController:zvc animated:YES];
+  [[PSExposeController sharedController] presentModalViewController:zvc animated:YES];
   zvc.imageView.image = cell.photoView.image;
   [zvc release];
 }
@@ -340,7 +339,7 @@
 
 - (void)commentsSelectedForCell:(PhotoCell *)cell {
   NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
-  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
   // Toggle 'selected' state
 	BOOL isSelected = ![self cellIsSelected:indexPath];

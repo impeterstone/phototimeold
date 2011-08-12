@@ -180,7 +180,7 @@ static UIImage *_like = nil;
   
   CGFloat top = 0;
   CGFloat bottom = _photoView.bottom;
-  CGFloat left = MARGIN_X;
+//  CGFloat left = MARGIN_X;
   CGFloat textWidth = self.contentView.width - MARGIN_X * 2;
   CGSize desiredSize = CGSizeZero;
   
@@ -315,7 +315,7 @@ static UIImage *_like = nil;
 }
 
 + (CGFloat)rowHeightForObject:(id)object expanded:(BOOL)expanded forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  Photo *photo = (Photo *)object;
+//  Photo *photo = (Photo *)object;
   
   CGFloat origHeight = [[self class] rowHeightForObject:object forInterfaceOrientation:interfaceOrientation];
   CGFloat desiredHeight = 0;

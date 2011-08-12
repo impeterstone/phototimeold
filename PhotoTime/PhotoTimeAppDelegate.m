@@ -463,8 +463,9 @@
 #pragma mark - Navigation Delegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
   if ([[navigationController viewControllers] count] > 1) {
+    _activeNavController = navigationController;
     [_searchField removeFromSuperview];
-    [_headerNavItem setLeftBarButtonItem:[UIBarButtonItem navBackButtonWithTarget:navigationController action:@selector(popViewControllerAnimated:)]];
+    [_headerNavItem setLeftBarButtonItem:[UIBarButtonItem navBackButtonWithTarget:self action:@selector(back)]];
     [_headerNavItem setRightBarButtonItem:nil];
   } else {
     [_headerNavItem setLeftBarButtonItem:nil];
@@ -489,6 +490,12 @@
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
   if ([[navigationController viewControllers] count] == 1) {
     [_headerNavBar bringSubviewToFront:_searchField];
+  }
+}
+
+- (void)back {
+  if (_activeNavController) {
+    [_activeNavController popViewControllerAnimated:YES];
   }
 }
 
@@ -589,6 +596,11 @@
 - (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo {
   [[PSProgressCenter defaultCenter] setProgress:[[userInfo objectForKey:@"progress"] floatValue]];
   [[PSProgressCenter defaultCenter] setMessage:[NSString stringWithFormat:@"Saving Albums: %@ of %@", [userInfo objectForKey:@"index"], [userInfo objectForKey:@"total"]]];
+  
+  // We finished
+  if ([[userInfo objectForKey:@"index"] integerValue] == [[userInfo objectForKey:@"total"] integerValue]) {
+    [[PSProgressCenter defaultCenter] hideProgress];
+  }
 }
 
 - (void)dealloc {

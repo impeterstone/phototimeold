@@ -62,10 +62,10 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   _totalAlbumsToParse = 0;
   
   // Show progress indicator if this is the first time
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedAlbums"]) {
+//  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedAlbums"]) {
 //    [[PSProgressCenter defaultCenter] setMessage:@"Downloading Albums"];
 //    [[PSProgressCenter defaultCenter] showProgress];
-  }
+//  }
   
   // This is retarded... if the user has more than batchSize friends, we'll just fire off multiple requests
   NSURL *albumsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.facebook.com/method/fql.multiquery"]];
