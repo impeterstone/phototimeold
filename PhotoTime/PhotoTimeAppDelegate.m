@@ -287,9 +287,10 @@
   
   if (!_splashViewController) {
     _splashViewController = [[SplashViewController alloc] init];
+    _splashViewController.view.frame = _loginViewController.view.bounds;
   }
   
-  [_loginViewController presentModalViewController:_splashViewController animated:NO];
+  [_loginViewController.view addSubview:_splashViewController.view];
   
   [self getMe];
 }
@@ -410,8 +411,9 @@
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {  
   // Session/Register request finished
-  if (_loginViewController.modalViewController) [_loginViewController dismissModalViewControllerAnimated:NO];
+  [_splashViewController.view removeFromSuperview];
   [_loginViewController.view removeFromSuperview];
+  
 //  if ([self.window.subviews containsObject:_loginViewController.view]) {
 //    [_loginViewController dismissModalViewControllerAnimated:NO];
 //    [_loginViewController.view removeFromSuperview];

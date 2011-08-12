@@ -13,7 +13,6 @@
 - (id)init {
   self = [super init];
   if (self) {
-    self.wantsFullScreenLayout = YES;
   }
   return self;
 }
