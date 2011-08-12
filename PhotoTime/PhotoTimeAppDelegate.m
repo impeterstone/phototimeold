@@ -214,15 +214,15 @@
   return bg;
 }
 
-- (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
-  NSString *label = nil;
-  if ([viewController isKindOfClass:[AlbumViewController class]]) {
-    label = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] navTitleLabel].text;
-  } else {
-    label = @"Bacon!";
-  }
-  return label;
-}
+//- (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
+//  NSString *label = nil;
+//  if ([viewController isKindOfClass:[AlbumViewController class]]) {
+//    label = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] navTitleLabel].text;
+//  } else {
+//    label = @"Bacon!";
+//  }
+//  return label;
+//}
 
 - (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
   AlbumType albumType = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] albumType];
@@ -269,8 +269,9 @@
 #pragma mark - Login
 - (void)tryLogin {
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    if (![[PSExposeController sharedController].navigationController.modalViewController isEqual:_loginViewController] && _loginViewController != nil) {
-      [[PSExposeController sharedController].navigationController presentModalViewController:_loginViewController animated:NO];
+    // Not Logged In
+    if (![self.window.subviews containsObject:_loginViewController.view]) {
+      [self.window addSubview:_loginViewController.view];
     }
   } else {
     _facebook.accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"];
@@ -409,9 +410,12 @@
 #pragma mark PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {  
   // Session/Register request finished
-  if ([[PSExposeController sharedController].navigationController.modalViewController isEqual:_loginViewController]) {
-    [[PSExposeController sharedController].navigationController dismissModalViewControllerAnimated:YES];
-  }
+  if (_loginViewController.modalViewController) [_loginViewController dismissModalViewControllerAnimated:NO];
+  [_loginViewController.view removeFromSuperview];
+//  if ([self.window.subviews containsObject:_loginViewController.view]) {
+//    [_loginViewController dismissModalViewControllerAnimated:NO];
+//    [_loginViewController.view removeFromSuperview];
+//  }
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
 }
