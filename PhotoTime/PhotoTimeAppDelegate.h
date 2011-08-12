@@ -29,10 +29,15 @@
   
   AlbumDataCenter *_albumDataCenter;
   
+  // Expose
+  UINavigationItem *_headerNavItem;
+  UINavigationBar *_headerNavBar;
+  
   // Search
   PSTextField *_searchField;
   UIBarButtonItem *_filterButton;
   UIBarButtonItem *_cancelButton;
+  UIBarButtonItem *_logoutButton;
   SearchTermController *_searchTermController;
   BOOL _searchActive;
 }

@@ -109,8 +109,6 @@
   // Title and Buttons
   _navTitleLabel.text = _album.name;
   
-  [self addBackButton];
-  
   // Table
   CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];

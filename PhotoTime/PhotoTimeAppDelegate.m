@@ -102,14 +102,15 @@
   for (AlbumViewController *avc in albumControllers) {
     UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
     nc.delegate = self;
+    nc.navigationBarHidden = YES;
     [navControllers addObject:nc];
   }
   [[PSExposeController sharedController] setViewControllers:navControllers];
   
   // Global Nav Buttons
-  [self setupSearchField];
   _filterButton = [[UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
   _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
+  _logoutButton = [[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal] retain];
   
   // Window
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -117,6 +118,8 @@
   [self.window makeKeyAndVisible];
   
   // Setup Search Controller
+  [_headerNavItem setRightBarButtonItem:_filterButton];
+  [self setupSearchField];
   [self setupSearch];
   
   // Login if necessary
@@ -184,16 +187,25 @@
 #pragma mark - PSExposeControllerDelegate
 - (void)exposeControllerWillExpand:(PSExposeController *)exposeController {
   [_searchField removeFromSuperview];  
-  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:nil];
-  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setLeftBarButtonItem:nil];
-//  
-//  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setLeftBarButtonItem:[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal]];
+  [_headerNavItem setLeftBarButtonItem:_logoutButton];
 }
 
 - (void)exposeControllerWillCollapse:(PSExposeController *)exposeController {
-  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:_filterButton];
-  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setLeftBarButtonItem:nil];
-  [[[[PSExposeController sharedController] selectedNavigationController] navigationBar] addSubview:_searchField];
+  [_headerNavBar addSubview:_searchField];
+  [_headerNavItem setLeftBarButtonItem:nil];
+}
+
+- (BOOL)exposeController:(PSExposeController *)exposeController shouldHideNavigationBarOnAppearForViewController:(UIViewController *)viewController {
+  return YES;
+}
+
+- (UIView *)headerViewForExposeController:(PSExposeController *)exposeController {
+  _headerNavBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.window.width, 44)] autorelease];
+  _headerNavBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+  _headerNavItem = [[[UINavigationItem alloc] init] autorelease];
+  [_headerNavBar setItems:[NSArray arrayWithObject:_headerNavItem]];
+  _headerNavItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
+  return _headerNavBar;
 }
 
 - (UIView *)backgroundViewForExposeController:(PSExposeController *)exposeController {
@@ -439,7 +451,7 @@
                    completion:^(BOOL finished) {
                    }];
   
-  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:_filterButton];
+  [_headerNavItem setRightBarButtonItem:_filterButton];
   [_searchField resignFirstResponder];
   _searchActive = NO;
 }
@@ -448,9 +460,13 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
   if ([[navigationController viewControllers] count] > 1) {
     [_searchField removeFromSuperview];
+    [_headerNavItem setLeftBarButtonItem:[UIBarButtonItem navBackButtonWithTarget:navigationController action:@selector(popViewControllerAnimated:)]];
+    [_headerNavItem setRightBarButtonItem:nil];
   } else {
+    [_headerNavItem setLeftBarButtonItem:nil];
+    [_headerNavItem setRightBarButtonItem:_filterButton];
     _searchField.alpha = 0.0;
-    [[[[PSExposeController sharedController] selectedNavigationController] navigationBar] addSubview:_searchField];
+    [_headerNavBar addSubview:_searchField];
     [UIView animateWithDuration:0.4
                           delay:0.0
                         options:UIViewAnimationCurveEaseOut
@@ -468,13 +484,13 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
   if ([[navigationController viewControllers] count] == 1) {
-    [[[[PSExposeController sharedController] selectedNavigationController] navigationBar] bringSubviewToFront:_searchField];
+    [_headerNavBar bringSubviewToFront:_searchField];
   }
 }
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-  [[[[PSExposeController sharedController] selectedViewController] navigationItem] setRightBarButtonItem:_cancelButton];
+  [_headerNavItem setRightBarButtonItem:_cancelButton];
 
   [UIView animateWithDuration:0.4
                    animations:^{
@@ -574,6 +590,7 @@
 - (void)dealloc {
   RELEASE_SAFELY(_searchTermController);
   RELEASE_SAFELY(_searchField);
+  RELEASE_SAFELY(_logoutButton);
   RELEASE_SAFELY(_filterButton);
   RELEASE_SAFELY(_cancelButton);
   RELEASE_SAFELY(_navController);
