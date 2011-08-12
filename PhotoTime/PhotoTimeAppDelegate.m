@@ -87,16 +87,16 @@
   AlbumViewController *mobile = [[[AlbumViewController alloc] init] autorelease];
   mobile.albumType = AlbumTypeMobile;
   
-  AlbumViewController *profile = [[[AlbumViewController alloc] init] autorelease];
-  profile.albumType = AlbumTypeProfile;
-  
   AlbumViewController *wall = [[[AlbumViewController alloc] init] autorelease];
   wall.albumType = AlbumTypeWall;
+  
+  AlbumViewController *profile = [[[AlbumViewController alloc] init] autorelease];
+  profile.albumType = AlbumTypeProfile;
   
   AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
   favorites.albumType = AlbumTypeFavorites;
 
-  [[PSExposeController sharedController] setViewControllers:[NSMutableArray arrayWithObjects:me, friends, mobile, profile, wall, nil]];
+  [[PSExposeController sharedController] setViewControllers:[NSMutableArray arrayWithObjects:me, friends, mobile, wall, profile, nil]];
   
   [self setupSearchField];
   
@@ -179,6 +179,16 @@
 }
 
 #pragma mark - PSExposeControllerDelegate
+- (void)exposeControllerWillExpand:(PSExposeController *)exposeController {
+  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal]];
+  [_searchField removeFromSuperview];
+}
+
+- (void)exposeControllerWillCollapse:(PSExposeController *)exposeController {
+  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:nil];
+  [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
+}
+
 - (UIView *)backgroundViewForExposeController:(PSExposeController *)exposeController {
   UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
   bg.frame = [[UIScreen mainScreen] bounds];
@@ -193,6 +203,34 @@
     label = @"Bacon!";
   }
   return label;
+}
+
+- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
+  AlbumType albumType = [(AlbumViewController *)viewController albumType];
+  NSString *img = nil;
+  switch (albumType) {
+    case AlbumTypeMe:
+      img = @"icon_me.png";
+      break;
+    case AlbumTypeFriends:
+      img = @"icon_friends.png";
+      break;
+    case AlbumTypeMobile:
+      img = @"icon_mobile.png";
+      break;
+    case AlbumTypeWall:
+      img = @"icon_wall.png";
+      break;
+    case AlbumTypeProfile:
+      img = @"icon_profile.png";
+      break;
+    default:
+      img = @"icon_me.png";
+      break;
+  }
+  UIImageView *overlayView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:img]] autorelease];
+  overlayView.contentMode = UIViewContentModeScaleAspectFit;
+  return overlayView;
 }
 
 - (BOOL)exposeController:(PSExposeController *)exposeController canDeleteViewController:(UIViewController *)viewController {
@@ -359,16 +397,6 @@
 }
 
 - (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
-}
-
-- (void)exposeControllerWillExpand:(PSExposeController *)exposeController {
-  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal]];
-  [_searchField removeFromSuperview];
-}
-
-- (void)exposeControllerWillCollapse:(PSExposeController *)exposeController {
-  [[[PSExposeController sharedController] navItem] setLeftBarButtonItem:nil];
-  [[[[PSExposeController sharedController] navigationController] navigationBar] addSubview:_searchField];
 }
 
 - (void)filter {
