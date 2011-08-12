@@ -13,6 +13,7 @@
 - (id)init {
   self = [super init];
   if (self) {
+    self.wantsFullScreenLayout = YES;
   }
   return self;
 }
@@ -26,11 +27,10 @@
 - (void)loadView {
   [super loadView];
   
-  if (isDeviceIPad()) {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_weave-pad.png"]];
-  } else {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_weave.png"]];
-  }
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]] autorelease];
+  bg.frame = self.view.bounds;
+  bg.autoresizingMask = ~UIViewAutoresizingNone;
+  [self.view addSubview:bg];
   
   _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
   [_loadingIndicator startAnimating];

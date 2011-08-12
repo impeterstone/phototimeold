@@ -63,11 +63,15 @@
 - (void)loadDataSource {
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     [super loadDataSource];
-    _hasMore = YES;
-    _fetchTotal = _fetchLimit;
-    [self executeFetch:FetchTypeCold];
     [self dataSourceDidLoad];
   }
+}
+
+- (void)dataSourceDidLoad {
+  [super dataSourceDidLoad];
+  _hasMore = YES;
+  _fetchTotal = _fetchLimit;
+  [self executeFetch:FetchTypeCold];
 }
 
 - (void)updateState {
@@ -76,19 +80,19 @@
   // Update Nav Title
   switch (self.albumType) {
     case AlbumTypeMe:
-      _navTitleLabel.text = @"Your Albums";
+      _navTitleLabel.text = @"Me";
       break;
     case AlbumTypeFriends:
-      _navTitleLabel.text = @"Your Friends";
+      _navTitleLabel.text = @"Friends";
       break;
     case AlbumTypeMobile:
-      _navTitleLabel.text = @"Mobile Uploads";
+      _navTitleLabel.text = @"Mobile";
       break;
     case AlbumTypeProfile:
-      _navTitleLabel.text = @"Profile Pictures";
+      _navTitleLabel.text = @"Profile";
       break;
     case AlbumTypeWall:
-      _navTitleLabel.text = @"Wall Photos";
+      _navTitleLabel.text = @"Wall";
       break;
     case AlbumTypeFavorites:
       _navTitleLabel.text = @"Favorites";

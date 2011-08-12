@@ -29,9 +29,6 @@
   
   AlbumDataCenter *_albumDataCenter;
   
-  // Session
-  NSString *_sessionKey;
-  
   // Search
   PSTextField *_searchField;
   UIBarButtonItem *_filterButton;
@@ -42,15 +39,13 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (readonly) Facebook *facebook;
-@property (retain) NSString *sessionKey;
 
 // Private
 + (void)setupDefaults;
-- (void)animateHideLogin;
+
 - (void)startSession;
 - (void)startDownloadAlbums;
 - (void)tryLogin;
-- (void)resetSessionKey;
 
 - (void)getMe;
 - (void)serializeMeWithResponse:(id)response;
@@ -61,6 +56,7 @@
 - (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
 
 // Search
+- (void)setupSearchField;
 - (void)setupSearch;
 - (void)filter;
 - (void)search;

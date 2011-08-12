@@ -16,8 +16,8 @@
 - (id)init {
   self = [super init];
   if (self) {
-    _loadingLabel = [@"Searching..." retain];
-    _emptyLabel = [@"Search for Photos by\nKeywords, Friends, or Places\nTap Search for Results" retain];
+//    _loadingLabel = [@"Searching..." retain];
+//    _emptyLabel = [@"Search for Photos by\nKeywords, Friends, or Places\nTap Search for Results" retain];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -34,6 +34,8 @@
 
 - (void)loadView {
   [super loadView];
+  
+//  [_nullView setLoadingTitle:@"Searching" loadingSubtitle:@"Next time we search for bacon" emptyTitle:@"No Results" emptySubtitle:@"Y U NO SEARCH PHOTOS?" image:[UIImage imageNamed:@"nullview_search.png"]];
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   

@@ -102,6 +102,9 @@
 
 - (void)loadView {
   [super loadView];
+
+  // Nullview
+  [_nullView setLoadingTitle:@"Loading" loadingSubtitle:@"Getting photos from Facebook..." emptyTitle:@"No Photos" emptySubtitle:@"Epic Fail Time!" image:[UIImage imageNamed:@"nullview_search.png"]];
   
   // Title and Buttons
   _navTitleLabel.text = _album.name;
@@ -159,12 +162,12 @@
 #pragma mark - State Machine
 - (void)loadDataSource {
   [super loadDataSource];
-  [self executeFetch:FetchTypeCold];
   [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
 }
 
 - (void)dataSourceDidLoad {
   [super dataSourceDidLoad];
+  [self executeFetch:FetchTypeCold];
 }
 
 - (void)updateState {
