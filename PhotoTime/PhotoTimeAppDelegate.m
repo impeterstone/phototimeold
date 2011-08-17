@@ -16,6 +16,7 @@
 #import "PSImageCache.h"
 #import "PSProgressCenter.h"
 #import "PSExposeController.h"
+#import "PSAlertCenter.h"
 
 #import "AlbumViewController.h"
 
@@ -298,6 +299,9 @@
 - (void)userDidLogout {
   // Clear all user defaults
   [[NSUserDefaults standardUserDefaults] setPersistentDomain:[NSDictionary dictionary] forName:[[NSBundle mainBundle] bundleIdentifier]];
+  
+  // Reset SearchCenter
+  [[PSSearchCenter defaultCenter] resetTerms];
   
   // Reset persistent store
   [PSCoreDataStack resetPersistentStoreCoordinator];

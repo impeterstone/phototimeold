@@ -11,6 +11,7 @@
 #import "PhotoViewController.h"
 #import "AlbumCell.h"
 #import "Album.h"
+#import "PSAlertCenter.h"
 
 @implementation AlbumViewController
 
@@ -47,6 +48,12 @@
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logoutRequested"]) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
+    }];
+  }
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLogin"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstLogin"];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Welcome!" andMessage:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." andDelegate:nil];
     }];
   }
 }

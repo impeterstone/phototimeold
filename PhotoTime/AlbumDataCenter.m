@@ -11,7 +11,6 @@
 #import "Album.h"
 #import "Album+Serialize.h"
 #import "PSProgressCenter.h"
-#import "PSAlertCenter.h"
 
 static dispatch_queue_t _coreDataSerializationQueue = nil;
 
@@ -201,7 +200,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     // Perform batch core data saves
     if (_parseIndex % 1000 == 0) {
       [PSCoreDataStack saveInContext:context];
-      [PSCoreDataStack resetInContext:context];
+//      [PSCoreDataStack resetInContext:context];
       
       [pool drain];
       pool = [[NSAutoreleasePool alloc] init];
@@ -330,12 +329,6 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
           [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
         }
         [[PSProgressCenter defaultCenter] hideProgress];
-        
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedAlbums"]) {
-          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Welcome!" andMessage:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." andDelegate:nil];
-          }];
-        }
       }
     });
   });
