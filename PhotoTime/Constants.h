@@ -47,10 +47,10 @@
 
 #define RADIANS(degrees) ((degrees * M_PI) / 180.0)
 
-// Facebook
-#define FB_APP_ID @"132514440148709"
-#define FB_APP_SECRET @"925b0a280e685631acf466dfea13b154"
-#define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access", @"user_photos", @"friends_photos", nil]
+// Facebook (PhotoTime)
+#define FB_APP_ID @"253088251379021"
+#define FB_APP_SECRET @"34e674f197452432321025d110f89aa2"
+#define FB_PERMISSIONS [NSArray arrayWithObjects:@"user_photos", @"friends_photos", @"offline_access", nil]
 #define FB_PARAMS @"id,first_name,last_name,name,gender,locale"
 
 // ERROR STRINGS

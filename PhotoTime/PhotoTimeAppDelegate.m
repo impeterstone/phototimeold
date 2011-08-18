@@ -288,10 +288,10 @@
   
   if (!_splashViewController) {
     _splashViewController = [[SplashViewController alloc] init];
-    _splashViewController.view.frame = _loginViewController.view.bounds;
+    _splashViewController.view.frame = self.window.bounds;
   }
   
-  [_loginViewController.view addSubview:_splashViewController.view];
+  [self.window addSubview:_splashViewController.view];
   
   [self getMe];
 }
@@ -480,6 +480,7 @@
     [_headerNavBar addSubview:_searchField];
     [UIView animateWithDuration:0.4
                           delay:0.0
+                      
                         options:UIViewAnimationCurveEaseOut
                      animations:^{
                        _searchField.alpha = 1.0;

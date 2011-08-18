@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="562" systemVersion="11B2118" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Album" representedClassName="Album">
+        <attribute name="aid" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="canUpload" optional="YES" attributeType="Boolean"/>
+        <attribute name="caption" optional="YES" attributeType="String"/>
+        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="coverPhoto" optional="YES" attributeType="String"/>
+        <attribute name="fromId" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="fromName" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES"/>
+        <attribute name="lastViewed" optional="YES" attributeType="Date" defaultValueString="1/1/1970 UTC" indexed="YES"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="objectId" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" indexed="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" indexed="YES"/>
+    </entity>
+    <entity name="Comment" representedClassName="Comment">
+        <attribute name="fromId" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="fromName" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="message" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" indexed="YES"/>
+        <relationship name="photo" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="comments" inverseEntity="Photo" indexed="YES"/>
+    </entity>
+    <entity name="Photo" representedClassName="Photo">
+        <attribute name="albumId" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="fromId" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="fromName" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="height" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="id" optional="YES" attributeType="String" defaultValueString="0" indexed="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="picture" optional="YES" attributeType="String"/>
+        <attribute name="position" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+        <attribute name="source" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" indexed="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="photo" inverseEntity="Comment" indexed="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="photo" inverseEntity="Tag" indexed="YES"/>
+    </entity>
+    <entity name="Search" representedClassName="Search">
+        <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <attribute name="term" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" indexed="YES"/>
+    </entity>
+    <entity name="Tag" representedClassName="Tag">
+        <attribute name="fromId" optional="YES" attributeType="String"/>
+        <attribute name="fromName" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <attribute name="x" optional="YES" attributeType="Decimal" defaultValueString="0"/>
+        <attribute name="y" optional="YES" attributeType="Decimal" defaultValueString="0"/>
+        <relationship name="photo" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="tags" inverseEntity="Photo" indexed="YES"/>
+    </entity>
+    <fetchRequest name="fetchComments" entity="Comment" predicateString="photo == $desiredPhoto"/>
+    <fetchRequest name="fetchFavorites" entity="Album" predicateString="isFavorite == 1"/>
+    <fetchRequest name="fetchFriends" entity="Album" predicateString="fromId != $desiredFromId"/>
+    <fetchRequest name="fetchFriendsFiltered" entity="Album" predicateString="fromId != $desiredFromId AND name != &quot;Wall Photos&quot; AND type != &quot;wall&quot; AND type != &quot;profile&quot; AND name != &quot;Profile Pictures&quot; AND type != &quot;mobile&quot; AND name != &quot;Mobile Uploads&quot;"/>
+    <fetchRequest name="fetchMe" entity="Album" predicateString="fromId == $desiredFromId"/>
+    <fetchRequest name="fetchMobile" entity="Album" predicateString="type == &quot;mobile&quot; OR name == &quot;Mobile Uploads&quot;"/>
+    <fetchRequest name="fetchPhotos" entity="Photo" predicateString="albumId == $desiredAlbumId"/>
+    <fetchRequest name="fetchProfile" entity="Album" predicateString="type == &quot;profile&quot;"/>
+    <fetchRequest name="fetchSearch" entity="Album"/>
+    <fetchRequest name="fetchWall" entity="Album" predicateString="type == &quot;wall&quot; OR name == &quot;Wall Photos&quot;"/>
+    <fetchRequest name="getHistory" entity="Album" predicateString="lastViewed > CAST(-978220800.000000, &quot;NSDate&quot;)"/>
+    <elements>
+        <element name="Photo" positionX="0" positionY="-72" width="128" height="240"/>
+        <element name="Tag" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Comment" positionX="-162" positionY="-72" width="128" height="135"/>
+        <element name="Album" positionX="160" positionY="-72" width="128" height="270"/>
+        <element name="Search" positionX="0" positionY="0" width="128" height="90"/>
+    </elements>
+</model>

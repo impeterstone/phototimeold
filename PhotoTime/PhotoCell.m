@@ -240,7 +240,9 @@ static UIImage *_likeImage = nil;
     _commentsView.contentSize = CGSizeMake(_commentsView.width * (numComments), _commentsView.height);
     
     int i = 0;
-    for (Comment *comment in [_photo.comments allObjects]) {
+    
+    NSArray *sortedComments = [[_photo.comments allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES]]];
+    for (Comment *comment in sortedComments) {
       CommentView *c = [[CommentView alloc] initWithFrame:CGRectZero];
       c.width = _commentsView.width;
       c.height = _commentsView.height;
