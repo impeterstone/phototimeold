@@ -20,5 +20,14 @@
 	<integer>0</integer>
 	<key>hasDownloadedAlbums</key>
 	<false/>
+	<key>userAlbums</key>
+	<array>
+		<dict>
+			<key>predicate</key>
+			<string>fromId == &quot;100002453408542&quot; OR fromId = &quot;100002434328470&quot;</string>
+			<key>title</key>
+			<string>My Bros</string>
+		</dict>
+	</array>
 </dict>
 </plist>

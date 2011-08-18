@@ -14,21 +14,20 @@ typedef enum {
   AlbumTypeMe = 0,
   AlbumTypeFriends = 1,
   AlbumTypeMobile = 2,
-  AlbumTypeProfile = 3,
   AlbumTypeWall = 4,
-  AlbumTypeFavorites = 5,
-  AlbumTypeHistory = 6,
-  AlbumTypeBoys = 7,
-  AlbumTypeGirls = 8,
-  AlbumTypeClassmates = 9,
-  AlbumTypeSearch = 10
+  AlbumTypeSearch = 5,
+  AlbumTypeCustom = 6
 } AlbumType;
 
 @interface AlbumViewController : PSCoreDataTableViewController {
   AlbumType _albumType;
+  NSDictionary *_albumConfig;
+  NSString *_albumTitle;
 }
 
 @property (nonatomic, assign) AlbumType albumType;
+@property (nonatomic, retain) NSDictionary *albumConfig;
+@property (nonatomic, retain) NSString *albumTitle;
 
 - (void)save;
 

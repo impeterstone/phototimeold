@@ -56,14 +56,13 @@
     <fetchRequest name="fetchComments" entity="Comment" predicateString="photo == $desiredPhoto"/>
     <fetchRequest name="fetchFavorites" entity="Album" predicateString="isFavorite == 1"/>
     <fetchRequest name="fetchFriends" entity="Album" predicateString="fromId != $desiredFromId"/>
-    <fetchRequest name="fetchFriendsFiltered" entity="Album" predicateString="fromId != $desiredFromId AND name != &quot;Wall Photos&quot; AND type != &quot;wall&quot; AND type != &quot;profile&quot; AND name != &quot;Profile Pictures&quot; AND type != &quot;mobile&quot; AND name != &quot;Mobile Uploads&quot;"/>
+    <fetchRequest name="fetchFriendsFiltered" entity="Album" predicateString="fromId != $desiredFromId AND name != &quot;Wall Photos&quot; AND type != &quot;wall&quot; AND type != &quot;mobile&quot; AND name != &quot;Mobile Uploads&quot;"/>
     <fetchRequest name="fetchMe" entity="Album" predicateString="fromId == $desiredFromId"/>
     <fetchRequest name="fetchMobile" entity="Album" predicateString="type == &quot;mobile&quot; OR name == &quot;Mobile Uploads&quot;"/>
     <fetchRequest name="fetchPhotos" entity="Photo" predicateString="albumId == $desiredAlbumId"/>
     <fetchRequest name="fetchProfile" entity="Album" predicateString="type == &quot;profile&quot;"/>
     <fetchRequest name="fetchSearch" entity="Album"/>
     <fetchRequest name="fetchWall" entity="Album" predicateString="type == &quot;wall&quot; OR name == &quot;Wall Photos&quot;"/>
-    <fetchRequest name="getHistory" entity="Album" predicateString="lastViewed > CAST(-978220800.000000, &quot;NSDate&quot;)"/>
     <elements>
         <element name="Photo" positionX="0" positionY="-72" width="128" height="240"/>
         <element name="Tag" positionX="0" positionY="0" width="128" height="135"/>

@@ -33,7 +33,7 @@
 
 // Fetch Templates
 #define FETCH_ME @"fetchMe"
-#define FETCH_FRIENDS @"fetchFriendsFiltered"
+#define FETCH_FRIENDS @"fetchFriends"
 #define FETCH_FRIENDS_FILTERED @"fetchFriendsFiltered"
 #define FETCH_MOBILE @"fetchMobile"
 #define FETCH_WALL @"fetchWall"
@@ -66,6 +66,9 @@
 #define SUBTITLE_FONT [UIFont fontWithName:@"HelveticaNeue" size:12.0]
 #define TIMESTAMP_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
 #define NAV_BUTTON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0]
+
+#define BELLO_FONT [UIFont fontWithName:@"Bello" size:48.0]
+#define BELLO_COLOR RGBCOLOR(104,183,230)
 
 // Colors
 #define COLOR_CHARCOAL RGBCOLOR(33,33,33)

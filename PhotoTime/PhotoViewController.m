@@ -391,7 +391,7 @@
 }
 #pragma mark -
 #pragma mark FetchRequest
-- (NSFetchRequest *)getFetchRequest {
+- (NSFetchRequest *)getFetchRequestInContext:(NSManagedObjectContext *)context {
   BOOL ascending = ([self.sortKey isEqualToString:@"position"]) ? YES : NO;
 //  BOOL ascending = YES;
 

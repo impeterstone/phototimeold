@@ -207,6 +207,7 @@
 		2873E15913F4C4EB0094BD52 /* button_drawer.png in Resources */ = {isa = PBXBuildFile; fileRef = 2873E15513F4C4EB0094BD52 /* button_drawer.png */; };
 		2873E15A13F4C4EB0094BD52 /* button_drawer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2873E15613F4C4EB0094BD52 /* button_drawer@2x.png */; };
 		288A306713F4AFFA00861C38 /* bg_expose_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A306613F4AFFA00861C38 /* bg_expose_overlay.png */; };
+		2893EB6213FDB78300B853FB /* bello-script.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2893EB6113FDB78300B853FB /* bello-script.ttf */; };
 		289764AF13E36F29007E1069 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289764AE13E36F29007E1069 /* SplashViewController.m */; };
 		28A0310613ECD943003592E6 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310313ECD943003592E6 /* Default-Portrait.png */; };
 		28A0310813ECD943003592E6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310513ECD943003592E6 /* Default@2x.png */; };
@@ -628,6 +629,7 @@
 		2873E15513F4C4EB0094BD52 /* button_drawer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_drawer.png; sourceTree = "<group>"; };
 		2873E15613F4C4EB0094BD52 /* button_drawer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_drawer@2x.png"; sourceTree = "<group>"; };
 		288A306613F4AFFA00861C38 /* bg_expose_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_expose_overlay.png; sourceTree = "<group>"; };
+		2893EB6113FDB78300B853FB /* bello-script.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "bello-script.ttf"; sourceTree = "<group>"; };
 		289764AD13E36F29007E1069 /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
 		289764AE13E36F29007E1069 /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		28A0310313ECD943003592E6 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
@@ -1043,6 +1045,7 @@
 				2538FFBC133C90A100ACE127 /* photo_frame.png */,
 				28A0310213ECD932003592E6 /* Launch */,
 				2554C4C013D78D33005344FD /* AppIcons */,
+				2893EB6013FDB78300B853FB /* fonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1392,6 +1395,14 @@
 				2873E15013F4BCC80094BD52 /* icon_wall@2x.png */,
 			);
 			path = spacelabels;
+			sourceTree = "<group>";
+		};
+		2893EB6013FDB78300B853FB /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2893EB6113FDB78300B853FB /* bello-script.ttf */,
+			);
+			path = fonts;
 			sourceTree = "<group>";
 		};
 		28A0310213ECD932003592E6 /* Launch */ = {
@@ -1750,6 +1761,7 @@
 				28DADC7413FC876C0092417D /* bubble@2x.png in Resources */,
 				28DADC7713FC8CC90092417D /* bg_photo_frame.png in Resources */,
 				28DADC7813FC8CC90092417D /* bg_photo_frame@2x.png in Resources */,
+				2893EB6213FDB78300B853FB /* bello-script.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

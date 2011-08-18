@@ -16,6 +16,8 @@
 @implementation AlbumViewController
 
 @synthesize albumType = _albumType;
+@synthesize albumConfig = _albumConfig;
+@synthesize albumTitle = _albumTitle;
 
 - (id)init {
   self = [super init];
@@ -31,6 +33,8 @@
 }
 
 - (void)dealloc {
+  RELEASE_SAFELY(_albumTitle);
+  RELEASE_SAFELY(_albumConfig);
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
   [super dealloc];
 }
@@ -72,8 +76,6 @@
   }
   
   self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
-  
-//  _navTitleLabel.text = @"PhotoTime";
   
   [self loadDataSource];
 }
@@ -164,7 +166,7 @@
 
 #pragma mark -
 #pragma mark FetchRequest
-- (NSFetchRequest *)getFetchRequest {
+- (NSFetchRequest *)getFetchRequestInContext:(NSManagedObjectContext *)context {
   NSArray *sortDescriptors = nil;
   NSString *fetchTemplate = nil;
   NSDictionary *substitutionVariables = nil;
@@ -191,26 +193,26 @@
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
-    case AlbumTypeProfile:
-      fetchTemplate = FETCH_PROFILE;
-      substitutionVariables = [NSDictionary dictionary];
-      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-      break;
-    case AlbumTypeFavorites:
-      fetchTemplate = FETCH_FAVORITES;
-      substitutionVariables = [NSDictionary dictionary];
-      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-      break;
     case AlbumTypeSearch:
       fetchTemplate = FETCH_SEARCH;
       substitutionVariables = [NSDictionary dictionary];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
     default:
+      sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
   }
   
-  NSFetchRequest *fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:fetchTemplate substitutionVariables:substitutionVariables];
+  NSFetchRequest *fetchRequest = nil;
+  if (self.albumType == AlbumTypeCustom) {
+    fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Album" inManagedObjectContext:context]];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:[self.albumConfig objectForKey:@"predicate"]];
+    [fetchRequest setPredicate:pred];
+  } else {
+    fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:fetchTemplate substitutionVariables:substitutionVariables];
+  }
+  
   [fetchRequest setSortDescriptors:sortDescriptors];
   [fetchRequest setFetchBatchSize:10];
   [fetchRequest setFetchLimit:_fetchTotal];

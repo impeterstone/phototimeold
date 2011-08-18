@@ -54,6 +54,8 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  NSLog(@"fonts: %@",[UIFont familyNames]);
+  
   // Override StyleSheet
   [PSStyleSheet setStyleSheet:@"AppStyleSheet"];
   
@@ -78,29 +80,41 @@
   [[PSExposeController sharedController] setDelegate:self];
   [[PSExposeController sharedController] setDataSource:self];
   
-  // Setup View Controllers
-  // This should include customizeable spaces people have added
+  // Setup the 4 standard streams
+  NSMutableArray *albums = [NSMutableArray array];
+  
   AlbumViewController *me = [[[AlbumViewController alloc] init] autorelease];
   me.albumType = AlbumTypeMe;
+  me.albumTitle = @"My Albums";
+  [albums addObject:me];
   
   AlbumViewController *friends = [[[AlbumViewController alloc] init] autorelease];
   friends.albumType = AlbumTypeFriends;
+  friends.albumTitle = @"My Friends";
+  [albums addObject:friends];
   
   AlbumViewController *mobile = [[[AlbumViewController alloc] init] autorelease];
   mobile.albumType = AlbumTypeMobile;
+  mobile.albumTitle = @"Mobile Uploads";
+  [albums addObject:mobile];
   
-  AlbumViewController *wall = [[[AlbumViewController alloc] init] autorelease];
-  wall.albumType = AlbumTypeWall;
+//  AlbumViewController *wall = [[[AlbumViewController alloc] init] autorelease];
+//  wall.albumType = AlbumTypeWall;
+//  [albums addObject:wall];
   
-  AlbumViewController *profile = [[[AlbumViewController alloc] init] autorelease];
-  profile.albumType = AlbumTypeProfile;
-  
-  AlbumViewController *favorites = [[[AlbumViewController alloc] init] autorelease];
-  favorites.albumType = AlbumTypeFavorites;
+  // Now check to see if the user has any custom streams
+  NSArray *userAlbums = [[NSUserDefaults standardUserDefaults] arrayForKey:@"userAlbums"];
+  for (NSDictionary *userAlbum in userAlbums) {
+    AlbumViewController *avc = [[AlbumViewController alloc] init];
+    avc.albumType = AlbumTypeCustom;
+    avc.albumConfig = userAlbum;
+    avc.albumTitle = [userAlbum objectForKey:@"title"];
+    [albums addObject:avc];
+    [avc release];
+  }
 
-  NSMutableArray *albumControllers = [NSMutableArray arrayWithObjects:me, friends, mobile, wall, nil];
   NSMutableArray *navControllers = [NSMutableArray array];
-  for (AlbumViewController *avc in albumControllers) {
+  for (AlbumViewController *avc in albums) {
     UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
     nc.delegate = self;
     nc.navigationBarHidden = YES;
@@ -226,31 +240,16 @@
 //}
 
 - (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
-  AlbumType albumType = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] albumType];
-  NSString *img = nil;
-  switch (albumType) {
-    case AlbumTypeMe:
-      img = @"icon_me.png";
-      break;
-    case AlbumTypeFriends:
-      img = @"icon_friends.png";
-      break;
-    case AlbumTypeMobile:
-      img = @"icon_mobile.png";
-      break;
-    case AlbumTypeWall:
-      img = @"icon_wall.png";
-      break;
-    case AlbumTypeProfile:
-      img = @"icon_profile.png";
-      break;
-    default:
-      img = @"icon_me.png";
-      break;
-  }
-  UIImageView *overlayView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:img]] autorelease];
+  AlbumViewController *avc = (AlbumViewController *)[(UINavigationController *)viewController topViewController];
+
+  UILabel *overlayView = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
   overlayView.autoresizingMask = ~UIViewAutoresizingNone;
-  overlayView.contentMode = UIViewContentModeScaleAspectFit;
+  overlayView.backgroundColor = [UIColor clearColor];
+  overlayView.font = BELLO_FONT;
+  overlayView.textColor = BELLO_COLOR;
+  overlayView.textAlignment = UITextAlignmentCenter;
+  overlayView.text = avc.albumTitle;
+
   return overlayView;
 }
 
