@@ -13,9 +13,11 @@
 #import "UIButton+SML.h"
 
 #define CAPTION_HEIGHT 40.0
+#define COMMENT_HEIGHT 80.0
 
-static UIImage *_comment = nil;
-static UIImage *_like = nil;
+static UIImage *_commentIndicatorImage = nil;
+static UIImage *_commentImage = nil;
+static UIImage *_likeImage = nil;
 
 @implementation PhotoCell
 
@@ -23,8 +25,9 @@ static UIImage *_like = nil;
 @synthesize delegate = _delegate;
 
 + (void)initialize {
-  _comment = [[UIImage imageNamed:@"comment_indicator.png"] retain];
-  _like = [[UIImage imageNamed:@"icon_like.png"] retain];
+  _commentIndicatorImage = [[UIImage imageNamed:@"comment_indicator.png"] retain];
+  _commentImage = [[UIImage imageNamed:@"icon_comment.png"] retain];
+  _likeImage = [[UIImage imageNamed:@"icon_like.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -62,27 +65,36 @@ static UIImage *_like = nil;
     _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _photoView.shouldAnimate = YES;
     
-    // Comment Button
-    _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
-    [_commentButton setBackgroundImage:_comment forState:UIControlStateNormal];
-    _commentButton.titleLabel.font = [UIFont systemFontOfSize:10];
-    [_commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    _commentButton.titleLabel.shadowColor = [UIColor whiteColor];
-//    _commentButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-    _commentButton.titleEdgeInsets = UIEdgeInsetsMake(-3, 1, 0, 0);
+    // Comment Indicator
+    _commentIndicator = [[UIButton alloc] initWithFrame:CGRectZero];
+    _commentIndicator.userInteractionEnabled = NO;
+    [_commentIndicator setBackgroundImage:_commentIndicatorImage forState:UIControlStateNormal];
+    _commentIndicator.titleLabel.font = [UIFont systemFontOfSize:10];
+    [_commentIndicator setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    _commentIndicator.titleLabel.shadowColor = [UIColor whiteColor];
+//    _commentIndicator.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    _commentIndicator.titleEdgeInsets = UIEdgeInsetsMake(-3, 2, 0, 0);
     
-    _commentButton.width = _comment.size.width;
-    _commentButton.height = _comment.size.height;
+    _commentIndicator.width = _commentIndicatorImage.size.width;
+    _commentIndicator.height = _commentIndicatorImage.size.height;
     
     // Like Button
     _likeButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [_likeButton addTarget:self action:@selector(addRemoveLike) forControlEvents:UIControlEventTouchUpInside];
-    [_likeButton setBackgroundImage:_like forState:UIControlStateNormal];
+    [_likeButton setImage:_likeImage forState:UIControlStateNormal];
     
-    _likeButton.width = _like.size.width;
-    _likeButton.height = _like.size.height;
+    _likeButton.width = _likeImage.size.width;
+    _likeButton.height = _likeImage.size.height;
     
+    // Comment Button
+    _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [_commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
+    [_commentButton setImage:_commentImage forState:UIControlStateNormal];
+    
+    _commentButton.width = _commentImage.size.width;
+    _commentButton.height = _commentImage.size.height;
+    
+    // Comments Frame
     _commentsFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_comment.png"]];
     
     _commentsView = [[UIScrollView alloc] initWithFrame:CGRectZero];
@@ -93,15 +105,6 @@ static UIImage *_like = nil;
     _commentsView.showsHorizontalScrollIndicator = NO;
     _commentsView.pagingEnabled = YES;
     
-    // Rollup
-//    _taggedFriendsView = [[PSRollupView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.width, 0)];
-//    [_taggedFriendsView setBackgroundImage:[UIImage stretchableImageNamed:@"bg_rollup.png" withLeftCapWidth:0 topCapWidth:0]];
-//    _taggedFriendsView.hidden = YES;
-
-    //    _photoView.shouldScale = YES;
-    //    _photoView.layer.borderColor = [[UIColor darkGrayColor] CGColor];
-    //    _photoView.layer.borderWidth = 1.0;
-    
     // Caption
     _captionView = [[UIView alloc] initWithFrame:CGRectZero];
     UIImageView *cbg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_caption.png"]] autorelease];
@@ -110,14 +113,16 @@ static UIImage *_like = nil;
     cbg.autoresizingMask = ~UIViewAutoresizingNone;
     [_captionView addSubview:cbg];
     [_captionView addSubview:_captionLabel];
-    [_captionView addSubview:_commentButton];
+    [_captionView addSubview:_commentIndicator];
     
     // Add to contentView
     [self.contentView addSubview:_photoView];
-//    [self.contentView addSubview:_likeButton];
     [self.contentView addSubview:_captionView];
     [self.contentView addSubview:_commentsFrame];
     [self.contentView addSubview:_commentsView];
+    
+    [self.contentView addSubview:_likeButton];
+    [self.contentView addSubview:_commentButton];
         
     UIPinchGestureRecognizer *zoomGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchZoom:)];
     [self addGestureRecognizer:zoomGesture];
@@ -129,6 +134,19 @@ static UIImage *_like = nil;
     [tapGesture release];
   }
   return self;
+}
+
+- (void)dealloc {
+  RELEASE_SAFELY(_photoView);
+  RELEASE_SAFELY(_captionView);
+  RELEASE_SAFELY(_captionLabel);
+  RELEASE_SAFELY(_taggedLabel);
+  RELEASE_SAFELY(_commentButton);
+  RELEASE_SAFELY(_likeButton);
+  RELEASE_SAFELY(_commentIndicator);
+  RELEASE_SAFELY(_commentsView);
+  RELEASE_SAFELY(_commentsFrame);
+  [super dealloc];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -184,26 +202,6 @@ static UIImage *_like = nil;
   CGFloat textWidth = self.contentView.width - MARGIN_X * 2;
   CGSize desiredSize = CGSizeZero;
   
-  // Rollup
-//  if ([_photo.tags count] > 0) {
-//    _taggedFriendsView.hidden = NO;
-//    NSArray *taggedFriendNames = [[_photo.tags valueForKeyPath:@"@distinctUnionOfObjects.fromName"] allObjects];
-//    
-//    [_taggedFriendsView setHeaderText:[NSString stringWithFormat:@"In this photo: %@", [taggedFriendNames componentsJoinedByString:@", "]]];
-//    [_taggedFriendsView layoutIfNeeded];
-//    _taggedFriendsView.top = 0;
-//  } else {
-//    _taggedFriendsView.hidden = YES;
-//  }
-  
-  // Like Button
-  _likeButton.top = MARGIN_Y * 2;
-  _likeButton.left = MARGIN_X * 2;
-  
-  // Comment Button
-  _commentButton.top = floorf((CAPTION_HEIGHT - _commentButton.height) / 2);
-  _commentButton.left = self.contentView.width - _commentButton.width - MARGIN_X;
-  
   // Caption Label
   if ([_captionLabel.text length] > 0) {    
     _captionLabel.hidden = NO;
@@ -228,40 +226,20 @@ static UIImage *_like = nil;
   _commentsFrame.top = top;
   _commentsFrame.left = 0;
   _commentsFrame.width = self.contentView.width;
-  _commentsFrame.height = 60;
+  _commentsFrame.height = COMMENT_HEIGHT;
   
   _commentsView.top = top;
   _commentsView.left = 0;
   _commentsView.width = self.contentView.width - 20;
-  _commentsView.height = 60;
+  _commentsView.height = COMMENT_HEIGHT;
   
   // If expanded, show comments    
   NSUInteger numComments = [_photo.comments count];
-  if ([self isExpanded]) {
+  if ([self isExpanded] && numComments > 0) {
     if ([[_commentsView subviews] count] > 0) return;
-    _commentsView.contentSize = CGSizeMake(_commentsView.width * (numComments + 1), _commentsView.height);
-    // add Like and Comment Button
-    UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    likeButton.frame = CGRectMake(15, 15, 120, 29);
-    [likeButton addTarget:self action:@selector(addRemoveLike) forControlEvents:UIControlEventTouchUpInside];
-    [likeButton setBackgroundImage:[UIImage imageNamed:@"button_drawer.png"] forState:UIControlStateNormal];
-    [likeButton setBackgroundImage:[UIImage imageNamed:@"button_drawer_highlighted.png"] forState:UIControlStateHighlighted];
-    [likeButton setTitle:@"Like this Photo" forState:UIControlStateNormal];
-    [likeButton setTitleColor:FB_COLOR_DARK_GRAY_BLUE forState:UIControlStateNormal];
-    [likeButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [_commentsView addSubview:likeButton];
+    _commentsView.contentSize = CGSizeMake(_commentsView.width * (numComments), _commentsView.height);
     
-    UIButton *commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    commentButton.frame = CGRectMake(150, 15, 120, 29);
-    [commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
-    [commentButton setBackgroundImage:[UIImage imageNamed:@"button_drawer.png"] forState:UIControlStateNormal];
-    [commentButton setBackgroundImage:[UIImage imageNamed:@"button_drawer_highlighted.png"] forState:UIControlStateHighlighted];
-    [commentButton setTitle:@"Add a Comment" forState:UIControlStateNormal];
-    [commentButton setTitleColor:FB_COLOR_DARK_GRAY_BLUE forState:UIControlStateNormal];
-    [commentButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [_commentsView addSubview:commentButton];
-    
-    int i = 1;
+    int i = 0;
     for (Comment *comment in [_photo.comments allObjects]) {
       CommentView *c = [[CommentView alloc] initWithFrame:CGRectZero];
       c.width = _commentsView.width;
@@ -276,23 +254,21 @@ static UIImage *_like = nil;
     [_commentsView removeSubviews];
   }
   
-//  if (numComments > 0 && [self isExpanded]) {
-//    if ([[_commentsView subviews] count] > 0) return;
-//    _commentsView.contentSize = CGSizeMake(_commentsView.width * numComments, _commentsView.height);
-//    int i = 0;
-//    for (Comment *comment in [_photo.comments allObjects]) {
-//      CommentView *c = [[CommentView alloc] initWithFrame:CGRectZero];
-//      c.width = _commentsView.width;
-//      c.height = _commentsView.height;
-//      c.left = i * c.width;
-//      [c loadCommentsWithObject:comment];
-//      [_commentsView addSubview:c];
-//      [c release];
-//      i++;
-//    }
-//  } else {
-//    [_commentsView removeSubviews];
-//  }
+  // Like Button  
+  // Comment Button
+  _likeButton.top = _captionView.top - _likeButton.height;
+  _commentButton.top = _captionView.top - _commentButton.height;
+  if ([self isExpanded]) {    
+    _likeButton.left = 0;
+    _commentButton.left = self.contentView.width - _commentButton.width;
+  } else {
+    _likeButton.left = 0 - _likeButton.width;
+    _commentButton.left = self.contentView.width;
+  }
+  
+  // Comment Bubble
+  _commentIndicator.top = floorf((CAPTION_HEIGHT - _commentIndicator.height) / 2);
+  _commentIndicator.left = _captionView.width - _commentIndicator.width - MARGIN_X;
 }
 
 + (CGFloat)rowHeightForObject:(id)object forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -315,7 +291,7 @@ static UIImage *_like = nil;
 }
 
 + (CGFloat)rowHeightForObject:(id)object expanded:(BOOL)expanded forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-//  Photo *photo = (Photo *)object;
+  Photo *photo = (Photo *)object;
   
   CGFloat origHeight = [[self class] rowHeightForObject:object forInterfaceOrientation:interfaceOrientation];
   CGFloat desiredHeight = 0;
@@ -324,7 +300,12 @@ static UIImage *_like = nil;
   
   // Add the comments table
   if (expanded) {
-    desiredHeight += 60;
+    NSUInteger numComments = [photo.comments count];
+    if (numComments > 0) {
+      desiredHeight += COMMENT_HEIGHT;
+    } else {
+      desiredHeight += 0.0001;
+    }
   }
   
   return desiredHeight;
@@ -342,8 +323,9 @@ static UIImage *_like = nil;
   [_photoView loadImageAndDownload:NO];
   
   // Comments
-  NSString *comments = [photo.comments count] > 0 ? [NSString stringWithFormat:@"%d",[photo.comments count]] : @"+";
-  [_commentButton setTitle:comments forState:UIControlStateNormal];
+//  NSString *comments = [photo.comments count] > 0 ? [NSString stringWithFormat:@"%d",[photo.comments count]] : @"+";
+  NSString *comments = [NSString stringWithFormat:@"%d",[photo.comments count]];
+  [_commentIndicator setTitle:comments forState:UIControlStateNormal];
   
   // Caption
   if ([photo.name length] > 0) {
@@ -373,18 +355,6 @@ static UIImage *_like = nil;
   if (self.delegate && [self.delegate respondsToSelector:@selector(addRemoveLikeForCell:)]) {
     [self.delegate addRemoveLikeForCell:self];
   }
-}
-
-- (void)dealloc {
-  RELEASE_SAFELY(_photoView);
-  RELEASE_SAFELY(_captionView);
-  RELEASE_SAFELY(_captionLabel);
-  RELEASE_SAFELY(_taggedLabel);
-  RELEASE_SAFELY(_commentButton);
-  RELEASE_SAFELY(_likeButton);
-  RELEASE_SAFELY(_commentsView);
-  RELEASE_SAFELY(_commentsFrame);
-  [super dealloc];
 }
 
 @end

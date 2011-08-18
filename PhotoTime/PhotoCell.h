@@ -19,6 +19,7 @@
   UILabel *_taggedLabel;
   UIButton *_commentButton;
   UIButton *_likeButton;
+  UIButton *_commentIndicator;
   UIImageView *_commentsFrame;
   UIScrollView *_commentsView;
   

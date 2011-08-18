@@ -13,6 +13,8 @@
 @interface CommentView : PSView {
   PSURLCacheImageView *_pictureView;
   UILabel *_messageLabel;
+  UIImageView *_bubble;
+  UIImageView *_frame;
 }
 
 - (void)loadCommentsWithObject:(id)object;

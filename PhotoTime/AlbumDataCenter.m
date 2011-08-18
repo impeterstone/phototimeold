@@ -363,7 +363,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 
 - (void)dataCenterRequestFailed:(ASIHTTPRequest *)request {
   NSLog(@"CRITICAL ALBUM REQUEST FAILED");
-  [[[request copy] autorelease] startAsynchronous];
+//  [[[request copy] autorelease] startAsynchronous];
 }
 
 - (void)dealloc {
