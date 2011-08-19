@@ -98,9 +98,10 @@
   mobile.albumTitle = @"Mobile Uploads";
   [albums addObject:mobile];
   
-//  AlbumViewController *wall = [[[AlbumViewController alloc] init] autorelease];
-//  wall.albumType = AlbumTypeWall;
-//  [albums addObject:wall];
+  AlbumViewController *wall = [[[AlbumViewController alloc] init] autorelease];
+  wall.albumType = AlbumTypeWall;
+  wall.albumTitle = @"Wall Photos";
+  [albums addObject:wall];
   
   // Now check to see if the user has any custom streams
   NSArray *userAlbums = [[NSUserDefaults standardUserDefaults] arrayForKey:@"userAlbums"];
@@ -229,41 +230,54 @@
   return bg;
 }
 
-//- (NSString *)exposeController:(PSExposeController *)exposeController labelTextForViewController:(UIViewController *)viewController {
-//  NSString *label = nil;
-//  if ([viewController isKindOfClass:[AlbumViewController class]]) {
-//    label = [(AlbumViewController *)[(UINavigationController *)viewController topViewController] navTitleLabel].text;
-//  } else {
-//    label = @"Bacon!";
-//  }
-//  return label;
-//}
-
-- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
+- (UILabel *)exposeController:(PSExposeController *)exposeController labelForViewController:(UIViewController *)viewController {
   AlbumViewController *avc = (AlbumViewController *)[(UINavigationController *)viewController topViewController];
-
-  UILabel *overlayView = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-  overlayView.autoresizingMask = ~UIViewAutoresizingNone;
-  overlayView.backgroundColor = [UIColor clearColor];
-  overlayView.font = BELLO_FONT;
-  overlayView.textColor = BELLO_COLOR;
-  overlayView.textAlignment = UITextAlignmentCenter;
-  overlayView.text = avc.albumTitle;
-
-  return overlayView;
+  UILabel *l = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+  l.autoresizingMask = ~UIViewAutoresizingNone;
+  l.backgroundColor = [UIColor clearColor];
+  l.font = BELLO_FONT;
+  l.textColor = BELLO_COLOR;
+  l.textAlignment = UITextAlignmentCenter;
+  l.text = avc.albumTitle;
+  
+  return l;
 }
 
+//- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
+//  AlbumViewController *avc = (AlbumViewController *)[(UINavigationController *)viewController topViewController];
+//
+//  UILabel *v = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+//  v.autoresizingMask = ~UIViewAutoresizingNone;
+//  v.backgroundColor = [UIColor clearColor];
+//  v.font = BELLO_FONT;
+//  v.textColor = BELLO_COLOR;
+//  v.textAlignment = UITextAlignmentCenter;
+//  v.text = avc.albumTitle;
+//
+//  return v;
+//}
+
 - (BOOL)exposeController:(PSExposeController *)exposeController canDeleteViewController:(UIViewController *)viewController {
-  return NO;
+  NSUInteger index = [exposeController.viewControllers indexOfObject:viewController];
+  if (index > 3) {
+    return YES;
+  } else {
+    return NO;
+  }
 }
 
 - (BOOL)canAddViewControllersForExposeController:(PSExposeController *)exposeController {
-  return NO;
+  return YES;
 }
 
 - (UIViewController *)newViewControllerForExposeController:(PSExposeController *)exposeController {
   AlbumViewController *avc = [[AlbumViewController alloc] init];
-  return [avc autorelease];
+  avc.albumType = AlbumTypeMe;
+  avc.albumTitle = @"Test Add";
+  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
+  nc.delegate = self;
+  nc.navigationBarHidden = YES;
+  return nc;
 }
 
 #pragma mark - Login
@@ -386,6 +400,7 @@
       if ([friend objectForKey:@"gender"]) {
         [friendDict setObject:[friend objectForKey:@"gender"] forKey:@"gender"];
       }
+      [friendDict setObject:[friend objectForKey:@"id"] forKey:@"id"];
       [friendDict setObject:[friend objectForKey:@"name"] forKey:@"name"];
       [friendsDict setObject:friendDict forKey:friendId];
     }

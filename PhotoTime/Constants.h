@@ -67,7 +67,7 @@
 #define TIMESTAMP_FONT [UIFont fontWithName:@"HelveticaNeue" size:10.0]
 #define NAV_BUTTON_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0]
 
-#define BELLO_FONT [UIFont fontWithName:@"Bello" size:48.0]
+#define BELLO_FONT [UIFont fontWithName:@"Bello" size:16.0]
 #define BELLO_COLOR RGBCOLOR(104,183,230)
 
 // Colors

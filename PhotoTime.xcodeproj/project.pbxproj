@@ -208,6 +208,8 @@
 		2873E15A13F4C4EB0094BD52 /* button_drawer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2873E15613F4C4EB0094BD52 /* button_drawer@2x.png */; };
 		288A306713F4AFFA00861C38 /* bg_expose_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A306613F4AFFA00861C38 /* bg_expose_overlay.png */; };
 		2893EB6213FDB78300B853FB /* bello-script.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2893EB6113FDB78300B853FB /* bello-script.ttf */; };
+		2893EB6513FDBE1100B853FB /* NewStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2893EB6413FDBE1100B853FB /* NewStreamViewController.m */; };
+		2893EB6813FDBFCB00B853FB /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2893EB6713FDBFCB00B853FB /* FriendCell.m */; };
 		289764AF13E36F29007E1069 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289764AE13E36F29007E1069 /* SplashViewController.m */; };
 		28A0310613ECD943003592E6 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310313ECD943003592E6 /* Default-Portrait.png */; };
 		28A0310813ECD943003592E6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0310513ECD943003592E6 /* Default@2x.png */; };
@@ -630,6 +632,10 @@
 		2873E15613F4C4EB0094BD52 /* button_drawer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_drawer@2x.png"; sourceTree = "<group>"; };
 		288A306613F4AFFA00861C38 /* bg_expose_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_expose_overlay.png; sourceTree = "<group>"; };
 		2893EB6113FDB78300B853FB /* bello-script.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "bello-script.ttf"; sourceTree = "<group>"; };
+		2893EB6313FDBE1100B853FB /* NewStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStreamViewController.h; sourceTree = "<group>"; };
+		2893EB6413FDBE1100B853FB /* NewStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewStreamViewController.m; sourceTree = "<group>"; };
+		2893EB6613FDBFCB00B853FB /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
+		2893EB6713FDBFCB00B853FB /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		289764AD13E36F29007E1069 /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
 		289764AE13E36F29007E1069 /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		28A0310313ECD943003592E6 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
@@ -769,6 +775,8 @@
 			children = (
 				25420ADA13D51A3600DD5A27 /* UploadViewController.h */,
 				25420ADB13D51A3600DD5A27 /* UploadViewController.m */,
+				2893EB6313FDBE1100B853FB /* NewStreamViewController.h */,
+				2893EB6413FDBE1100B853FB /* NewStreamViewController.m */,
 			);
 			name = Modals;
 			sourceTree = "<group>";
@@ -1184,6 +1192,8 @@
 				25B9C770138DDBCD003FEE96 /* CommentCell.m */,
 				258777CA13CBDBFB00990C71 /* FilterCell.h */,
 				258777CB13CBDBFB00990C71 /* FilterCell.m */,
+				2893EB6613FDBFCB00B853FB /* FriendCell.h */,
+				2893EB6713FDBFCB00B853FB /* FriendCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1886,6 +1896,8 @@
 				28A9FABC13F2701500EFB191 /* PSCell.m in Sources */,
 				28A0618013F3EE6E00DF60A7 /* PSStyleSheet.m in Sources */,
 				28A0619113F3F06E00DF60A7 /* UIColor+SML.m in Sources */,
+				2893EB6513FDBE1100B853FB /* NewStreamViewController.m in Sources */,
+				2893EB6813FDBFCB00B853FB /* FriendCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
