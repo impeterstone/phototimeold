@@ -54,8 +54,8 @@
   [super layoutSubviews];
   
   CGFloat top = MARGIN_Y;
-  CGFloat left = MARGIN_X + IMAGE_OFFSET;
-  CGFloat textWidth = self.contentView.width - MARGIN_X * 2 - IMAGE_OFFSET;
+  CGFloat left = MARGIN_X + self.contentView.width;
+  CGFloat textWidth = self.contentView.width - MARGIN_X * 2 - self.contentView.width;
   CGSize desiredSize = CGSizeZero;
   
   // Name/Timestamp
@@ -86,7 +86,7 @@
   Comment *comment = (Comment *)object;
   
   CGSize desiredSize = CGSizeZero;
-  CGFloat textWidth = [[self class] rowWidthForInterfaceOrientation:interfaceOrientation] - IMAGE_OFFSET - MARGIN_X * 2; // minus image
+  CGFloat textWidth = [[self class] rowWidthForInterfaceOrientation:interfaceOrientation] - [[self class] rowHeight] - MARGIN_X * 2; // minus image
   CGFloat desiredHeight = 0.0;
   
   desiredHeight += MARGIN_Y;
@@ -101,8 +101,8 @@
   
   desiredHeight += MARGIN_Y;
   
-  if (desiredHeight <= IMAGE_OFFSET) {
-    desiredHeight = IMAGE_OFFSET;
+  if (desiredHeight <= [[self class] rowHeight]) {
+    desiredHeight = [[self class] rowHeight];
   }
   
   return desiredHeight;

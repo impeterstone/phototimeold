@@ -18,6 +18,7 @@
 #import "PSAlertCenter.h"
 
 #import "AlbumViewController.h"
+#import "FriendViewController.h"
 
 #import "SearchTermController.h"
 #import "SearchTermDelegate.h"
@@ -242,6 +243,11 @@
   return l;
 }
 
+- (UIView *)addViewForExposeController:(PSExposeController *)exposeController {
+  UIImageView *addView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_add_stream.png"]] autorelease];
+  return addView;
+}
+
 //- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
 //  AlbumViewController *avc = (AlbumViewController *)[(UINavigationController *)viewController topViewController];
 //
@@ -269,18 +275,21 @@
   return YES;
 }
 
-- (UIViewController *)newViewControllerForExposeController:(PSExposeController *)exposeController {
-  
-  
-//  return nil;
-  
+- (void)shouldAddViewControllerForExposeController:(PSExposeController *)exposeController {
+  // Prompt user to configure new stream
+  FriendViewController *fvc = [[[FriendViewController alloc] init] autorelease];
+  [[PSExposeController sharedController] presentModalViewController:fvc animated:YES];
+}
+
+- (void)addNewUserAlbum {
   AlbumViewController *avc = [[AlbumViewController alloc] init];
   avc.albumType = AlbumTypeMe;
   avc.albumTitle = @"Test Add";
   UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
   nc.delegate = self;
   nc.navigationBarHidden = YES;
-  return nc;
+  
+  [[PSExposeController sharedController] addNewViewController:nc];
 }
 
 #pragma mark - Login

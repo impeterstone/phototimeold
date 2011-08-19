@@ -1,5 +1,5 @@
 //
-//  NewStreamViewController.h
+//  FriendViewController.h
 //  PhotoTime
 //
 //  Created by Peter Shih on 8/18/11.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "PSTableViewController.h"
 
-@interface NewStreamViewController : PSTableViewController
+@interface FriendViewController : PSTableViewController
 
 @end

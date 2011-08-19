@@ -64,6 +64,8 @@
 - (void)updateLoginProgress:(NSNotification *)notification;
 - (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
 
+- (void)addNewUserAlbum;
+
 // Facebook
 - (void)requestPublishStream;
 

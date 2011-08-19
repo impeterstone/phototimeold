@@ -10,4 +10,13 @@
 
 @implementation FriendCell
 
+- (void)fillCellWithObject:(id)object {
+  NSDictionary *friend = (NSDictionary *)object;
+  
+  _psImageView.urlPath = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", [friend objectForKey:@"id"]];
+  [_psImageView loadImageAndDownload:YES];
+  
+  self.textLabel.text = [friend objectForKey:@"name"];
+}
+
 @end
