@@ -28,7 +28,7 @@
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-  RELEASE_SAFELY(_noResultsView);
+  RELEASE_SAFELY(_dismissGesture);
   [super dealloc];
 }
 
@@ -42,7 +42,10 @@
   
   self.tableView.scrollsToTop = NO;
   
-  [self setupNoResultsView];
+  _dismissGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelSearch)];
+  [_nullView addGestureRecognizer:_dismissGesture];
+  _dismissGesture.enabled = YES;
+  
   [self updateState];
 }
 
@@ -50,17 +53,6 @@
 - (void)setupTableFooter {
   UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)] autorelease];
   _tableView.tableFooterView = footerView;
-}
-
-- (void)setupNoResultsView {
-  _noResultsView = [[UIView alloc] initWithFrame:self.view.bounds];
-  _noResultsView.autoresizingMask = self.view.autoresizingMask;
-//  _noResultsView.backgroundColor = [UIColor grayColor];
-  
-  UITapGestureRecognizer *cancelGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelSearch)] autorelease];
-  [_noResultsView addGestureRecognizer:cancelGesture];
-  
-  [self.view addSubview:_noResultsView];
 }
 
 - (void)cancelSearch {
@@ -76,12 +68,10 @@
   NSArray *filteredArray = [[PSSearchCenter defaultCenter] searchResultsForTerm:term];
 
   if ([filteredArray count] > 0) {
-    // remove empty view
-    [_noResultsView removeFromSuperview];
+    _dismissGesture.enabled = NO;
     [self.items addObject:filteredArray];
   } else {
-    // show empty view
-    [self.view addSubview:_noResultsView];
+    _dismissGesture.enabled = YES;
   }
   [self.tableView reloadData];
   [self dataSourceDidLoad];
