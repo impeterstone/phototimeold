@@ -50,6 +50,8 @@
 }
 
 - (void)save {
+  if ([_selectedFriends count] == 0) return;
+  
   if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectFriends:)]) {
     [self.delegate didSelectFriends:[_selectedFriends allObjects]];
   }
@@ -97,7 +99,7 @@
   
   cell = (FriendCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
   if(cell == nil) { 
-    cell = [[[FriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier] autorelease];
+    cell = [[[FriendCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier] autorelease];
   }
   
   [self tableView:tableView configureCell:cell atIndexPath:indexPath];
