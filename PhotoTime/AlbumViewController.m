@@ -179,7 +179,7 @@
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;
     case AlbumTypeFriends:
-      fetchTemplate = FETCH_FRIENDS;
+      fetchTemplate = FETCH_FRIENDS_FILTERED;
       substitutionVariables = [NSDictionary dictionaryWithObject:facebookId forKey:@"desiredFromId"];
       sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
       break;

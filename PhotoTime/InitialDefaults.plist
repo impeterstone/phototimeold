@@ -23,16 +23,6 @@
 	<key>facebookCanPublish</key>
 	<false/>
 	<key>userAlbums</key>
-	<array>
-		<dict>
-			<key>ids</key>
-			<array>
-				<string>100002453408542</string>
-				<string>100002434328470</string>
-			</array>
-			<key>title</key>
-			<string>My Bros</string>
-		</dict>
-	</array>
+	<array/>
 </dict>
 </plist>
