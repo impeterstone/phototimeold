@@ -207,7 +207,7 @@
   if (self.albumType == AlbumTypeCustom) {
     fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Album" inManagedObjectContext:context]];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:[self.albumConfig objectForKey:@"predicate"]];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"fromId IN %@", [self.albumConfig objectForKey:@"ids"]];
     [fetchRequest setPredicate:pred];
   } else {
     fetchRequest = [[PSCoreDataStack managedObjectModel] fetchRequestFromTemplateWithName:fetchTemplate substitutionVariables:substitutionVariables];

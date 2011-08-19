@@ -11,14 +11,18 @@
 
 @implementation FriendViewController
 
+@synthesize delegate = _delegate;
+
 - (id)init {
   self = [super init];
   if (self) {
+    _selectedFriends = [[NSMutableSet alloc] init];
   }
   return self;
 }
 
 - (void)dealloc {
+  RELEASE_SAFELY(_selectedFriends);
   [super dealloc];
 }
 
@@ -46,7 +50,10 @@
 }
 
 - (void)save {
-  
+  if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectFriends:)]) {
+    [self.delegate didSelectFriends:[_selectedFriends allObjects]];
+  }
+  [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)cancel {
@@ -101,6 +108,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  NSDictionary *friend = [[self.items objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
   
   // Toggle 'selected' state
 	BOOL isSelected = ![self cellIsSelected:indexPath];
@@ -110,13 +118,21 @@
 	[_selectedIndexes setObject:selectedIndex forKey:indexPath];
   
   if (isSelected) {
+    [_selectedFriends addObject:friend];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
   } else {
+    [_selectedFriends removeObject:friend];
     cell.accessoryType = UITableViewCellAccessoryNone;
   }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if ([self cellIsSelected:indexPath]) {
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+  } else {
+    cell.accessoryType = UITableViewCellAccessoryNone;
+  }
+  
   UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
   backgroundView.backgroundColor = [UIColor whiteColor];
   cell.backgroundView = backgroundView;

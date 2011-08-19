@@ -10,6 +10,11 @@
 
 @implementation FriendCell
 
+- (void)prepareForReuse {
+  [super prepareForReuse];
+  self.accessoryType = UITableViewCellAccessoryNone;
+}
+
 - (void)fillCellWithObject:(id)object {
   NSDictionary *friend = (NSDictionary *)object;
   

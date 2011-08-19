@@ -13,6 +13,7 @@
 #import "SearchTermDelegate.h"
 #import "PSTextField.h"
 #import "Facebook.h"
+#import "FriendSelectDelegate.h"
 
 @class SplashViewController;
 @class LoginViewController;
@@ -20,7 +21,7 @@
 @class AlbumDataCenter;
 @class SearchTermController;
 
-@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource, UITextFieldDelegate, SearchTermDelegate, UINavigationControllerDelegate, FBSessionDelegate, UIAlertViewDelegate> {
+@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource, UITextFieldDelegate, SearchTermDelegate, UINavigationControllerDelegate, FBSessionDelegate, UIAlertViewDelegate, FriendSelectDelegate> {
   UIWindow *_window;
   Facebook *_facebook;
   SplashViewController *_splashViewController;

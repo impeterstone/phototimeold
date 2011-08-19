@@ -25,8 +25,11 @@
 	<key>userAlbums</key>
 	<array>
 		<dict>
-			<key>predicate</key>
-			<string>fromId == &quot;100002453408542&quot; OR fromId = &quot;100002434328470&quot;</string>
+			<key>ids</key>
+			<array>
+				<string>100002453408542</string>
+				<string>100002434328470</string>
+			</array>
 			<key>title</key>
 			<string>My Bros</string>
 		</dict>

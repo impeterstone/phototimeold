@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "PSTableViewController.h"
+#import "FriendSelectDelegate.h"
 
-@interface FriendViewController : PSTableViewController
+@interface FriendViewController : PSTableViewController {
+  NSMutableSet *_selectedFriends;
+  id <FriendSelectDelegate> _delegate;
+}
+
+@property (nonatomic, assign) id <FriendSelectDelegate> delegate;
 
 @end

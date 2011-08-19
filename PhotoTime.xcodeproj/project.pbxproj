@@ -623,6 +623,7 @@
 		281BDE8113FF0C8F000CEA8F /* bg_add_stream@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_add_stream@2x.png"; sourceTree = "<group>"; };
 		28314D9F13EFA62D007516B2 /* icon_expose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_expose.png; sourceTree = "<group>"; };
 		28314DA113EFA6D2007516B2 /* icon_expose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_expose@2x.png"; sourceTree = "<group>"; };
+		28372C6313FF119D007C5F2B /* FriendSelectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendSelectDelegate.h; sourceTree = "<group>"; };
 		284F941D13EDB9620033F4A9 /* PhotoTime.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoTime.xcdatamodel; sourceTree = "<group>"; };
 		284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_sketch-pad.png"; path = "Resources/button_sketch-pad.png"; sourceTree = SOURCE_ROOT; };
 		2852EFA213EDB25800444ACD /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
@@ -1183,6 +1184,7 @@
 				2564404A138902F30050D948 /* PhotoCellDelegate.h */,
 				25D4D28F13B077C900A21C4C /* ComposeDelegate.h */,
 				25784B6D13D534CE00164124 /* UploadDelegate.h */,
+				28372C6313FF119D007C5F2B /* FriendSelectDelegate.h */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";

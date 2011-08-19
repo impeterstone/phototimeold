@@ -244,7 +244,12 @@
 }
 
 - (UIView *)addViewForExposeController:(PSExposeController *)exposeController {
-  UIImageView *addView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_add_stream.png"]] autorelease];
+  UIView *addView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+  addView.autoresizingMask = ~UIViewAutoresizingNone;
+  UIImageView *addBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_add_stream.png"]] autorelease];
+  addBackgroundView.frame = addView.bounds;
+  addBackgroundView.autoresizingMask = addView.autoresizingMask;
+  [addView addSubview:addBackgroundView];
   return addView;
 }
 
@@ -278,6 +283,7 @@
 - (void)shouldAddViewControllerForExposeController:(PSExposeController *)exposeController {
   // Prompt user to configure new stream
   FriendViewController *fvc = [[[FriendViewController alloc] init] autorelease];
+  fvc.delegate = self;
   [[PSExposeController sharedController] presentModalViewController:fvc animated:YES];
 }
 
@@ -285,6 +291,29 @@
   AlbumViewController *avc = [[AlbumViewController alloc] init];
   avc.albumType = AlbumTypeMe;
   avc.albumTitle = @"Test Add";
+  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
+  nc.delegate = self;
+  nc.navigationBarHidden = YES;
+  
+  [[PSExposeController sharedController] addNewViewController:nc];
+}
+
+#pragma mark - FriendSelectDelegate
+- (void)didSelectFriends:(NSArray *)friends {
+  NSMutableArray *newUserAlbums = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"userAlbums"]];
+  
+  NSString *title = @"test";
+  
+  NSDictionary *newAlbum = [NSDictionary dictionaryWithObjectsAndKeys:[friends valueForKey:@"id"], @"ids", title, @"title", nil];
+  [newUserAlbums addObject:newAlbum];
+  
+  [[NSUserDefaults standardUserDefaults] setObject:newUserAlbums forKey:@"userAlbums"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  AlbumViewController *avc = [[AlbumViewController alloc] init];
+  avc.albumType = AlbumTypeCustom;
+  avc.albumTitle = title;
+  avc.albumConfig = newAlbum;
   UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
   nc.delegate = self;
   nc.navigationBarHidden = YES;
