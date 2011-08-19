@@ -8,7 +8,6 @@
 
 #import "PhotoTimeAppDelegate.h"
 #import "Constants.h"
-#import "FBConnect.h"
 #import "SplashViewController.h"
 #import "LoginViewController.h"
 #import "LoginDataCenter.h"
@@ -324,6 +323,26 @@
   [self tryLogin];
 }
 
+#pragma mark - Facebook Permissions
+- (void)requestPublishStream {
+  UIAlertView *permissionsAlert = [[[UIAlertView alloc] initWithTitle:@"Permission Needed" message:@"We need your permission to post comments or like photos." delegate:self cancelButtonTitle:@"Nevermind" otherButtonTitles:@"Okay", nil] autorelease];
+  permissionsAlert.tag = PERMISSIONS_ALERT_TAG;
+  [permissionsAlert show];
+}
+
+- (void)fbDidLogin {
+  // Store New Access Token
+  // ignore the expiration since we request non-expiring offline access
+  [[NSUserDefaults standardUserDefaults] setObject:[_facebook.accessToken stringWithPercentEscape] forKey:@"facebookAccessToken"];
+  [[NSUserDefaults standardUserDefaults] setObject:_facebook.expirationDate forKey:@"facebookExpirationDate"];
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"facebookCanPublish"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)fbDidNotLogin:(BOOL)cancelled {
+  
+}
+
 - (void)getMe {
   // This is called the first time logging in
   NSURL *meUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me?fields=id,name,friends&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
@@ -454,6 +473,7 @@
 
 - (void)logout {
   UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout?" message:LOGOUT_ALERT delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+  logoutAlert.tag = LOGOUT_ALERT_TAG;
   [logoutAlert show];
   [logoutAlert autorelease];
 }
@@ -461,8 +481,12 @@
 #pragma mark - AlertView
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   if (buttonIndex != alertView.cancelButtonIndex) {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
-    [[PSExposeController sharedController] toggleExpose];
+    if (alertView.tag == LOGOUT_ALERT_TAG) {
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+      [[PSExposeController sharedController] toggleExpose];
+    } else if (alertView.tag == PERMISSIONS_ALERT_TAG) {
+      [_facebook authorize:FB_PERMISSIONS_EXTENDED delegate:self];
+    }
   }
 }
 

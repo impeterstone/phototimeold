@@ -61,7 +61,7 @@
   textWidth = textWidth - _pictureView.width - 5;
   
   // Comment
-  _bubble.frame = CGRectMake(left, top, textWidth, 60);
+  _bubble.frame = CGRectMake(left, top + 2, textWidth, 56);
   
   _messageLabel.left = left + 15;
   _messageLabel.top = top + 5;

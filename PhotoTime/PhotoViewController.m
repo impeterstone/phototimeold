@@ -158,6 +158,10 @@
 }
 
 #pragma mark - State Machine
+- (void)reloadDataSource {
+  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
+}
+
 - (void)loadDataSource {
   [super loadDataSource];
   [self executeFetch:FetchTypeCold];
@@ -331,10 +335,14 @@
 #pragma mark -
 #pragma mark PhotoCellDelegate
 - (void)addCommentForCell:(PhotoCell *)cell {
-  NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
-  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  _photoToComment = photo;
-  [_commentField becomeFirstResponder];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebookCanPublish"]) {
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    _photoToComment = photo;
+    [_commentField becomeFirstResponder];
+  } else {
+    [APP_DELEGATE requestPublishStream];
+  }
 }
 
 - (void)commentsSelectedForCell:(PhotoCell *)cell {
@@ -355,12 +363,16 @@
 }
 
 - (void)addRemoveLikeForCell:(PhotoCell *)cell {
-  NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
-  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  
-  // Add or Remove a like on the given photo
-  [[PhotoDataCenter defaultCenter] addLikeForPhotoId:photo.id];
-  [[PSToastCenter defaultCenter] showToastWithMessage:@"Photo Liked" toastType:PSToastTypeAlert toastDuration:1.0];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebookCanPublish"]) {
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    // Add or Remove a like on the given photo
+    [[PhotoDataCenter defaultCenter] addLikeForPhotoId:photo.id];
+    [[PSToastCenter defaultCenter] showToastWithMessage:@"Photo Liked" toastType:PSToastTypeAlert toastDuration:1.0];
+  } else {
+    [APP_DELEGATE requestPublishStream];
+  }
 }
 
 //- (void)pinchZoomTriggeredForCell:(PhotoCell *)cell {

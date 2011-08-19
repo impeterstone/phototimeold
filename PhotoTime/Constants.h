@@ -31,6 +31,10 @@
 #define kUpdateLoginProgress @"UpdateLoginProgress"
 #define kAlbumDownloadComplete @"AlbumDownloadComplete"
 
+// UIView Tags
+#define LOGOUT_ALERT_TAG 7001
+#define PERMISSIONS_ALERT_TAG 7002
+
 // Fetch Templates
 #define FETCH_ME @"fetchMe"
 #define FETCH_FRIENDS @"fetchFriends"
@@ -51,6 +55,7 @@
 #define FB_APP_ID @"253088251379021"
 #define FB_APP_SECRET @"34e674f197452432321025d110f89aa2"
 #define FB_PERMISSIONS [NSArray arrayWithObjects:@"user_photos", @"friends_photos", @"offline_access", nil]
+#define FB_PERMISSIONS_EXTENDED [NSArray arrayWithObjects:@"user_photos", @"friends_photos", @"offline_access", @"publish_stream", nil]
 #define FB_PARAMS @"id,first_name,last_name,name,gender,locale"
 
 // ERROR STRINGS

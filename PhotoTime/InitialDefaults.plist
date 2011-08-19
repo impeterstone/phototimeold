@@ -20,6 +20,8 @@
 	<integer>0</integer>
 	<key>hasDownloadedAlbums</key>
 	<false/>
+	<key>facebookCanPublish</key>
+	<false/>
 	<key>userAlbums</key>
 	<array>
 		<dict>

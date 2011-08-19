@@ -200,7 +200,14 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {  
   // Check request type
   NSString *requestType = [request.userInfo objectForKey:@"requestType"];
-  if ([requestType isEqualToString:@"addLike"] || [requestType isEqualToString:@"removeLike"] || [requestType isEqualToString:@"addComment"]) {
+  if ([requestType isEqualToString:@"addLike"] || [requestType isEqualToString:@"removeLike"]) {
+    return;
+  }
+  
+  if ([requestType isEqualToString:@"addComment"]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(reloadDataSource)]) {
+      [self.delegate performSelector:@selector(reloadDataSource)];
+    }
     return;
   }
   

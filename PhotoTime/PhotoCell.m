@@ -27,7 +27,7 @@ static UIImage *_likeImage = nil;
 + (void)initialize {
   _commentIndicatorImage = [[UIImage imageNamed:@"comment_indicator.png"] retain];
   _commentImage = [[UIImage imageNamed:@"icon_comment.png"] retain];
-  _likeImage = [[UIImage imageNamed:@"icon_like.png"] retain];
+  _likeImage = [[UIImage imageNamed:@"icon_epic.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {

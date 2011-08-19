@@ -12,15 +12,15 @@
 #import "PSExposeController.h"
 #import "SearchTermDelegate.h"
 #import "PSTextField.h"
+#import "Facebook.h"
 
-@class Facebook;
 @class SplashViewController;
 @class LoginViewController;
 @class LoginDataCenter;
 @class AlbumDataCenter;
 @class SearchTermController;
 
-@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource, UITextFieldDelegate, SearchTermDelegate, UINavigationControllerDelegate> {
+@interface PhotoTimeAppDelegate : NSObject <UIApplicationDelegate, LoginDelegate, PSDataCenterDelegate, PSExposeControllerDelegate, PSExposeControllerDataSource, UITextFieldDelegate, SearchTermDelegate, UINavigationControllerDelegate, FBSessionDelegate, UIAlertViewDelegate> {
   UIWindow *_window;
   Facebook *_facebook;
   SplashViewController *_splashViewController;
@@ -63,6 +63,9 @@
 
 - (void)updateLoginProgress:(NSNotification *)notification;
 - (void)updateLoginProgressOnMainThread:(NSDictionary *)userInfo;
+
+// Facebook
+- (void)requestPublishStream;
 
 // Search
 - (void)setupSearchField;
