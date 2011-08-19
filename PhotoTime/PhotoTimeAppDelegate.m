@@ -270,6 +270,10 @@
 }
 
 - (UIViewController *)newViewControllerForExposeController:(PSExposeController *)exposeController {
+  
+  
+//  return nil;
+  
   AlbumViewController *avc = [[AlbumViewController alloc] init];
   avc.albumType = AlbumTypeMe;
   avc.albumTitle = @"Test Add";
