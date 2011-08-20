@@ -252,7 +252,13 @@
 - (UIView *)addViewForExposeController:(PSExposeController *)exposeController {
   UIView *addView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
   addView.autoresizingMask = ~UIViewAutoresizingNone;
-  UIImageView *addBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_add_stream.png"]] autorelease];
+  NSString *bgName = nil;
+  if (isDeviceIPad()) {
+    bgName = @"bg_add_stream_pad.png";
+  } else {
+    bgName = @"bg_add_stream.png";
+  }
+  UIImageView *addBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:bgName]] autorelease];
   addBackgroundView.frame = addView.bounds;
   addBackgroundView.autoresizingMask = addView.autoresizingMask;
   [addView addSubview:addBackgroundView];
