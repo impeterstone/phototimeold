@@ -194,6 +194,18 @@
 		281BDE8413FF0C8F000CEA8F /* bg_add_stream@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 281BDE8113FF0C8F000CEA8F /* bg_add_stream@2x.png */; };
 		28314DA013EFA62D007516B2 /* icon_expose.png in Resources */ = {isa = PBXBuildFile; fileRef = 28314D9F13EFA62D007516B2 /* icon_expose.png */; };
 		28314DA213EFA6D2007516B2 /* icon_expose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28314DA113EFA6D2007516B2 /* icon_expose@2x.png */; };
+		28372CC013FF1E6B007C5F2B /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372C9313FF1E6B007C5F2B /* JSONKit.m */; };
+		28372CC113FF1E6B007C5F2B /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372C9513FF1E6B007C5F2B /* NSData+Base64.m */; };
+		28372CC213FF1E6B007C5F2B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372C9713FF1E6B007C5F2B /* SFHFKeychainUtils.m */; };
+		28372CC313FF1E6B007C5F2B /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372C9913FF1E6B007C5F2B /* MKSKProduct.m */; };
+		28372CC413FF1E6B007C5F2B /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372C9B13FF1E6B007C5F2B /* MKSKSubscriptionProduct.m */; };
+		28372CC513FF1E6B007C5F2B /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28372C9D13FF1E6B007C5F2B /* MKStoreKitConfigs.plist */; };
+		28372CC613FF1E6B007C5F2B /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372C9F13FF1E6B007C5F2B /* MKStoreManager.m */; };
+		28372CC713FF1E6B007C5F2B /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372CA113FF1E6B007C5F2B /* MKStoreObserver.m */; };
+		28372CC813FF1E6B007C5F2B /* README.mdown in Resources */ = {isa = PBXBuildFile; fileRef = 28372CA213FF1E6B007C5F2B /* README.mdown */; };
+		28372CD213FF1ED0007C5F2B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28372CD013FF1EBE007C5F2B /* Security.framework */; };
+		28372CD313FF1ED0007C5F2B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28372CCE13FF1EB0007C5F2B /* StoreKit.framework */; };
+		28372CD613FF2DD9007C5F2B /* PurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28372CD513FF2DD9007C5F2B /* PurchaseViewController.m */; };
 		284F941E13EDB9620033F4A9 /* PhotoTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 284F941C13EDB9620033F4A9 /* PhotoTime.xcdatamodeld */; };
 		284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */; };
 		2852EFA313EDB25800444ACD /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 2852EFA213EDB25800444ACD /* iTunesArtwork */; };
@@ -624,6 +636,27 @@
 		28314D9F13EFA62D007516B2 /* icon_expose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_expose.png; sourceTree = "<group>"; };
 		28314DA113EFA6D2007516B2 /* icon_expose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_expose@2x.png"; sourceTree = "<group>"; };
 		28372C6313FF119D007C5F2B /* FriendSelectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendSelectDelegate.h; sourceTree = "<group>"; };
+		28372C9213FF1E6B007C5F2B /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		28372C9313FF1E6B007C5F2B /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		28372C9413FF1E6B007C5F2B /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		28372C9513FF1E6B007C5F2B /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		28372C9613FF1E6B007C5F2B /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		28372C9713FF1E6B007C5F2B /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		28372C9813FF1E6B007C5F2B /* MKSKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKProduct.h; sourceTree = "<group>"; };
+		28372C9913FF1E6B007C5F2B /* MKSKProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKProduct.m; sourceTree = "<group>"; };
+		28372C9A13FF1E6B007C5F2B /* MKSKSubscriptionProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKSubscriptionProduct.h; sourceTree = "<group>"; };
+		28372C9B13FF1E6B007C5F2B /* MKSKSubscriptionProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKSubscriptionProduct.m; sourceTree = "<group>"; };
+		28372C9C13FF1E6B007C5F2B /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
+		28372C9D13FF1E6B007C5F2B /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
+		28372C9E13FF1E6B007C5F2B /* MKStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreManager.h; sourceTree = "<group>"; };
+		28372C9F13FF1E6B007C5F2B /* MKStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreManager.m; sourceTree = "<group>"; };
+		28372CA013FF1E6B007C5F2B /* MKStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreObserver.h; sourceTree = "<group>"; };
+		28372CA113FF1E6B007C5F2B /* MKStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreObserver.m; sourceTree = "<group>"; };
+		28372CA213FF1E6B007C5F2B /* README.mdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.mdown; sourceTree = "<group>"; };
+		28372CCE13FF1EB0007C5F2B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		28372CD013FF1EBE007C5F2B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		28372CD413FF2DD9007C5F2B /* PurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseViewController.h; sourceTree = "<group>"; };
+		28372CD513FF2DD9007C5F2B /* PurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseViewController.m; sourceTree = "<group>"; };
 		284F941D13EDB9620033F4A9 /* PhotoTime.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoTime.xcdatamodel; sourceTree = "<group>"; };
 		284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_sketch-pad.png"; path = "Resources/button_sketch-pad.png"; sourceTree = SOURCE_ROOT; };
 		2852EFA213EDB25800444ACD /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
@@ -775,6 +808,8 @@
 				25CEF8091339F278006F23A7 /* Foundation.framework in Frameworks */,
 				25CEF80B1339F278006F23A7 /* CoreGraphics.framework in Frameworks */,
 				25CEF80D1339F278006F23A7 /* CoreData.framework in Frameworks */,
+				28372CD213FF1ED0007C5F2B /* Security.framework in Frameworks */,
+				28372CD313FF1ED0007C5F2B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,6 +823,8 @@
 				25420ADB13D51A3600DD5A27 /* UploadViewController.m */,
 				2893EB6313FDBE1100B853FB /* FriendViewController.h */,
 				2893EB6413FDBE1100B853FB /* FriendViewController.m */,
+				28372CD413FF2DD9007C5F2B /* PurchaseViewController.h */,
+				28372CD513FF2DD9007C5F2B /* PurchaseViewController.m */,
 			);
 			name = Modals;
 			sourceTree = "<group>";
@@ -918,6 +955,7 @@
 		25CEF7F71339F278006F23A7 = {
 			isa = PBXGroup;
 			children = (
+				28372C6913FF1E6B007C5F2B /* Vendor */,
 				28C8AE9F13EDEBDC0087A06B /* PSExposeController */,
 				2570A47A13B490DD006CBCFE /* SevenMinuteLibrary */,
 				25CEF80E1339F278006F23A7 /* PhotoTime */,
@@ -942,6 +980,8 @@
 			children = (
 				28B13DF913E9395500F9E38B /* libsqlite3.dylib */,
 				25622EF4139F16DD004945AA /* libz.dylib */,
+				28372CD013FF1EBE007C5F2B /* Security.framework */,
+				28372CCE13FF1EB0007C5F2B /* StoreKit.framework */,
 				2544ACB313788E370072C86C /* CoreVideo.framework */,
 				2544ACB113788E2B0072C86C /* CoreMedia.framework */,
 				259C7B70134A914800C37AE1 /* MediaPlayer.framework */,
@@ -1402,6 +1442,46 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		28372C6913FF1E6B007C5F2B /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				28372C6A13FF1E6B007C5F2B /* MKStoreKit */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		28372C6A13FF1E6B007C5F2B /* MKStoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				28372C9113FF1E6B007C5F2B /* Externals */,
+				28372C9813FF1E6B007C5F2B /* MKSKProduct.h */,
+				28372C9913FF1E6B007C5F2B /* MKSKProduct.m */,
+				28372C9A13FF1E6B007C5F2B /* MKSKSubscriptionProduct.h */,
+				28372C9B13FF1E6B007C5F2B /* MKSKSubscriptionProduct.m */,
+				28372C9C13FF1E6B007C5F2B /* MKStoreKitConfigs.h */,
+				28372C9D13FF1E6B007C5F2B /* MKStoreKitConfigs.plist */,
+				28372C9E13FF1E6B007C5F2B /* MKStoreManager.h */,
+				28372C9F13FF1E6B007C5F2B /* MKStoreManager.m */,
+				28372CA013FF1E6B007C5F2B /* MKStoreObserver.h */,
+				28372CA113FF1E6B007C5F2B /* MKStoreObserver.m */,
+				28372CA213FF1E6B007C5F2B /* README.mdown */,
+			);
+			path = MKStoreKit;
+			sourceTree = "<group>";
+		};
+		28372C9113FF1E6B007C5F2B /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+				28372C9213FF1E6B007C5F2B /* JSONKit.h */,
+				28372C9313FF1E6B007C5F2B /* JSONKit.m */,
+				28372C9413FF1E6B007C5F2B /* NSData+Base64.h */,
+				28372C9513FF1E6B007C5F2B /* NSData+Base64.m */,
+				28372C9613FF1E6B007C5F2B /* SFHFKeychainUtils.h */,
+				28372C9713FF1E6B007C5F2B /* SFHFKeychainUtils.m */,
+			);
+			path = Externals;
+			sourceTree = "<group>";
+		};
 		2873E13D13F4BA9D0094BD52 /* spacelabels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1794,6 +1874,8 @@
 				281BDE8213FF0C8F000CEA8F /* bg_add_stream_pad.png in Resources */,
 				281BDE8313FF0C8F000CEA8F /* bg_add_stream.png in Resources */,
 				281BDE8413FF0C8F000CEA8F /* bg_add_stream@2x.png in Resources */,
+				28372CC513FF1E6B007C5F2B /* MKStoreKitConfigs.plist in Resources */,
+				28372CC813FF1E6B007C5F2B /* README.mdown in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1920,6 +2002,14 @@
 				28A0619113F3F06E00DF60A7 /* UIColor+SML.m in Sources */,
 				2893EB6513FDBE1100B853FB /* FriendViewController.m in Sources */,
 				2893EB6813FDBFCB00B853FB /* FriendCell.m in Sources */,
+				28372CC013FF1E6B007C5F2B /* JSONKit.m in Sources */,
+				28372CC113FF1E6B007C5F2B /* NSData+Base64.m in Sources */,
+				28372CC213FF1E6B007C5F2B /* SFHFKeychainUtils.m in Sources */,
+				28372CC313FF1E6B007C5F2B /* MKSKProduct.m in Sources */,
+				28372CC413FF1E6B007C5F2B /* MKSKSubscriptionProduct.m in Sources */,
+				28372CC613FF1E6B007C5F2B /* MKStoreManager.m in Sources */,
+				28372CC713FF1E6B007C5F2B /* MKStoreObserver.m in Sources */,
+				28372CD613FF2DD9007C5F2B /* PurchaseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

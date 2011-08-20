@@ -19,12 +19,15 @@
 
 #import "AlbumViewController.h"
 #import "FriendViewController.h"
+#import "PurchaseViewController.h"
 
 #import "SearchTermController.h"
 #import "SearchTermDelegate.h"
 #import "PSSearchCenter.h"
 #import "UIImage+SML.h"
 #import "UIBarButtonItem+SML.h"
+
+#import "MKStoreManager.h"
 
 @implementation PhotoTimeAppDelegate
 
@@ -55,6 +58,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   NSLog(@"fonts: %@",[UIFont familyNames]);
+  
+  // MKStoreKit
+  [MKStoreManager sharedManager];
   
   // Override StyleSheet
   [PSStyleSheet setStyleSheet:@"AppStyleSheet"];
@@ -253,19 +259,16 @@
   return addView;
 }
 
-//- (UIView *)exposeController:(PSExposeController *)exposeController overlayViewForViewController:(UIViewController *)viewController {
-//  AlbumViewController *avc = (AlbumViewController *)[(UINavigationController *)viewController topViewController];
-//
-//  UILabel *v = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-//  v.autoresizingMask = ~UIViewAutoresizingNone;
-//  v.backgroundColor = [UIColor clearColor];
-//  v.font = BELLO_FONT;
-//  v.textColor = BELLO_COLOR;
-//  v.textAlignment = UITextAlignmentCenter;
-//  v.text = avc.albumTitle;
-//
-//  return v;
-//}
+- (void)exposeController:(PSExposeController *)exposeController didDeleteViewController:(UIViewController *)viewController atIndex:(NSUInteger)index {
+  NSUInteger offsetIndex = index - 4; // 4 non-deleteable spaces
+  
+  NSMutableArray *newUserAlbums = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"userAlbums"]];
+  
+  [newUserAlbums removeObjectAtIndex:offsetIndex];
+  
+  [[NSUserDefaults standardUserDefaults] setObject:newUserAlbums forKey:@"userAlbums"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (BOOL)exposeController:(PSExposeController *)exposeController canDeleteViewController:(UIViewController *)viewController {
   NSUInteger index = [exposeController.viewControllers indexOfObject:viewController];
@@ -281,21 +284,21 @@
 }
 
 - (void)shouldAddViewControllerForExposeController:(PSExposeController *)exposeController {
-  // Prompt user to configure new stream
+  // Check to see if this feature is purchased first or if the user hasn't used their freebie
+  if ([MKStoreManager isFeaturePurchased:SK_PHOTO_STREAMS] || [[[PSExposeController sharedController] viewControllers] count] == 4) {
+    // Prompt user to configure new stream
+    [self addNewStream];
+  } else {
+    // Prompt user to buy
+    PurchaseViewController *pvc = [[[PurchaseViewController alloc] init] autorelease];
+    [[PSExposeController sharedController] presentModalViewController:pvc animated:YES];
+  }
+}
+
+- (void)addNewStream {
   FriendViewController *fvc = [[[FriendViewController alloc] init] autorelease];
   fvc.delegate = self;
   [[PSExposeController sharedController] presentModalViewController:fvc animated:YES];
-}
-
-- (void)addNewUserAlbum {
-  AlbumViewController *avc = [[AlbumViewController alloc] init];
-  avc.albumType = AlbumTypeMe;
-  avc.albumTitle = @"Test Add";
-  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
-  nc.delegate = self;
-  nc.navigationBarHidden = YES;
-  
-  [[PSExposeController sharedController] addNewViewController:nc];
 }
 
 #pragma mark - FriendSelectDelegate

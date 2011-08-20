@@ -44,11 +44,14 @@
   
   self.tableView.rowHeight = 44;
   
-  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Search Friends..."];
+  // THERE IS A BUG
+  // When multi-selecting on a search results table view, it doesnt' match to the real table
+//  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Search Friends..."];
   
   [self loadDataSource];
 }
 
+#pragma mark - Actions
 - (void)save {
   if ([_selectedFriends count] == 0) return;
   
@@ -77,7 +80,26 @@
   NSDictionary *facebookFriends = [[NSUserDefaults standardUserDefaults] objectForKey:@"facebookFriends"];
   NSArray *friends = [[facebookFriends allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
   
-  [self.items addObject:friends];
+  // Sort these friends
+  NSMutableDictionary *groups = [NSMutableDictionary dictionary];
+  for (NSDictionary *friend in friends) {
+    NSString *firstInitial = [[[friend objectForKey:@"name"] uppercaseString] substringToIndex:1];
+    
+    NSMutableArray *section = [groups objectForKey:firstInitial];
+    if (!section) {
+      section = [NSMutableArray arrayWithCapacity:1];
+      [groups setObject:section forKey:firstInitial];
+    }
+    
+    [section addObject:friend];
+  }
+  
+  [_sectionTitles addObjectsFromArray:[[groups allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
+  for (NSString *firstInitial in _sectionTitles) {
+    [self.items addObject:[groups objectForKey:firstInitial]];
+  }
+  
+//  [self.items addObject:friends];
   
   [self dataSourceDidLoad];
 }
@@ -89,7 +111,14 @@
 
 #pragma mark - TableView
 - (void)tableView:(UITableView *)tableView configureCell:(id)cell atIndexPath:(NSIndexPath *)indexPath {
-  NSDictionary *friend = [[self.items objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+  NSArray *items = nil;
+  if (tableView == self.searchDisplayController.searchResultsTableView) {
+    items = _searchItems;
+  } else {
+    items = _items;
+  }
+  
+  NSDictionary *friend = [[items objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
   [cell fillCellWithObject:friend];
 }
 
@@ -147,5 +176,19 @@
   [selectedBackgroundView release];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+  return [_sectionTitles objectAtIndex:section];
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+  return _sectionTitles;
+}
+
+#pragma mark - Search
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+  NSArray *filteredItems = [[_items objectAtIndex:0] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name BEGINSWITH[cd] %@", searchText]];
+  [_searchItems removeAllObjects];
+  [_searchItems addObject:filteredItems];
+}
 
 @end

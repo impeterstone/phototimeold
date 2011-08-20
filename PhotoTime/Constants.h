@@ -12,6 +12,9 @@
 #import "UINavigationBar+Custom.h"
 #import "LocalyticsSession.h"
 
+// Store Kit
+#define SK_PHOTO_STREAMS @"com.sevenminutelabs.phototime.photostream"
+
 // Core Data (From PSConstants.h)
 #define CORE_DATA_SQL_FILE @"phototime.sqlite"
 #define CORE_DATA_MOM @"PhotoTime"
