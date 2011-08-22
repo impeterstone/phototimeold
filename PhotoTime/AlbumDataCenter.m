@@ -269,11 +269,10 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     
     dispatch_async(dispatch_get_main_queue(), ^{
       // All albums downloaded
-      if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isResume"]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
-      }
+//      if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isResume"]) {
+//      }
       if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
         
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedAlbums"];
@@ -322,6 +321,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
       if (self.delegate && [self.delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
         [self.delegate dataCenterDidFinish:nil withResponse:nil];
       }

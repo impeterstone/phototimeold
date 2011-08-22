@@ -10,5 +10,5 @@
 
 @protocol FriendSelectDelegate <NSObject>
 @optional
-- (void)didSelectFriends:(NSArray *)friends;
+- (void)didSelectFriends:(NSArray *)friends withTitle:(NSString *)title;
 @end

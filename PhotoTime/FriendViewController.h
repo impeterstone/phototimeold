@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "PSTableViewController.h"
 #import "FriendSelectDelegate.h"
+#import "TSAlertView.h"
 
-@interface FriendViewController : PSTableViewController {
+@interface FriendViewController : PSTableViewController <TSAlertViewDelegate> {
   NSMutableSet *_selectedFriends;
   id <FriendSelectDelegate> _delegate;
 }

@@ -82,6 +82,10 @@
   }
   
   self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
+    [self loadDataSource];
+  }
 }
 
 #pragma mark - State Machine

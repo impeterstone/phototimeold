@@ -316,10 +316,8 @@
 }
 
 #pragma mark - FriendSelectDelegate
-- (void)didSelectFriends:(NSArray *)friends {
+- (void)didSelectFriends:(NSArray *)friends withTitle:(NSString *)title {
   NSMutableArray *newUserAlbums = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"userAlbums"]];
-  
-  NSString *title = @"test";
   
   NSDictionary *newAlbum = [NSDictionary dictionaryWithObjectsAndKeys:[friends valueForKey:@"id"], @"ids", title, @"title", nil];
   [newUserAlbums addObject:newAlbum];
@@ -574,6 +572,8 @@
 
 #pragma mark - Navigation Delegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  if ([[PSExposeController sharedController] isShowing]) return;
+  
   if ([[navigationController viewControllers] count] > 1) {
     _activeNavController = navigationController;
     [_searchField removeFromSuperview];

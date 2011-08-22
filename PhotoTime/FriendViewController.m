@@ -55,14 +55,28 @@
 - (void)save {
   if ([_selectedFriends count] == 0) return;
   
-  if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectFriends:)]) {
-    [self.delegate didSelectFriends:[_selectedFriends allObjects]];
-  }
-  [self dismissModalViewControllerAnimated:YES];
+  TSAlertView *alertView = [[[TSAlertView alloc] init] autorelease];
+  alertView.delegate = self;
+  alertView.style = TSAlertViewStyleInput;
+  alertView.buttonLayout = TSAlertViewButtonLayoutNormal;
+  alertView.title = @"Name Your Stream";
+  [alertView addButtonWithTitle:@"Okay"];
+  [alertView show];
+
 }
 
 - (void)cancel {
   [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void) alertView: (TSAlertView *) alertView 
+didDismissWithButtonIndex: (NSInteger) buttonIndex {
+  if (buttonIndex != alertView.cancelButtonIndex) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectFriends:withTitle:)]) {
+      [self.delegate didSelectFriends:[_selectedFriends allObjects] withTitle:alertView.inputTextField.text];
+    }
+    [self dismissModalViewControllerAnimated:YES];
+  }
 }
 
 #pragma mark - State Machine
