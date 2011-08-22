@@ -681,7 +681,7 @@
     if ([searchTerm length] == 0) continue;
     NSString *searchValue = searchTerm;
     // search any
-    [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue]];
+    [subpredicates addObject:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR fromName CONTAINS[cd] %@ OR caption CONTAINS[cd] %@ OR location CONTAINS[cd] %@", searchValue, searchValue, searchValue, searchValue]];
   }
 
   AlbumViewController *avc = [[AlbumViewController alloc] init];

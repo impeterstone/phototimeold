@@ -46,7 +46,7 @@
   
   // THERE IS A BUG
   // When multi-selecting on a search results table view, it doesnt' match to the real table
-//  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Search Friends..."];
+  //  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Search Friends..."];
   
   [self loadDataSource];
 }
@@ -60,17 +60,17 @@
   alertView.style = TSAlertViewStyleInput;
   alertView.buttonLayout = TSAlertViewButtonLayoutNormal;
   alertView.title = @"Name Your Stream";
+  alertView.message = @"e.g. My Girls";
   [alertView addButtonWithTitle:@"Okay"];
   [alertView show];
-
+  
 }
 
 - (void)cancel {
   [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void) alertView: (TSAlertView *) alertView 
-didDismissWithButtonIndex: (NSInteger) buttonIndex {
+- (void)alertView:(TSAlertView *)alertView didDismissWithButtonIndex: (NSInteger) buttonIndex {
   if (buttonIndex != alertView.cancelButtonIndex) {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectFriends:withTitle:)]) {
       [self.delegate didSelectFriends:[_selectedFriends allObjects] withTitle:alertView.inputTextField.text];
@@ -113,7 +113,7 @@ didDismissWithButtonIndex: (NSInteger) buttonIndex {
     [self.items addObject:[groups objectForKey:firstInitial]];
   }
   
-//  [self.items addObject:friends];
+  //  [self.items addObject:friends];
   
   [self dataSourceDidLoad];
 }
@@ -157,7 +157,7 @@ didDismissWithButtonIndex: (NSInteger) buttonIndex {
   
   // Toggle 'selected' state
 	BOOL isSelected = ![self cellIsSelected:indexPath];
- 
+  
   // Store cell 'selected' state keyed on indexPath
 	NSNumber *selectedIndex = [NSNumber numberWithBool:isSelected];
 	[_selectedIndexes setObject:selectedIndex forKey:indexPath];
