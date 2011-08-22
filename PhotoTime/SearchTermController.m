@@ -36,7 +36,7 @@
   [super loadView];
   
   // Nullview
-  [_nullView setLoadingTitle:nil loadingSubtitle:nil emptyTitle:@"Search Photos" emptySubtitle:@"Try things, people, or places" image:[UIImage imageNamed:@"nullview_search.png"]];
+  [_nullView setLoadingTitle:nil loadingSubtitle:nil emptyTitle:@"Search Photos" emptySubtitle:@"Try searching for people, places, or things" image:[UIImage imageNamed:@"nullview_search.png"]];
   
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   

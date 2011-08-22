@@ -12,6 +12,8 @@
 	<false/>
 	<key>isFirstLogin</key>
 	<true/>
+	<key>isFirstNewStream</key>
+	<true/>
 	<key>isLoggedIn</key>
 	<false/>
 	<key>lastEventType</key>

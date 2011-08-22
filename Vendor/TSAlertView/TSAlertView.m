@@ -401,7 +401,7 @@ const CGFloat kTSAlertView_ColumnMargin = 10.0;
 {
 	if ( _inputTextField == nil )
 	{
-		_inputTextField = [[UITextField alloc] init];
+		_inputTextField = [[PSTextField alloc] initWithFrame:CGRectZero withInset:CGSizeMake(8, 5)];
 		_inputTextField.borderStyle = UITextBorderStyleRoundedRect;
 	}
 	

@@ -10,7 +10,9 @@
 #import "PSBaseViewController.h"
 
 @interface PurchaseViewController : PSBaseViewController {
-  UINavigationItem *_navItem;
+  UIButton *_buyButton;
+  UIButton *_buyUnlimitedButton;
+  UIButton *_cancelButton;
 }
 
 @end

@@ -49,6 +49,14 @@
   //  [self setupSearchDisplayControllerWithScopeButtonTitles:nil andPlaceholder:@"Search Friends..."];
   
   [self loadDataSource];
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstNewStream"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isFirstNewStream"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [[[[UIAlertView alloc] initWithTitle:@"Create a Stream" message:@"Choose the friend(s) that you would like to add to your new stream." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] autorelease] show];
+    }];
+  }
 }
 
 #pragma mark - Actions
@@ -60,7 +68,7 @@
   alertView.style = TSAlertViewStyleInput;
   alertView.buttonLayout = TSAlertViewButtonLayoutNormal;
   alertView.title = @"Name Your Stream";
-  alertView.message = @"e.g. My Girls";
+  alertView.message = @"e.g. My Family";
   [alertView addButtonWithTitle:@"Okay"];
   [alertView show];
   

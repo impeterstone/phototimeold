@@ -60,10 +60,11 @@
       [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
     }];
   }
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLogin"]) {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstLogin"];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLogin"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isFirstLogin"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [[PSAlertCenter defaultCenter] postAlertWithTitle:@"Welcome!" andMessage:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." andDelegate:nil];
+      [[[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] autorelease] show];
     }];
   }
 }
@@ -72,7 +73,7 @@
   [super loadView];
   
   // Nullview
-  [_nullView setLoadingTitle:@"Loading" loadingSubtitle:@"Getting albums from Facebook..." emptyTitle:@"No Photos Found" emptySubtitle:@"Epic Fail Time!" image:[UIImage imageNamed:@"nullview_search.png"]];
+  [_nullView setLoadingTitle:@"Loading..." loadingSubtitle:@"Getting albums from Facebook" emptyTitle:@"Fail" emptySubtitle:@"No Albums Found" image:[UIImage imageNamed:@"nullview_photos.png"]];
   
   // Table
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
