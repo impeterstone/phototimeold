@@ -40,6 +40,8 @@
   UIBarButtonItem *_filterButton;
   UIBarButtonItem *_cancelButton;
   UIBarButtonItem *_logoutButton;
+  UIBarButtonItem *_editButton;
+  UIBarButtonItem *_doneButton;
   SearchTermController *_searchTermController;
   BOOL _searchActive;
 }

@@ -268,18 +268,17 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {        
-        // All albums downloaded
+      // All albums downloaded
+      if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isResume"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
+      }
+      if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
         
-        // Inform Delegate if all responses are parsed
-        if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-          [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
-          [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
-          [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedAlbums"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          [[PSProgressCenter defaultCenter] hideProgress];
-        }
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedAlbums"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[PSProgressCenter defaultCenter] hideProgress];
       }
     });
   });
@@ -323,11 +322,10 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [context release];
     
     dispatch_async(dispatch_get_main_queue(), ^{
+      if (self.delegate && [self.delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
+        [self.delegate dataCenterDidFinish:nil withResponse:nil];
+      }
       if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
-        // Inform Delegate if all responses are parsed
-        if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
-          [_delegate performSelector:@selector(dataCenterDidFinish:withResponse:) withObject:nil withObject:nil];
-        }
         [[PSProgressCenter defaultCenter] hideProgress];
       }
     });

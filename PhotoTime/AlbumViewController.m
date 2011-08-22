@@ -27,20 +27,26 @@
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
 //    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDataSource) name:kReloadAlbumController object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDataSource) name:kAlbumDownloadComplete object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource) name:kReloadAlbumController object:nil];
   }
   return self;
 }
 
 - (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kAlbumDownloadComplete object:nil];
   RELEASE_SAFELY(_albumTitle);
   RELEASE_SAFELY(_albumConfig);
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
   [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
+    [self loadDataSource];
+  }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -76,16 +82,18 @@
   }
   
   self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
-  
-  [self loadDataSource];
 }
 
 #pragma mark - State Machine
-- (void)loadDataSource {
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    [super loadDataSource];
-    [self dataSourceDidLoad];
+- (void)reloadDataSource {
+  if ([[[PSExposeController sharedController] selectedViewController] isEqual:self]) {
+    [self loadDataSource];
   }
+}
+
+- (void)loadDataSource {
+  [super loadDataSource];
+  [self dataSourceDidLoad];
 }
 
 - (void)dataSourceDidLoad {
@@ -137,7 +145,7 @@
   pvc.album = album;
   
   // If this album is WALL, sort by timestamp instead
-  if (self.albumType == AlbumTypeWall) {
+  if ([album.type isEqualToString:@"wall"] || [album.name isEqualToString:@"Wall Photos"]) {
     pvc.sortKey = @"timestamp";
   }
   

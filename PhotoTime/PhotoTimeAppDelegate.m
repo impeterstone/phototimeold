@@ -57,7 +57,9 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  NSLog(@"fonts: %@",[UIFont familyNames]);
+//  NSLog(@"fonts: %@",[UIFont familyNames]);
+  
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isResume"];
   
   // MKStoreKit
   [MKStoreManager sharedManager];
@@ -133,6 +135,8 @@
   _filterButton = [[UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
   _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
   _logoutButton = [[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal] retain];
+  _editButton = [[UIBarButtonItem navButtonWithTitle:@"Edit" withTarget:self action:@selector(edit) buttonType:NavButtonTypeNormal] retain];
+  _doneButton = [[UIBarButtonItem navButtonWithTitle:@"Done" withTarget:self action:@selector(edit) buttonType:NavButtonTypeBlue] retain];
   
   // Window
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -187,6 +191,8 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isResume"];
+  
   // Login if necessary
   [self tryLogin];
   
@@ -210,11 +216,13 @@
 - (void)exposeControllerWillExpand:(PSExposeController *)exposeController {
   [_searchField removeFromSuperview];  
   [_headerNavItem setLeftBarButtonItem:_logoutButton];
+  [_headerNavItem setRightBarButtonItem:_editButton];
 }
 
 - (void)exposeControllerWillCollapse:(PSExposeController *)exposeController {
   [_headerNavBar addSubview:_searchField];
   [_headerNavItem setLeftBarButtonItem:nil];
+  [_headerNavItem setRightBarButtonItem:_filterButton];
 }
 
 - (BOOL)exposeController:(PSExposeController *)exposeController shouldHideNavigationBarOnAppearForViewController:(UIViewController *)viewController {
@@ -506,8 +514,6 @@
 //    [_loginViewController dismissModalViewControllerAnimated:NO];
 //    [_loginViewController.view removeFromSuperview];
 //  }
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
 }
 
 - (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
@@ -527,6 +533,17 @@
   logoutAlert.tag = LOGOUT_ALERT_TAG;
   [logoutAlert show];
   [logoutAlert autorelease];
+}
+
+- (void)edit {
+  BOOL isEditing = [[PSExposeController sharedController] isEditing];
+  if (isEditing) {
+    [_headerNavItem setRightBarButtonItem:_editButton];
+  } else {
+    [_headerNavItem setRightBarButtonItem:_doneButton];
+  }
+  
+  [[PSExposeController sharedController] toggleEditing:!isEditing];
 }
 
 #pragma mark - AlertView
@@ -703,6 +720,8 @@
   RELEASE_SAFELY(_searchTermController);
   RELEASE_SAFELY(_searchField);
   RELEASE_SAFELY(_logoutButton);
+  RELEASE_SAFELY(_editButton);
+  RELEASE_SAFELY(_doneButton);
   RELEASE_SAFELY(_filterButton);
   RELEASE_SAFELY(_cancelButton);
   RELEASE_SAFELY(_navController);

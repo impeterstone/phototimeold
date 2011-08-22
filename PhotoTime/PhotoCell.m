@@ -63,7 +63,7 @@ static UIImage *_likeImage = nil;
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _photoView.shouldAnimate = YES;
+    _photoView.shouldAnimate = NO;
     
     // Comment Indicator
     _commentIndicator = [[UIButton alloc] initWithFrame:CGRectZero];

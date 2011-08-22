@@ -8,6 +8,8 @@
 	<date>4001-01-01T00:00:00Z</date>
 	<key>hasCachedFriends</key>
 	<false/>
+	<key>isResume</key>
+	<false/>
 	<key>isFirstLogin</key>
 	<true/>
 	<key>isLoggedIn</key>
