@@ -60,15 +60,6 @@
       [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
     }];
   }
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLogin"]) {
-      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isFirstLogin"];
-      [[NSUserDefaults standardUserDefaults] synchronize];
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [[[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] autorelease] show];
-      }];
-    }
-  }
 }
 
 - (void)loadView {
@@ -101,6 +92,14 @@
 - (void)loadDataSource {
   [super loadDataSource];
   [self dataSourceDidLoad];
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLogin"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isFirstLogin"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [[[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] autorelease] show];
+    }];
+  }
 }
 
 - (void)dataSourceDidLoad {
