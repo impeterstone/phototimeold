@@ -299,7 +299,7 @@
 
 - (void)shouldAddViewControllerForExposeController:(PSExposeController *)exposeController {
   // Check to see if this feature is purchased first or if the user hasn't used their freebie
-  if ([MKStoreManager isFeaturePurchased:SK_PHOTO_STREAMS] || [[[PSExposeController sharedController] viewControllers] count] == 4) {
+  if ([[[PSExposeController sharedController] viewControllers] count] < [[NSUserDefaults standardUserDefaults] integerForKey:@"availableStreams"]) {
     // Prompt user to configure new stream
     [self addNewStream];
   } else {

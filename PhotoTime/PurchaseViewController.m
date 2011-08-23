@@ -55,7 +55,7 @@
   
   _buyUnlimitedButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
   _buyUnlimitedButton.frame = CGRectMake(10, 370, 300, 37);
-  [_buyUnlimitedButton addTarget:self action:@selector(buy) forControlEvents:UIControlEventTouchUpInside];
+  [_buyUnlimitedButton addTarget:self action:@selector(buyUnlimited) forControlEvents:UIControlEventTouchUpInside];
   [_buyUnlimitedButton setTitle:@"Buy unlimited streams for $1.99" forState:UIControlStateNormal];
   [_buyUnlimitedButton.titleLabel setFont:LARGE_FONT];
   [_buyUnlimitedButton setBackgroundImage:[UIImage stretchableImageNamed:@"button_round_green.png" withLeftCapWidth:11 topCapWidth:0] forState:UIControlStateNormal];
@@ -75,8 +75,31 @@
   _buyButton.enabled = NO;
   _buyUnlimitedButton.enabled = NO;
   _cancelButton.enabled = NO;
-  [[MKStoreManager sharedManager] buyFeature:SK_PHOTO_STREAMS 
+  [[MKStoreManager sharedManager] buyFeature:SK_ADD_STREAM 
                                   onComplete:^(NSString *purchasedFeature){
+                                    // Purchase complete, increment availableStreams
+                                    [[MKStoreManager sharedManager] consumeProduct:SK_ADD_STREAM quantity:1];
+                                    NSInteger availableStreams = [[NSUserDefaults standardUserDefaults] integerForKey:@"availableStreams"];
+                                    [[NSUserDefaults standardUserDefaults] setInteger:(availableStreams + 1) forKey:@"availableStreams"];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
+                                    [self dismissModalViewControllerAnimated:YES];
+                                  } 
+                                 onCancelled:^{
+                                   _buyButton.enabled = YES;
+                                   _buyUnlimitedButton.enabled = YES;
+                                   _cancelButton.enabled = YES;
+                                 }];
+}
+
+- (void)buyUnlimited {
+  _buyButton.enabled = NO;
+  _buyUnlimitedButton.enabled = NO;
+  _cancelButton.enabled = NO;
+  [[MKStoreManager sharedManager] buyFeature:SK_UNLIMITED_STREAMS 
+                                  onComplete:^(NSString *purchasedFeature){
+                                    // Purchase complete, increment availableStreams to infinity
+                                    [[NSUserDefaults standardUserDefaults] setInteger:INT_MAX forKey:@"availableStreams"];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
                                     [self dismissModalViewControllerAnimated:YES];
                                   } 
                                  onCancelled:^{

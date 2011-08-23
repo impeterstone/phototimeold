@@ -15,4 +15,7 @@
   UIButton *_cancelButton;
 }
 
+- (void)buy;
+- (void)buyUnlimited;
+
 @end

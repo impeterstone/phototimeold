@@ -26,6 +26,8 @@
 	<false/>
 	<key>facebookCanPublish</key>
 	<false/>
+	<key>availableStreams</key>
+	<integer>5</integer>
 	<key>userAlbums</key>
 	<array/>
 </dict>

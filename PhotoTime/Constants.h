@@ -13,7 +13,8 @@
 #import "LocalyticsSession.h"
 
 // Store Kit
-#define SK_PHOTO_STREAMS @"com.sevenminutelabs.phototime.photostream"
+#define SK_ADD_STREAM @"com.sevenminutelabs.phototime.addstream"
+#define SK_UNLIMITED_STREAMS @"com.sevenminutelabs.phototime.unlimited"
 
 // Core Data (From PSConstants.h)
 #define CORE_DATA_SQL_FILE @"phototime.sqlite"
