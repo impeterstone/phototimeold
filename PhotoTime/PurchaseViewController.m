@@ -9,7 +9,6 @@
 #import "PurchaseViewController.h"
 #import "MKStoreManager.h"
 #import "UIImage+SML.h"
-#import "PSTextView.h"
 
 @implementation PurchaseViewController
 
@@ -27,38 +26,37 @@
   [super dealloc];
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  
+}
+
 #pragma mark - View
 - (void)loadView {
   [super loadView];
   
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lolcats_money.jpg"]] autorelease];
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_purchase.png"]] autorelease];
   bg.frame = self.view.bounds;
   bg.autoresizingMask = ~UIViewAutoresizingNone;
   [self.view addSubview:bg];
   
-  PSTextView *tv = [[[PSTextView alloc] initWithFrame:CGRectMake(10, 225, 300, 100)] autorelease];
-  tv.editable = NO;
-  tv.backgroundColor = RGBACOLOR(0, 0, 0, 0.6);
-  tv.textColor = [UIColor whiteColor];
-  tv.font = LARGE_FONT;
-  tv.text = @"Get the ability to create more groups of albums for the people you care about. Some popular examples are: My Family, My Boys, or My Classmates.";
-  tv.layer.masksToBounds = YES;
-  tv.layer.cornerRadius = 10.0;
-  [self.view addSubview:tv];
-  
   _buyButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-  _buyButton.frame = CGRectMake(10, 330, 300, 37);
+  if (isDeviceIPad()) {
+    _buyButton.frame = CGRectMake(10, 620, self.view.width - 20, 105);
+  } else {
+    _buyButton.frame = CGRectMake(10, 290, self.view.width - 20, 44);
+  }
   [_buyButton addTarget:self action:@selector(buy) forControlEvents:UIControlEventTouchUpInside];
-  [_buyButton setTitle:@"Buy 1 extra stream for 99¢" forState:UIControlStateNormal];
-  [_buyButton.titleLabel setFont:LARGE_FONT];
-  [_buyButton setBackgroundImage:[UIImage stretchableImageNamed:@"button_round_green.png" withLeftCapWidth:11 topCapWidth:0] forState:UIControlStateNormal];
+  [_buyButton setBackgroundImage:[UIImage imageNamed:@"button_purchase_one.png"] forState:UIControlStateNormal];
   
   _buyUnlimitedButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-  _buyUnlimitedButton.frame = CGRectMake(10, 370, 300, 37);
+  if (isDeviceIPad()) {
+    _buyUnlimitedButton.frame = CGRectMake(10, 735, self.view.width - 20, 190);
+  } else {
+    _buyUnlimitedButton.frame = CGRectMake(10, 340, self.view.width - 20, 79);
+  }
   [_buyUnlimitedButton addTarget:self action:@selector(buyUnlimited) forControlEvents:UIControlEventTouchUpInside];
-  [_buyUnlimitedButton setTitle:@"Buy unlimited streams for $1.99" forState:UIControlStateNormal];
-  [_buyUnlimitedButton.titleLabel setFont:LARGE_FONT];
-  [_buyUnlimitedButton setBackgroundImage:[UIImage stretchableImageNamed:@"button_round_green.png" withLeftCapWidth:11 topCapWidth:0] forState:UIControlStateNormal];
+  [_buyUnlimitedButton setBackgroundImage:[UIImage imageNamed:@"button_purchase_unlimited.png"] forState:UIControlStateNormal];
   
   _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
   _cancelButton.frame = CGRectMake(6, 6, 34, 34);
