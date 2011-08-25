@@ -49,6 +49,7 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (readonly) Facebook *facebook;
 @property (nonatomic, assign) PSTextField *searchField;
+@property (nonatomic, assign) UINavigationItem *headerNavItem;
 
 // Private
 + (void)setupDefaults;

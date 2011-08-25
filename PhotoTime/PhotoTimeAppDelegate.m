@@ -17,6 +17,7 @@
 #import "PSExposeController.h"
 #import "PSAlertCenter.h"
 
+#import "PhotoViewController.h"
 #import "AlbumViewController.h"
 #import "FriendViewController.h"
 #import "PurchaseViewController.h"
@@ -34,6 +35,7 @@
 @synthesize window = _window;
 @synthesize facebook = _facebook;
 @synthesize searchField = _searchField;
+@synthesize headerNavItem = _headerNavItem;
 
 + (void)initialize {
   [self setupDefaults];
@@ -303,6 +305,7 @@
     // Prompt user to configure new stream
     [self addNewStream];
   } else {
+    [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.purchase"];
     // Prompt user to buy
     PurchaseViewController *pvc = [[[PurchaseViewController alloc] init] autorelease];
     [[PSExposeController sharedController] presentModalViewController:pvc animated:YES];
@@ -310,6 +313,7 @@
 }
 
 - (void)addNewStream {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.addStream"];
   FriendViewController *fvc = [[[FriendViewController alloc] init] autorelease];
   fvc.delegate = self;
   [[PSExposeController sharedController] presentModalViewController:fvc animated:YES];
@@ -353,7 +357,7 @@
 #pragma mark - LoginDelegate
 - (void)userDidLogin:(NSDictionary *)userInfo {
   // User managed to actually login, let's show a splash screen while 
-  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"User Logged In"];
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.didLogin"];
   
   if (!_splashViewController) {
     _splashViewController = [[SplashViewController alloc] init];
@@ -518,7 +522,7 @@
 }
 
 - (void)filter {
-  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Expose"];
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.expose"];
   //  FilterViewController *fvc = [[[FilterViewController alloc] init] autorelease];
   //  UINavigationController *fnc = [[[UINavigationController alloc] initWithRootViewController:fvc] autorelease];
   //  [self presentModalViewController:fnc animated:YES];
@@ -548,9 +552,11 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   if (buttonIndex != alertView.cancelButtonIndex) {
     if (alertView.tag == LOGOUT_ALERT_TAG) {
+      [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.logout"];
       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
       [[PSExposeController sharedController] toggleExpose];
     } else if (alertView.tag == PERMISSIONS_ALERT_TAG) {
+      [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.requestMorePermissions"];
       [_facebook authorize:FB_PERMISSIONS_EXTENDED delegate:self];
     }
   }
@@ -578,7 +584,11 @@
     _activeNavController = navigationController;
     [_searchField removeFromSuperview];
     [_headerNavItem setLeftBarButtonItem:[UIBarButtonItem navBackButtonWithTarget:self action:@selector(back)]];
-    [_headerNavItem setRightBarButtonItem:nil];
+    if ([viewController isKindOfClass:[PhotoViewController class]]) {
+      [_headerNavItem setRightBarButtonItem:[(PhotoViewController *)viewController rightBarButton]];
+    } else {
+      [_headerNavItem setRightBarButtonItem:nil];
+    }
   } else {
     [_headerNavItem setLeftBarButtonItem:nil];
     [_headerNavItem setRightBarButtonItem:_filterButton];
@@ -659,6 +669,7 @@
 //}
 
 - (void)searchWithText:(NSString *)searchText {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.searchWithText"];
   _searchActive = YES;
   
   [_searchField resignFirstResponder];

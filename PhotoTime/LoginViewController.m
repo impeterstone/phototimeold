@@ -80,11 +80,11 @@
 
 - (void)next {
   if (_welcomeView.currentPage == (_welcomeView.numPages - 1)) {
-    [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Welcome Login"];
+    [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"login.welcome"];
     [self login];
     return;
   } else {
-    [[LocalyticsSession sharedLocalyticsSession] tagEvent:[NSString stringWithFormat:@"Welcome Next: %d", _welcomeView.currentPage]];
+    [[LocalyticsSession sharedLocalyticsSession] tagEvent:[NSString stringWithFormat:@"login.next: %d", _welcomeView.currentPage]];
   }
   
   [_welcomeView next];

@@ -71,10 +71,6 @@
   // Table
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  if (self.albumType == AlbumTypeSearch) {
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Save" withTarget:self action:@selector(save) buttonType:NavButtonTypeBlue];
-  }
-  
   self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
   
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
@@ -142,6 +138,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"album.select"];
   
   Album *album = [self.fetchedResultsController objectAtIndexPath:indexPath];
   album.lastViewed = [NSDate date];

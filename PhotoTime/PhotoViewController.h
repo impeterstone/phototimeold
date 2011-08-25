@@ -32,6 +32,8 @@
 @property (nonatomic, assign) Album *album;
 @property (nonatomic, retain) NSString *sortKey;
 
+- (UIBarButtonItem *)rightBarButton;
+
 - (void)getTaggedFriends;
 
 - (void)moveTextViewForKeyboard:(NSNotification*)aNotification up:(BOOL)up;

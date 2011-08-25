@@ -70,12 +70,14 @@
 
 #pragma mark - Actions
 - (void)buy {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"purchase.buy"];
   _buyButton.enabled = NO;
   _buyUnlimitedButton.enabled = NO;
   _cancelButton.enabled = NO;
   [[MKStoreManager sharedManager] buyFeature:SK_ADD_STREAM 
                                   onComplete:^(NSString *purchasedFeature){
                                     // Purchase complete, increment availableStreams
+                                    [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"purchase.buyComplete"];
                                     [[MKStoreManager sharedManager] consumeProduct:SK_ADD_STREAM quantity:1];
                                     NSInteger availableStreams = [[NSUserDefaults standardUserDefaults] integerForKey:@"availableStreams"];
                                     [[NSUserDefaults standardUserDefaults] setInteger:(availableStreams + 1) forKey:@"availableStreams"];
@@ -83,6 +85,7 @@
                                     [self dismissModalViewControllerAnimated:YES];
                                   } 
                                  onCancelled:^{
+                                   [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"purchase.buyCancelled"];
                                    _buyButton.enabled = YES;
                                    _buyUnlimitedButton.enabled = YES;
                                    _cancelButton.enabled = YES;
@@ -90,17 +93,20 @@
 }
 
 - (void)buyUnlimited {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"purchase.buyUnlimited"];
   _buyButton.enabled = NO;
   _buyUnlimitedButton.enabled = NO;
   _cancelButton.enabled = NO;
   [[MKStoreManager sharedManager] buyFeature:SK_UNLIMITED_STREAMS 
                                   onComplete:^(NSString *purchasedFeature){
                                     // Purchase complete, increment availableStreams to infinity
+                                    [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"purchase.buyUnlimitedComplete"];
                                     [[NSUserDefaults standardUserDefaults] setInteger:INT_MAX forKey:@"availableStreams"];
                                     [[NSUserDefaults standardUserDefaults] synchronize];
                                     [self dismissModalViewControllerAnimated:YES];
                                   } 
                                  onCancelled:^{
+                                   [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"purchase.buyUnlimitedCancelled"];
                                    _buyButton.enabled = YES;
                                    _buyUnlimitedButton.enabled = YES;
                                    _cancelButton.enabled = YES;

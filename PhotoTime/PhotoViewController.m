@@ -113,11 +113,11 @@
   CGRect tableFrame = self.view.bounds;
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
-  if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:NavButtonTypeGreen];
-  } else {
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
-  }
+//  if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
+//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:NavButtonTypeGreen];
+//  } else {
+//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
+//  }
   
   // Comment Field
   _commentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
@@ -155,6 +155,14 @@
   [self.view addSubview:_commentView];
   
   [self loadDataSource];
+}
+
+- (UIBarButtonItem *)rightBarButton {
+  if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
+    return [UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:NavButtonTypeGreen];
+  } else {
+    return nil;
+  }
 }
 
 #pragma mark - State Machine
@@ -245,7 +253,7 @@
   imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
   //  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
   
-  [self presentModalViewController:imagePicker animated:YES];
+  [[PSExposeController sharedController] presentModalViewController:imagePicker animated:YES];
 }
 
 - (void)favorite {
@@ -301,6 +309,8 @@
 //  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
 //  CGRect photoFrame = [cell convertRect:cell.photoView.frame toView:self.view];
   
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"photo.zoom"];
+  
   ZoomViewController *zvc = [[ZoomViewController alloc] init];
   [[PSExposeController sharedController] presentModalViewController:zvc animated:YES];
   zvc.imageView.image = cell.photoView.image;
@@ -322,6 +332,7 @@
 }
 
 - (void)sendComment {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"photo.sendComment"];
   [_commentField resignFirstResponder];
   [[PhotoDataCenter defaultCenter] addCommentForPhotoId:_photoToComment.id withMessage:_commentField.text];
   _commentField.text = nil;
@@ -346,6 +357,7 @@
 }
 
 - (void)commentsSelectedForCell:(PhotoCell *)cell {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"photo.toggleComments"];
   NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
 //  Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
@@ -363,6 +375,7 @@
 }
 
 - (void)addRemoveLikeForCell:(PhotoCell *)cell {
+  [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"photo.like"];
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebookCanPublish"]) {
     NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
