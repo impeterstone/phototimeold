@@ -216,7 +216,6 @@
 		284372DA1402EE7E00A774A4 /* lolcats_money.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 284372D91402EE7E00A774A4 /* lolcats_money.jpg */; };
 		284F941E13EDB9620033F4A9 /* PhotoTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 284F941C13EDB9620033F4A9 /* PhotoTime.xcdatamodeld */; };
 		284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */; };
-		2852EFA313EDB25800444ACD /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 2852EFA213EDB25800444ACD /* iTunesArtwork */; };
 		286C49C414032F40003A591E /* bg_navigationbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49C214032F40003A591E /* bg_navigationbar.png */; };
 		286C49C514032F40003A591E /* bg_navigationbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49C314032F40003A591E /* bg_navigationbar@2x.png */; };
 		286C49CE14037483003A591E /* button_purchase_one.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49CA14037482003A591E /* button_purchase_one.png */; };
@@ -684,7 +683,6 @@
 		284372D91402EE7E00A774A4 /* lolcats_money.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lolcats_money.jpg; sourceTree = "<group>"; };
 		284F941D13EDB9620033F4A9 /* PhotoTime.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoTime.xcdatamodel; sourceTree = "<group>"; };
 		284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_sketch-pad.png"; path = "Resources/button_sketch-pad.png"; sourceTree = SOURCE_ROOT; };
-		2852EFA213EDB25800444ACD /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		286C49C214032F40003A591E /* bg_navigationbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_navigationbar.png; sourceTree = "<group>"; };
 		286C49C314032F40003A591E /* bg_navigationbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_navigationbar@2x.png"; sourceTree = "<group>"; };
 		286C49CA14037482003A591E /* button_purchase_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_purchase_one.png; path = Resources/button_purchase_one.png; sourceTree = SOURCE_ROOT; };
@@ -865,7 +863,6 @@
 		2554C4C013D78D33005344FD /* AppIcons */ = {
 			isa = PBXGroup;
 			children = (
-				2852EFA213EDB25800444ACD /* iTunesArtwork */,
 				25CEF903133A0086006F23A7 /* Icon.png */,
 				25CEF904133A0086006F23A7 /* Icon@2x.png */,
 				2554C4C213D78D4F005344FD /* Icon-72.png */,
@@ -1878,7 +1875,6 @@
 				28B13E0413ECAEDF00F9E38B /* bg_weave-pad.png in Resources */,
 				28A0310613ECD943003592E6 /* Default-Portrait.png in Resources */,
 				28A0310813ECD943003592E6 /* Default@2x.png in Resources */,
-				2852EFA313EDB25800444ACD /* iTunesArtwork in Resources */,
 				284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */,
 				28C8AEAE13EE95000087A06B /* button_delete.png in Resources */,
 				28C8AEAF13EE95000087A06B /* button_delete@2x.png in Resources */,
