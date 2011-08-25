@@ -20,6 +20,14 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   _coreDataSerializationQueue = dispatch_queue_create("com.sevenminutelabs.albumCoreDataSerializationQueue", NULL);
 }
 
++ (id)defaultCenter {
+  static id defaultCenter = nil;
+  if (!defaultCenter) {
+    defaultCenter = [[self alloc] init];
+  }
+  return defaultCenter;
+}
+
 - (id)init {
   self = [super init];
   if (self) {
