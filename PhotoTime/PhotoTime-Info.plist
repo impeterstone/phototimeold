@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.1.14</string>
+	<string>1.1.15</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
@@ -50,7 +50,7 @@
 		<string>bello-script.ttf</string>
 	</array>
 	<key>UILaunchImageFile</key>
-	<string>Default.png</string>
+	<string>Default.jpg</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
