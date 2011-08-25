@@ -33,6 +33,10 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+}
+
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kAlbumDownloadComplete object:nil];
@@ -41,6 +45,15 @@
   [super dealloc];
 }
 
+#pragma mark - View Config
+- (UIView *)backgroundView {
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
+  bg.frame = self.view.bounds;
+  bg.autoresizingMask = ~UIViewAutoresizingNone;
+  return bg;
+}
+
+#pragma mark - View
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   

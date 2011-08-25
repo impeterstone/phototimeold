@@ -23,6 +23,17 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  RELEASE_SAFELY(_nextButton);
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
+  RELEASE_SAFELY(_nextButton);
+  [super dealloc];
+}
+
 - (void)loadView {
   [super loadView];
   
@@ -142,12 +153,6 @@
   if (self.delegate && [self.delegate respondsToSelector:@selector(userDidLogout)]) {
     [self.delegate performSelector:@selector(userDidLogout)];
   }
-}
-
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
-  RELEASE_SAFELY(_nextButton);
-  [super dealloc];
 }
 
 @end

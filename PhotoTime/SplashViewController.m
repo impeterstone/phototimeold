@@ -17,6 +17,11 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  RELEASE_SAFELY(_loadingIndicator);
+}
+
 - (void)dealloc {
   [super dealloc];
   RELEASE_SAFELY(_loadingIndicator);

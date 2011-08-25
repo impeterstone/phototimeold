@@ -21,6 +21,12 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  RELEASE_SAFELY(_containerView);
+  RELEASE_SAFELY(_imageView);
+}
+
 - (void)dealloc {
   RELEASE_SAFELY(_containerView);
   RELEASE_SAFELY(_imageView);

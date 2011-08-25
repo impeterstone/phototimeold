@@ -19,6 +19,13 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  RELEASE_SAFELY(_buyButton);
+  RELEASE_SAFELY(_buyUnlimitedButton);
+  RELEASE_SAFELY(_cancelButton);
+}
+
 - (void)dealloc {
   RELEASE_SAFELY(_buyButton);
   RELEASE_SAFELY(_buyUnlimitedButton);
@@ -26,19 +33,17 @@
   [super dealloc];
 }
 
-- (void)viewDidUnload {
-  [super viewDidUnload];
-  
+#pragma mark - View Config
+- (UIView *)backgroundView {
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_purchase.png"]] autorelease];
+  bg.frame = self.view.bounds;
+  bg.autoresizingMask = ~UIViewAutoresizingNone;
+  return bg;
 }
 
 #pragma mark - View
 - (void)loadView {
   [super loadView];
-  
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_purchase.png"]] autorelease];
-  bg.frame = self.view.bounds;
-  bg.autoresizingMask = ~UIViewAutoresizingNone;
-  [self.view addSubview:bg];
   
   _buyButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
   if (isDeviceIPad()) {

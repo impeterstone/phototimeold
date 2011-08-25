@@ -26,12 +26,35 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  RELEASE_SAFELY(_captionField);
+  RELEASE_SAFELY(_footerView);
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+  
+  RELEASE_SAFELY(_uploadImage);
+  RELEASE_SAFELY(_captionField);
+  RELEASE_SAFELY(_footerView);
+  [super dealloc];
+}
+
+#pragma mark - View Config
+- (UIView *)backgroundView {
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
+  bg.frame = self.view.bounds;
+  bg.autoresizingMask = ~UIViewAutoresizingNone;
+  return bg;
+}
+
+#pragma mark - View
 - (void)loadView {
   [super loadView];
   
   self.navigationController.navigationBarHidden = NO;
-  
-  self.view.backgroundColor = [UIColor blackColor];
   
   self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Upload" withTarget:self action:@selector(upload) buttonType:NavButtonTypeBlue];
   
@@ -47,16 +70,6 @@
   
   UITapGestureRecognizer *dismissTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped)] autorelease];
   [self.view addGestureRecognizer:dismissTap];
-}
-
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-  
-  RELEASE_SAFELY(_uploadImage);
-  RELEASE_SAFELY(_captionField);
-  RELEASE_SAFELY(_footerView);
-  [super dealloc];
 }
 
 - (void)upload {

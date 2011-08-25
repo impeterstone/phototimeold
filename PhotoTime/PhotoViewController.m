@@ -86,6 +86,37 @@
   return self;
 }
 
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  RELEASE_SAFELY(_commentField);
+  RELEASE_SAFELY(_cancelButton);
+  RELEASE_SAFELY(_commentView);
+  RELEASE_SAFELY(_zoomView);
+  RELEASE_SAFELY(_taggedFriendsView);
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+  
+  RELEASE_SAFELY(_commentField);
+  RELEASE_SAFELY(_cancelButton);
+  RELEASE_SAFELY(_commentView);
+  RELEASE_SAFELY(_zoomView);
+  RELEASE_SAFELY(_taggedFriendsView);
+  RELEASE_SAFELY(_sortKey);
+  [super dealloc];
+}
+
+#pragma mark - View Config
+- (UIView *)backgroundView {
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
+  bg.frame = self.view.bounds;
+  bg.autoresizingMask = ~UIViewAutoresizingNone;
+  return bg;
+}
+
+#pragma mark - View
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 //  [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -481,19 +512,6 @@
   }
   
   [UIView commitAnimations];
-}
-
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-
-  RELEASE_SAFELY(_commentField);
-  RELEASE_SAFELY(_cancelButton);
-  RELEASE_SAFELY(_commentView);
-  RELEASE_SAFELY(_zoomView);
-  RELEASE_SAFELY(_taggedFriendsView);
-  RELEASE_SAFELY(_sortKey);
-  [super dealloc];
 }
 
 @end

@@ -32,6 +32,15 @@
   [super dealloc];
 }
 
+#pragma mark - View Config
+- (UIView *)backgroundView {
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
+  bg.frame = self.view.bounds;
+  bg.autoresizingMask = ~UIViewAutoresizingNone;
+  return bg;
+}
+
+#pragma mark - View
 - (void)loadView {
   [super loadView];
   
