@@ -284,15 +284,15 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 }
 
 - (void)parseMeWithRequest:(ASIHTTPRequest *)request {
-  dispatch_async(_coreDataSerializationQueue, ^{
-    NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
-    
+  dispatch_async(_coreDataSerializationQueue, ^{    
     id response = [[request responseData] JSONValue];
     
     // Validate response
     if (![self validateFacebookResponse:response]) {
       return;
     }
+    
+    NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
     
     NSArray *albumArray = nil;
     for (NSDictionary *fqlResult in response) {

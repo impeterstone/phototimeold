@@ -338,6 +338,7 @@
   nc.navigationBarHidden = YES;
   
   [[PSExposeController sharedController] addNewViewController:nc];
+  [avc release];
 }
 
 #pragma mark - Login

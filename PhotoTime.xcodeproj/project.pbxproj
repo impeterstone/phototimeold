@@ -334,11 +334,6 @@
 		28E6F99E13E64835002337A9 /* nux_comic_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F99613E64835002337A9 /* nux_comic_3@2x.png */; };
 		28E6F99F13E64835002337A9 /* nux_comic_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F99713E64835002337A9 /* nux_comic_4.png */; };
 		28E6F9A013E64835002337A9 /* nux_comic_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E6F99813E64835002337A9 /* nux_comic_4@2x.png */; };
-		28E9BCF41405F33600A0F3BA /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9BCEC1405F33600A0F3BA /* GDataXMLNode.m */; };
-		28E9BCF51405F33600A0F3BA /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9BCEF1405F33600A0F3BA /* TFHpple.m */; };
-		28E9BCF61405F33600A0F3BA /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9BCF11405F33600A0F3BA /* TFHppleElement.m */; };
-		28E9BCF71405F33600A0F3BA /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9BCF31405F33600A0F3BA /* XPathQuery.m */; };
-		28E9BCFB1405F33D00A0F3BA /* PSScrapeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9BCFA1405F33D00A0F3BA /* PSScrapeCenter.m */; };
 		28F7490B13F202100056D111 /* PSDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F7490913F202100056D111 /* PSDataCenter.m */; };
 /* End PBXBuildFile section */
 
@@ -819,16 +814,6 @@
 		28E6F99613E64835002337A9 /* nux_comic_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_comic_3@2x.png"; sourceTree = "<group>"; };
 		28E6F99713E64835002337A9 /* nux_comic_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nux_comic_4.png; sourceTree = "<group>"; };
 		28E6F99813E64835002337A9 /* nux_comic_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nux_comic_4@2x.png"; sourceTree = "<group>"; };
-		28E9BCEB1405F33600A0F3BA /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
-		28E9BCEC1405F33600A0F3BA /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
-		28E9BCEE1405F33600A0F3BA /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
-		28E9BCEF1405F33600A0F3BA /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
-		28E9BCF01405F33600A0F3BA /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
-		28E9BCF11405F33600A0F3BA /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
-		28E9BCF21405F33600A0F3BA /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
-		28E9BCF31405F33600A0F3BA /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
-		28E9BCF91405F33D00A0F3BA /* PSScrapeCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSScrapeCenter.h; sourceTree = "<group>"; };
-		28E9BCFA1405F33D00A0F3BA /* PSScrapeCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSScrapeCenter.m; sourceTree = "<group>"; };
 		28F7490813F202100056D111 /* PSDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenter.h; sourceTree = "<group>"; };
 		28F7490913F202100056D111 /* PSDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSDataCenter.m; sourceTree = "<group>"; };
 		28F7490A13F202100056D111 /* PSDataCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDataCenterDelegate.h; sourceTree = "<group>"; };
@@ -928,8 +913,6 @@
 				2814E26913F1EF1D00D7A85A /* PSToastCenter.m */,
 				2814E26A13F1EF1D00D7A85A /* PSURLCache.h */,
 				2814E26B13F1EF1D00D7A85A /* PSURLCache.m */,
-				28E9BCF91405F33D00A0F3BA /* PSScrapeCenter.h */,
-				28E9BCFA1405F33D00A0F3BA /* PSScrapeCenter.m */,
 				2814E26C13F1EF1D00D7A85A /* Vendor */,
 				2814E2A013F1EF1D00D7A85A /* Views */,
 			);
@@ -1367,8 +1350,6 @@
 		2814E26C13F1EF1D00D7A85A /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				28E9BCEA1405F33600A0F3BA /* GData */,
-				28E9BCED1405F33600A0F3BA /* Hpple */,
 				2814E3CA13F1F0C300D7A85A /* EGO */,
 				2814E26D13F1EF1D00D7A85A /* ASI */,
 				2814E28213F1EF1D00D7A85A /* DDProgressView */,
@@ -1726,28 +1707,6 @@
 				28E6F97013E63B54002337A9 /* button_round_silver_highlighted@2x.png */,
 			);
 			path = buttons;
-			sourceTree = "<group>";
-		};
-		28E9BCEA1405F33600A0F3BA /* GData */ = {
-			isa = PBXGroup;
-			children = (
-				28E9BCEB1405F33600A0F3BA /* GDataXMLNode.h */,
-				28E9BCEC1405F33600A0F3BA /* GDataXMLNode.m */,
-			);
-			path = GData;
-			sourceTree = "<group>";
-		};
-		28E9BCED1405F33600A0F3BA /* Hpple */ = {
-			isa = PBXGroup;
-			children = (
-				28E9BCEE1405F33600A0F3BA /* TFHpple.h */,
-				28E9BCEF1405F33600A0F3BA /* TFHpple.m */,
-				28E9BCF01405F33600A0F3BA /* TFHppleElement.h */,
-				28E9BCF11405F33600A0F3BA /* TFHppleElement.m */,
-				28E9BCF21405F33600A0F3BA /* XPathQuery.h */,
-				28E9BCF31405F33600A0F3BA /* XPathQuery.m */,
-			);
-			path = Hpple;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2121,11 +2080,6 @@
 				28372CC713FF1E6B007C5F2B /* MKStoreObserver.m in Sources */,
 				28372CD613FF2DD9007C5F2B /* PurchaseViewController.m in Sources */,
 				280250DE14021CA60026F3AF /* TSAlertView.m in Sources */,
-				28E9BCF41405F33600A0F3BA /* GDataXMLNode.m in Sources */,
-				28E9BCF51405F33600A0F3BA /* TFHpple.m in Sources */,
-				28E9BCF61405F33600A0F3BA /* TFHppleElement.m in Sources */,
-				28E9BCF71405F33600A0F3BA /* XPathQuery.m in Sources */,
-				28E9BCFB1405F33D00A0F3BA /* PSScrapeCenter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

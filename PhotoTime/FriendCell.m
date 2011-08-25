@@ -32,6 +32,9 @@
     [countFetchRequest setPredicate:[NSPredicate predicateWithFormat:@"fromId == %@", [friend objectForKey:@"id"]]];
     count = [context countForFetchRequest:countFetchRequest error:nil];
     
+    [countFetchRequest release];
+    [context release];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
       self.detailTextLabel.text = [NSString stringWithFormat:@"%d", count];
     });
