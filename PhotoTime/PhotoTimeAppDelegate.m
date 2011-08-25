@@ -233,6 +233,7 @@
 
 - (UIView *)headerViewForExposeController:(PSExposeController *)exposeController {
   _headerNavBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.window.width, 44)] autorelease];
+  _headerNavBar.tintColor = RGBACOLOR(80, 80, 80, 1.0);
   _headerNavBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   _headerNavItem = [[[UINavigationItem alloc] init] autorelease];
   [_headerNavBar setItems:[NSArray arrayWithObject:_headerNavItem]];

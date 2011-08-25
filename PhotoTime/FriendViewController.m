@@ -31,6 +31,7 @@
   [super loadView];
   
   UINavigationBar *navBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)] autorelease];
+  navBar.tintColor = RGBACOLOR(80, 80, 80, 1.0);
   navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   UINavigationItem *navItem = [[[UINavigationItem alloc] init] autorelease];
   [navBar setItems:[NSArray arrayWithObject:navItem]];

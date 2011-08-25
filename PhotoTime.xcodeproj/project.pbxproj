@@ -218,6 +218,8 @@
 		28417ED6140618160050C04D /* Default@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28417ED3140618160050C04D /* Default@2x.jpg */; };
 		284F941E13EDB9620033F4A9 /* PhotoTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 284F941C13EDB9620033F4A9 /* PhotoTime.xcdatamodeld */; };
 		284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */; };
+		2863B8AB1406504C0021946C /* UIViewController+Ad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2863B8AA1406504C0021946C /* UIViewController+Ad.m */; };
+		2863B8AE140650890021946C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2863B8AD140650890021946C /* iAd.framework */; };
 		286C49C414032F40003A591E /* bg_navigationbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49C214032F40003A591E /* bg_navigationbar.png */; };
 		286C49C514032F40003A591E /* bg_navigationbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49C314032F40003A591E /* bg_navigationbar@2x.png */; };
 		286C49CE14037483003A591E /* button_purchase_one.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49CA14037482003A591E /* button_purchase_one.png */; };
@@ -670,6 +672,9 @@
 		28417ED3140618160050C04D /* Default@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default@2x.jpg"; sourceTree = "<group>"; };
 		284F941D13EDB9620033F4A9 /* PhotoTime.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoTime.xcdatamodel; sourceTree = "<group>"; };
 		284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_sketch-pad.png"; path = "Resources/button_sketch-pad.png"; sourceTree = SOURCE_ROOT; };
+		2863B8A91406504C0021946C /* UIViewController+Ad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Ad.h"; sourceTree = "<group>"; };
+		2863B8AA1406504C0021946C /* UIViewController+Ad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Ad.m"; sourceTree = "<group>"; };
+		2863B8AD140650890021946C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		286C49C214032F40003A591E /* bg_navigationbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_navigationbar.png; sourceTree = "<group>"; };
 		286C49C314032F40003A591E /* bg_navigationbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_navigationbar@2x.png"; sourceTree = "<group>"; };
 		286C49CA14037482003A591E /* button_purchase_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_purchase_one.png; path = Resources/button_purchase_one.png; sourceTree = SOURCE_ROOT; };
@@ -811,6 +816,7 @@
 				25CEF80D1339F278006F23A7 /* CoreData.framework in Frameworks */,
 				28372CD213FF1ED0007C5F2B /* Security.framework in Frameworks */,
 				28372CD313FF1ED0007C5F2B /* StoreKit.framework in Frameworks */,
+				2863B8AE140650890021946C /* iAd.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -980,6 +986,7 @@
 			children = (
 				28B13DF913E9395500F9E38B /* libsqlite3.dylib */,
 				25622EF4139F16DD004945AA /* libz.dylib */,
+				2863B8AD140650890021946C /* iAd.framework */,
 				28372CD013FF1EBE007C5F2B /* Security.framework */,
 				28372CCE13FF1EB0007C5F2B /* StoreKit.framework */,
 				2544ACB313788E370072C86C /* CoreVideo.framework */,
@@ -1295,6 +1302,8 @@
 				2814E23F13F1EF1D00D7A85A /* UIScreen+SML.m */,
 				2814E24013F1EF1D00D7A85A /* UIView+SML.h */,
 				2814E24113F1EF1D00D7A85A /* UIView+SML.m */,
+				2863B8A91406504C0021946C /* UIViewController+Ad.h */,
+				2863B8AA1406504C0021946C /* UIViewController+Ad.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2012,6 +2021,7 @@
 				28372CC713FF1E6B007C5F2B /* MKStoreObserver.m in Sources */,
 				28372CD613FF2DD9007C5F2B /* PurchaseViewController.m in Sources */,
 				280250DE14021CA60026F3AF /* TSAlertView.m in Sources */,
+				2863B8AB1406504C0021946C /* UIViewController+Ad.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
