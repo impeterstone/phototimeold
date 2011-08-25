@@ -48,14 +48,13 @@
 }
 
 - (void)loadView {
-  
   _containerView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  _containerView.backgroundColor = [UIColor blackColor];
   _containerView.autoresizingMask = ~UIViewAutoresizingNone;
   _containerView.delegate = self;
   _containerView.maximumZoomScale = 3.0;
   _containerView.minimumZoomScale = 1.0;
   _containerView.bouncesZoom = YES;
-  _containerView.backgroundColor = [UIColor clearColor];
   _containerView.showsVerticalScrollIndicator = NO;
   _containerView.showsHorizontalScrollIndicator = NO;
   

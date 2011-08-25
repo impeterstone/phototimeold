@@ -221,6 +221,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   
   if ([requestType isEqualToString:@"uploadPhoto"]) {
     [[PSProgressCenter defaultCenter] hideProgress];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(reloadDataSource)]) {
+      [self.delegate performSelector:@selector(reloadDataSource)];
+    }
     return;
   }
   

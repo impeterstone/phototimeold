@@ -280,7 +280,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 //      if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isResume"]) {
 //      }
       if (_parseIndex > 0 && _totalAlbumsToParse > 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlbumDownloadComplete object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kReloadAlbumController object:nil];
         
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"albums.since"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedAlbums"];

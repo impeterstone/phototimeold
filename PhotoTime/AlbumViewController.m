@@ -27,8 +27,8 @@
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
 //    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDataSource) name:kAlbumDownloadComplete object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource) name:kReloadAlbumController object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAlbums) name:kLogoutRequested object:nil];
   }
   return self;
 }
@@ -39,7 +39,7 @@
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kAlbumDownloadComplete object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
   RELEASE_SAFELY(_albumTitle);
   RELEASE_SAFELY(_albumConfig);
   [super dealloc];
@@ -53,13 +53,18 @@
   return bg;
 }
 
+- (void)resetAlbums {
+  _hasMore = YES;
+  _fetchTotal = _fetchLimit;
+}
+
 #pragma mark - View
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    [self loadDataSource];
-  }
+//  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
+//    [self loadDataSource];
+//  }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -93,29 +98,19 @@
 
 #pragma mark - State Machine
 - (void)reloadDataSource {
-  if ([[[PSExposeController sharedController] selectedViewController] isEqual:self]) {
-    [self loadDataSource];
-  }
+  [super loadDataSource];
+  [self executeFetch:FetchTypeRefresh];
+  [self dataSourceDidLoad];
 }
 
 - (void)loadDataSource {
   [super loadDataSource];
+  [self executeFetch:FetchTypeCold];
   [self dataSourceDidLoad];
-  
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLogin"]) {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isFirstLogin"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [[[[UIAlertView alloc] initWithTitle:@"Welcome!" message:@"We are still downloading albums from your friends. You can browse your own photos in the meantime." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] autorelease] show];
-    }];
-  }
 }
 
 - (void)dataSourceDidLoad {
   [super dataSourceDidLoad];
-  _hasMore = YES;
-  _fetchTotal = _fetchLimit;
-  [self executeFetch:FetchTypeCold];
 }
 
 - (void)updateState {

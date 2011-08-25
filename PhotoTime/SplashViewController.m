@@ -31,7 +31,7 @@
 - (void)loadView {
   [super loadView];
   
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]] autorelease];
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]] autorelease];
   bg.frame = self.view.bounds;
   bg.autoresizingMask = ~UIViewAutoresizingNone;
   [self.view addSubview:bg];
