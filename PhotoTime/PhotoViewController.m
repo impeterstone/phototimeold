@@ -141,7 +141,7 @@
   [_commentView addSubview:_commentField];
   
   _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-  _cancelButton.frame = CGRectMake(255, 6, 60, 32);
+  _cancelButton.frame = CGRectMake(self.view.width - 32 - 28 - 5, 6, 60, 32);
   [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
   _cancelButton.titleLabel.font = BOLD_FONT;
   _cancelButton.titleLabel.shadowColor = [UIColor blackColor];
