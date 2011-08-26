@@ -271,20 +271,24 @@
 
 #pragma mark - Actions
 - (void)upload {
-  UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-  imagePicker.allowsEditing = NO;
-  imagePicker.delegate = self;
-//  imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-  
-  // Source Type
-  imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-  
-  // Media Types
-  //  imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
-  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-  //  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
-  
-  [[PSExposeController sharedController] presentModalViewController:imagePicker animated:YES];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebookCanPublish"]) {
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.allowsEditing = NO;
+    imagePicker.delegate = self;
+    //  imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    
+    // Source Type
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    // Media Types
+    //  imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
+    imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+    //  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+    
+    [[PSExposeController sharedController] presentModalViewController:imagePicker animated:YES];
+  } else {
+    [APP_DELEGATE requestPublishStream];
+  }
 }
 
 - (void)favorite {

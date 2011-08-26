@@ -60,6 +60,7 @@
 - (void)startDownloadAlbums;
 - (void)tryLogin;
 
+- (void)callHome;
 - (void)getMe;
 - (void)serializeMeWithResponse:(id)response;
 - (void)getFriends;

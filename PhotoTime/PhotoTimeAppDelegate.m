@@ -406,6 +406,41 @@
   
 }
 
+- (void)callHome {
+  // This is called the first time logging in
+  NSURL *callHomeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users", API_BASE_URL]];
+  
+#warning don't use blocks
+  __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:callHomeUrl];
+  request.userInfo = [NSDictionary dictionaryWithObject:@"callHome" forKey:@"requestType"];
+  request.requestMethod = @"POST";
+  request.allowCompressedResponse = YES;
+  
+  NSMutableDictionary *params = [NSMutableDictionary dictionary];
+  [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"facebookAccessToken"] forKey:@"facebook_access_token"];
+  [params setObject:[[UIDevice currentDevice] uniqueIdentifier] forKey:@"udid"];
+  [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"facebookId"] forKey:@"facebook_id"];
+  [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"facebookName"] forKey:@"facebook_name"];
+  request.postBody = [[PSDataCenter defaultCenter] buildRequestParamsData:params];
+  
+  [request addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
+  [request addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
+  [request addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+  [request addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
+  [request addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
+  [request addRequestHeader:@"X-User-Language" value:USER_LANGUAGE];
+  [request addRequestHeader:@"X-User-Locale" value:USER_LOCALE];
+  
+  // Request Completion Block
+  [request setCompletionBlock:^{
+  }];
+  [request setFailedBlock:^{
+  }];
+  
+  // Start the Request
+  [request startAsynchronous];
+}
+
 - (void)getMe {
   // This is called the first time logging in
   NSURL *meUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me?fields=id,name,friends&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
@@ -420,6 +455,7 @@
   [request setCompletionBlock:^{
     [self serializeMeWithResponse:[[request responseData] JSONValue]];
     [self startDownloadAlbums];
+    [self callHome];
   }];
   [request setFailedBlock:^{
     [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
@@ -561,7 +597,7 @@
   if (buttonIndex != alertView.cancelButtonIndex) {
     if (alertView.tag == LOGOUT_ALERT_TAG) {
       [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.logout"];
-      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
       [[PSExposeController sharedController] toggleExpose];
     } else if (alertView.tag == PERMISSIONS_ALERT_TAG) {
       [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.requestMorePermissions"];
