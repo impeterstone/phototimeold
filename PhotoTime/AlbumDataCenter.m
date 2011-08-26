@@ -343,8 +343,29 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 - (BOOL)validateFacebookResponse:(id)response {
   // Check FB Error
   if ([response isKindOfClass:[NSDictionary class]] && [response objectForKey:@"error_msg"] && [response objectForKey:@"error_code"]) {
+    DLog(@"facebook error: %@", response);
     // We have a FB error, probably a token invalidated
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+    // {"error_code":190,"error_msg":"Error validating access token: The session has been invalidated because the user has changed the password.
+    if ([[response objectForKey:@"error_code"] isEqualToNumber:[NSNumber numberWithInt:190]]) {
+//      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logoutRequested"];
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        BOOL alertIsShowing = NO;
+        for (UIWindow *window in [UIApplication sharedApplication].windows) {
+          NSArray *subviews = [window subviews];
+          if ([subviews count] > 0)
+            if ([[subviews objectAtIndex:0] isKindOfClass:[UIAlertView class]])
+            {
+              alertIsShowing = YES;
+            }
+        }
+        
+        if (!alertIsShowing) {
+          UIAlertView *av = [[[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Something happened with Facebook. Please try to login again." delegate:APP_DELEGATE cancelButtonTitle:nil otherButtonTitles:@"Okay", nil] autorelease];
+          av.tag = FB_ERROR_ALERT_TAG;
+          [av show];
+        }
+      }];
+    }
     return NO;
   } else {
     return YES;

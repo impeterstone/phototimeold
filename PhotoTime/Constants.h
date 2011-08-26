@@ -39,6 +39,7 @@
 #define LOGOUT_ALERT_TAG 7001
 #define PERMISSIONS_ALERT_TAG 7002
 #define STREAM_ALERT_TAG 7003
+#define FB_ERROR_ALERT_TAG 7004
 
 // Fetch Templates
 #define FETCH_ME @"fetchMe"

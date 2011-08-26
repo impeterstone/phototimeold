@@ -45,8 +45,8 @@
   [navBar setItems:[NSArray arrayWithObject:navItem]];
   [self.view addSubview:navBar];
   
-  navItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Save" withTarget:self action:@selector(save) buttonType:NavButtonTypeBlue];
-  navItem.leftBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancel) buttonType:NavButtonTypeNormal];
+  navItem.rightBarButtonItem = [UIBarButtonItem barButtonWithTitle:@"Save" withTarget:self action:@selector(save) width:60 height:30 buttonType:BarButtonTypeBlue];
+  navItem.leftBarButtonItem = [UIBarButtonItem barButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancel) width:60 height:30 buttonType:BarButtonTypeNormal];
   navItem.titleView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phototime_logo.png"]] autorelease];
   
   [self setupTableViewWithFrame:CGRectMake(0, navBar.height, self.view.width, self.view.height - navBar.height) andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];

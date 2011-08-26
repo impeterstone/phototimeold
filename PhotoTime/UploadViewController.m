@@ -56,7 +56,7 @@
   
   self.navigationController.navigationBarHidden = NO;
   
-  self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Upload" withTarget:self action:@selector(upload) buttonType:NavButtonTypeBlue];
+  self.navigationItem.rightBarButtonItem = [UIBarButtonItem barButtonWithTitle:@"Upload" withTarget:self action:@selector(upload) width:60 height:30 buttonType:BarButtonTypeBlue];
   
   _navTitleLabel.text = @"Upload Photo";
   

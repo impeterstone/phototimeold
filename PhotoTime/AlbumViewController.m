@@ -73,11 +73,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logoutRequested"]) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
-    }];
-  }
+//  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logoutRequested"]) {
+//    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//      [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
+//    }];
+//  }
 }
 
 - (void)loadView {

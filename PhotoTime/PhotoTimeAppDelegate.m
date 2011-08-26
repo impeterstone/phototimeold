@@ -134,11 +134,11 @@
   [[PSExposeController sharedController] setViewControllers:navControllers];
   
   // Global Nav Buttons
-  _filterButton = [[UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) buttonType:NavButtonTypeBlue] retain];
-  _cancelButton = [[UIBarButtonItem navButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) buttonType:NavButtonTypeSilver] retain];
-  _logoutButton = [[UIBarButtonItem navButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) buttonType:NavButtonTypeNormal] retain];
-  _editButton = [[UIBarButtonItem navButtonWithTitle:@"Edit" withTarget:self action:@selector(edit) buttonType:NavButtonTypeNormal] retain];
-  _doneButton = [[UIBarButtonItem navButtonWithTitle:@"Done" withTarget:self action:@selector(edit) buttonType:NavButtonTypeBlue] retain];
+  _filterButton = [[UIBarButtonItem barButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) width:60 height:30 buttonType:BarButtonTypeBlue] retain];
+  _cancelButton = [[UIBarButtonItem barButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) width:60 height:30 buttonType:BarButtonTypeSilver] retain];
+  _logoutButton = [[UIBarButtonItem barButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) width:60 height:30 buttonType:BarButtonTypeNormal] retain];
+  _editButton = [[UIBarButtonItem barButtonWithTitle:@"Edit" withTarget:self action:@selector(edit) width:60 height:30 buttonType:BarButtonTypeNormal] retain];
+  _doneButton = [[UIBarButtonItem barButtonWithTitle:@"Done" withTarget:self action:@selector(edit) width:60 height:30 buttonType:BarButtonTypeBlue] retain];
   
   // Window
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -566,6 +566,8 @@
     } else if (alertView.tag == PERMISSIONS_ALERT_TAG) {
       [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"app.requestMorePermissions"];
       [_facebook authorize:FB_PERMISSIONS_EXTENDED delegate:self];
+    } else if (alertView.tag == FB_ERROR_ALERT_TAG) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
     }
   }
 }

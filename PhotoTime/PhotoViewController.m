@@ -145,9 +145,9 @@
   [self setupTableViewWithFrame:tableFrame andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];
   
 //  if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
-//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:NavButtonTypeGreen];
+//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem barButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:BarButtonTypeGreen];
 //  } else {
-//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem navButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:NavButtonTypeBlue];
+//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem barButtonWithTitle:@"Favorite" withTarget:self action:@selector(favorite) buttonType:BarButtonTypeBlue];
 //  }
   
   // Comment Field
@@ -190,7 +190,7 @@
 
 - (UIBarButtonItem *)rightBarButton {
   if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
-    return [UIBarButtonItem navButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) buttonType:NavButtonTypeGreen];
+    return [UIBarButtonItem barButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) width:60 height:30 buttonType:BarButtonTypeGreen];
   } else {
     return nil;
   }
