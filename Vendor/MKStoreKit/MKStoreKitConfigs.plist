@@ -6,8 +6,6 @@
 	<dict>
 		<key>com.sevenminutelabs.phototime.addstream</key>
 		<dict>
-			<key>New item</key>
-			<string></string>
 			<key>Count</key>
 			<integer>1</integer>
 			<key>Name</key>

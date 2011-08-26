@@ -46,4 +46,4 @@
 #define REVIEW_ALLOWED 1
 
 //#warning Shared Secret Missing Ignore this warning if you don't use auto-renewable subscriptions
-#define kSharedSecret @"<FILL IN YOUR SHARED SECRET HERE>"
+#define kSharedSecret @"d25b0b59b2fc40dfbb5ce02b3ebef25d"
