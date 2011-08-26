@@ -84,7 +84,7 @@
   [super loadView];
   
   // Nullview
-  [_nullView setLoadingTitle:@"Loading..." loadingSubtitle:@"Getting albums from Facebook" emptyTitle:@"Fail" emptySubtitle:@"No Albums Found" image:[UIImage imageNamed:@"nullview_photos.png"]];
+  [_nullView setLoadingTitle:@"Loading..." loadingSubtitle:@"Getting albums from Facebook" emptyTitle:@"Oh Noes!" emptySubtitle:@"No Albums Found" image:[UIImage imageNamed:@"nullview_photos.png"]];
   
   // Table
   [self setupTableViewWithFrame:self.view.bounds andStyle:UITableViewStylePlain andSeparatorStyle:UITableViewCellSeparatorStyleNone];

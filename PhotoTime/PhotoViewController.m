@@ -135,7 +135,7 @@
   [super loadView];
 
   // Nullview
-  [_nullView setLoadingTitle:@"Loading..." loadingSubtitle:@"Getting photos from Facebook" emptyTitle:@"Fail" emptySubtitle:@"No Photos Found" image:[UIImage imageNamed:@"nullview_photos.png"]];
+  [_nullView setLoadingTitle:@"Loading..." loadingSubtitle:@"Getting photos from Facebook" emptyTitle:@"Oh Noes!" emptySubtitle:@"No Photos Found" image:[UIImage imageNamed:@"nullview_photos.png"]];
   
   // Title and Buttons
   _navTitleLabel.text = _album.name;

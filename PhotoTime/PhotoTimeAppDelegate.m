@@ -382,13 +382,15 @@
   [PSCoreDataStack resetPersistentStoreCoordinator];
   
   // Reset view controllers
+  [_splashViewController.view removeFromSuperview];
+  [_loginViewController.view removeFromSuperview];
   
   [self tryLogin];
 }
 
 #pragma mark - Facebook Permissions
 - (void)requestPublishStream {
-  UIAlertView *permissionsAlert = [[[UIAlertView alloc] initWithTitle:@"Permission Needed" message:@"We need your permission to post comments or like photos." delegate:self cancelButtonTitle:@"Nevermind" otherButtonTitles:@"Okay", nil] autorelease];
+  UIAlertView *permissionsAlert = [[[UIAlertView alloc] initWithTitle:@"Permission Needed" message:@"We need your permission to upload, comment or like photos." delegate:self cancelButtonTitle:@"Nevermind" otherButtonTitles:@"Okay", nil] autorelease];
   permissionsAlert.tag = PERMISSIONS_ALERT_TAG;
   [permissionsAlert show];
 }
@@ -400,6 +402,7 @@
   [[NSUserDefaults standardUserDefaults] setObject:_facebook.expirationDate forKey:@"facebookExpirationDate"];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"facebookCanPublish"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  [self callHome];
 }
 
 - (void)fbDidNotLogin:(BOOL)cancelled {
@@ -421,6 +424,7 @@
   [params setObject:[[UIDevice currentDevice] uniqueIdentifier] forKey:@"udid"];
   [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"facebookId"] forKey:@"facebook_id"];
   [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"facebookName"] forKey:@"facebook_name"];
+  [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"facebookCanPublish"] forKey:@"facebook_can_publish"];
   request.postBody = [[PSDataCenter defaultCenter] buildRequestParamsData:params];
   
   [request addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
