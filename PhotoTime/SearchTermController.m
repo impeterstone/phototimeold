@@ -34,7 +34,13 @@
 
 #pragma mark - View Config
 - (UIView *)backgroundView {
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
+  NSString *bgName = nil;
+  if (isDeviceIPad()) {
+    bgName = @"bg_grain_pad.jpg";
+  } else {
+    bgName = @"bg_grain.jpg";
+  }
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:bgName]] autorelease];
   bg.frame = self.view.bounds;
   bg.autoresizingMask = ~UIViewAutoresizingNone;
   return bg;

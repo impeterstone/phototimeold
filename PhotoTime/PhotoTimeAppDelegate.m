@@ -242,7 +242,13 @@
 }
 
 - (UIView *)backgroundViewForExposeController:(PSExposeController *)exposeController {
-  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_weave.png"]] autorelease];
+  NSString *bgName = nil;
+  if (isDeviceIPad()) {
+    bgName = @"bg_darkwood_pad.jpg";
+  } else {
+    bgName = @"bg_darkwood.jpg";
+  }
+  UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:bgName]] autorelease];
   bg.frame = [[UIScreen mainScreen] bounds];
   return bg;
 }

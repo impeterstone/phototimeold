@@ -254,7 +254,9 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
       
       _totalAlbumsToParse += [albumArray count];
       
-      [pendingResponses addObject:response];
+      if (response) {
+        [pendingResponses addObject:response];
+      }
     }
     
     if (_totalAlbumsToParse > 0) {
