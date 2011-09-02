@@ -215,8 +215,7 @@ static UIImage *_disclosureImage = nil;
   [self pauseLayer:_photoView.layer];
 }
 
-- (void)pauseLayer:(CALayer*)layer
-{
+- (void)pauseLayer:(CALayer*)layer {
   if (layer.speed == 0.0) return;
   
   CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
@@ -224,8 +223,7 @@ static UIImage *_disclosureImage = nil;
   layer.timeOffset = pausedTime;
 }
 
-- (void)resumeLayer:(CALayer*)layer
-{
+- (void)resumeLayer:(CALayer*)layer {
   if (layer.speed == 1.0) return;
   
   CFTimeInterval pausedTime = [layer timeOffset];
