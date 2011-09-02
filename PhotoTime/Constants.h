@@ -59,7 +59,6 @@
 
 // Facebook (PhotoTime)
 #define FB_APP_ID @"253088251379021"
-#define FB_APP_SECRET @"34e674f197452432321025d110f89aa2"
 #define FB_PERMISSIONS [NSArray arrayWithObjects:@"user_photos", @"friends_photos", @"offline_access", nil]
 #define FB_PERMISSIONS_EXTENDED [NSArray arrayWithObjects:@"user_photos", @"friends_photos", @"offline_access", @"publish_stream", nil]
 #define FB_PARAMS @"id,first_name,last_name,name,gender,locale"
