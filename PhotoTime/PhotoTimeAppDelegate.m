@@ -750,7 +750,7 @@
   [_searchField resignFirstResponder];
   
   // Store search term
-  [[PSSearchCenter defaultCenter] addTerm:searchText];
+  [[PSSearchCenter defaultCenter] addTerm:searchText inContainer:@"albums"];
   
   static NSCharacterSet *separatorCharacterSet = nil;
   if (!separatorCharacterSet) {
