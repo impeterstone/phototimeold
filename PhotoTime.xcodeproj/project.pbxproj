@@ -224,6 +224,8 @@
 		284F942013EDBCB90033F4A9 /* button_sketch-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 284F941F13EDBCB80033F4A9 /* button_sketch-pad.png */; };
 		2863B8AB1406504C0021946C /* UIViewController+Ad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2863B8AA1406504C0021946C /* UIViewController+Ad.m */; };
 		2863B8AE140650890021946C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2863B8AD140650890021946C /* iAd.framework */; };
+		286A579A1410D225001D9490 /* bg_toast.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A57981410D225001D9490 /* bg_toast.png */; };
+		286A579B1410D225001D9490 /* bg_toast@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A57991410D225001D9490 /* bg_toast@2x.png */; };
 		286C49C414032F40003A591E /* bg_navigationbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49C214032F40003A591E /* bg_navigationbar.png */; };
 		286C49C514032F40003A591E /* bg_navigationbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49C314032F40003A591E /* bg_navigationbar@2x.png */; };
 		286C49CE14037483003A591E /* button_purchase_one.png in Resources */ = {isa = PBXBuildFile; fileRef = 286C49CA14037482003A591E /* button_purchase_one.png */; };
@@ -682,6 +684,8 @@
 		2863B8A91406504C0021946C /* UIViewController+Ad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Ad.h"; sourceTree = "<group>"; };
 		2863B8AA1406504C0021946C /* UIViewController+Ad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Ad.m"; sourceTree = "<group>"; };
 		2863B8AD140650890021946C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		286A57981410D225001D9490 /* bg_toast.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_toast.png; sourceTree = "<group>"; };
+		286A57991410D225001D9490 /* bg_toast@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toast@2x.png"; sourceTree = "<group>"; };
 		286C49C214032F40003A591E /* bg_navigationbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_navigationbar.png; sourceTree = "<group>"; };
 		286C49C314032F40003A591E /* bg_navigationbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_navigationbar@2x.png"; sourceTree = "<group>"; };
 		286C49CA14037482003A591E /* button_purchase_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_purchase_one.png; path = Resources/button_purchase_one.png; sourceTree = SOURCE_ROOT; };
@@ -855,6 +859,7 @@
 		2570A47A13B490DD006CBCFE /* SevenMinuteLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				286A57971410D225001D9490 /* Resources */,
 				2814E22713F1EF1D00D7A85A /* Categories */,
 				2814E24213F1EF1D00D7A85A /* Controllers */,
 				2814E24E13F1EF1D00D7A85A /* PSConstants.h */,
@@ -1512,6 +1517,15 @@
 			path = Externals;
 			sourceTree = "<group>";
 		};
+		286A57971410D225001D9490 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				286A57981410D225001D9490 /* bg_toast.png */,
+				286A57991410D225001D9490 /* bg_toast@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		2893EB6013FDB78300B853FB /* fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1898,6 +1912,8 @@
 				283FAA8E140846620035A315 /* bg_grain_pad.jpg in Resources */,
 				283FAA8F140846620035A315 /* bg_grain.jpg in Resources */,
 				283FAA90140846620035A315 /* bg_grain@2x.jpg in Resources */,
+				286A579A1410D225001D9490 /* bg_toast.png in Resources */,
+				286A579B1410D225001D9490 /* bg_toast@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
