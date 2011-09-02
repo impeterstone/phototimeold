@@ -264,14 +264,14 @@ static UIImage *_disclosureImage = nil;
     zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
     zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
     
-    moveAnimation.fromValue = [NSNumber numberWithFloat:15];
-    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(45)];
+    moveAnimation.fromValue = [NSNumber numberWithFloat:-15];
+    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(15)];
   } else {
     zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
     zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
     
-    moveAnimation.fromValue = [NSNumber numberWithFloat:50];
-    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(90)];
+    moveAnimation.fromValue = [NSNumber numberWithFloat:-50];
+    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(50)];
   }
   
   // Animation Group
