@@ -124,13 +124,11 @@
 - (void)reloadDataSource {
   [super loadDataSource];
   [self executeFetch:FetchTypeRefresh];
-  [self dataSourceDidLoad];
 }
 
 - (void)loadDataSource {
   [super loadDataSource];
   [self executeFetch:FetchTypeCold];
-  [self dataSourceDidLoad];
 }
 
 - (void)dataSourceDidLoad {

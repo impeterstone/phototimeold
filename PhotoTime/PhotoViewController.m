@@ -218,7 +218,6 @@
 }
 
 - (void)dataSourceDidLoad {
-  [self executeFetch:FetchTypeRefresh];
   [super dataSourceDidLoad];
 }
 
@@ -229,7 +228,7 @@
 
 #pragma mark - PSDataCenterDelegate
 - (void)dataCenterDidFinish:(ASIHTTPRequest *)request withResponse:(id)response {
-  [self dataSourceDidLoad];
+  [self executeFetch:FetchTypeRefresh];
 }
 
 - (void)dataCenterDidFail:(ASIHTTPRequest *)request withError:(NSError *)error {
