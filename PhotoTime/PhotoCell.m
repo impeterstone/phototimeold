@@ -63,7 +63,7 @@ static UIImage *_likeImage = nil;
     // Photo
     _photoView = [[PSURLCacheImageView alloc] initWithFrame:CGRectZero];
     _photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _photoView.shouldAnimate = NO;
+    _photoView.shouldAnimate = YES;
     
     // Comment Indicator
     _commentIndicator = [[UIButton alloc] initWithFrame:CGRectZero];
@@ -147,6 +147,10 @@ static UIImage *_likeImage = nil;
   RELEASE_SAFELY(_commentsView);
   RELEASE_SAFELY(_commentsFrame);
   [super dealloc];
+}
+
+- (void)setShouldAnimate:(NSNumber *)shouldAnimate {
+  _photoView.shouldAnimate = [shouldAnimate boolValue];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

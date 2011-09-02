@@ -93,7 +93,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   NSManagedObjectContext *context = [PSCoreDataStack newManagedObjectContext];
   
   // Parse the JSON
-  id response = [[request responseData] JSONValue];
+  id response = [[request responseData] objectFromJSONData];
   
   // AlbumId from the userInfo
   NSString *albumId = [request.userInfo valueForKey:@"albumId"];

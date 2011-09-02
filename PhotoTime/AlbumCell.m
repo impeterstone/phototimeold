@@ -147,6 +147,8 @@ static UIImage *_disclosureImage = nil;
   _photoView.urlPath = nil;
   _photoWidth = 0;
   _photoHeight = 0;
+  
+  [self.layer removeAllAnimations];
 }
 
 - (void)layoutSubviews {
@@ -164,6 +166,8 @@ static UIImage *_disclosureImage = nil;
   _ribbonView.frame = CGRectMake(self.contentView.width - 68, 10, 68, 24);
   _disclosureView.frame = CGRectMake(self.contentView.width - _disclosureView.width - MARGIN_X, 0, _disclosureView.width, self.contentView.height);
   _overlayView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
+  
+  [self animateImage];
   
   // Add Gradient Overlay
   if (![[[_overlayView.layer sublayers] lastObject] isKindOfClass:[CAGradientLayer class]]) {
@@ -203,6 +207,34 @@ static UIImage *_disclosureImage = nil;
   _dateLabel.height = desiredSize.height;
 }
 
+- (void)resumeAnimations {
+  [self resumeLayer:_photoView.layer];
+}
+
+- (void)pauseAnimations {
+  [self pauseLayer:_photoView.layer];
+}
+
+- (void)pauseLayer:(CALayer*)layer
+{
+  if (layer.speed == 0.0) return;
+  
+  CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+  layer.speed = 0.0;
+  layer.timeOffset = pausedTime;
+}
+
+- (void)resumeLayer:(CALayer*)layer
+{
+  if (layer.speed == 1.0) return;
+  
+  CFTimeInterval pausedTime = [layer timeOffset];
+  layer.speed = 1.0;
+  layer.timeOffset = 0.0;
+  layer.beginTime = 0.0;
+  CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+  layer.beginTime = timeSincePause;
+}
 
 - (void)animateImage {
   // Don't animate it again
@@ -222,26 +254,27 @@ static UIImage *_disclosureImage = nil;
 //  NSLog(@"layer: %@", NSStringFromCGRect(_photoView.layer.frame));
 //  NSLog(@"actual w: %f, h: %f", _photoWidth, _photoHeight);
   
-  CGFloat width = _photoView.width;
-  CGFloat height = _photoView.height;
-  
+  CGFloat width = _photoView.image.size.width;
+  CGFloat height = _photoView.image.size.height;
   
   // Zoom/Scale
-  CABasicAnimation *zoomAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
-  if (width >= height) {
-    zoomAnimation.fromValue = [NSValue valueWithCGSize:CGSizeMake(floor(width * 1.2), floor(height * 1.2))];
-    zoomAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(floor(width), floor(height))];
-  } else {
-    zoomAnimation.fromValue = [NSValue valueWithCGSize:CGSizeMake(width, height)];
-    zoomAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(floor(width * 1.2), floor(height * 1.2))];
-  }
-  
+  CABasicAnimation *zoomAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
   // Move/Position
-  CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
-  CGPoint startPt = CGPointMake(self.contentView.width / 2, floor(height / 2));
-  CGPoint endPt = CGPointMake(self.contentView.width / 2, floor(height / 3));
-  moveAnimation.fromValue = [NSValue valueWithCGPoint:startPt];
-  moveAnimation.toValue = [NSValue valueWithCGPoint:endPt];
+  CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
+  
+  if (width >= height) {
+    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+    
+    moveAnimation.fromValue = [NSNumber numberWithFloat:15];
+    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(45)];
+  } else {
+    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+    
+    moveAnimation.fromValue = [NSNumber numberWithFloat:50];
+    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(90)];
+  }
   
   // Animation Group
   CAAnimationGroup *group = [CAAnimationGroup animation]; 
@@ -255,10 +288,6 @@ static UIImage *_disclosureImage = nil;
   [group setAnimations:[NSArray arrayWithObjects:zoomAnimation, moveAnimation, nil]];
   [group setValue:_photoView forKey:@"imageViewBeingAnimated"];
   [_photoView.layer addAnimation:group forKey:@"kenBurnsAnimation"];
-  
-//  NSLog(@"animations: %@", [_photoView.layer animationKeys]);
-  // Add animation
-//  [_photoView.layer addAnimation:resizeAnimation forKey:@"bounds.size"];
   
 }
 
@@ -315,14 +344,13 @@ static UIImage *_disclosureImage = nil;
   _photoWidth = image.size.width;
   _photoHeight = image.size.height;
   CGFloat desiredWidth = self.contentView.width;
-  CGFloat desiredHeight = floor((self.contentView.width / _photoWidth) * _photoHeight);
+  CGFloat desiredHeight = floorf((self.contentView.width / _photoWidth) * _photoHeight);
   if (desiredHeight < ceil(cellHeight * 1.2)) { // 120 * 1.2
     desiredHeight = ceil(cellHeight * 1.2);
-    desiredWidth = floor((desiredHeight / _photoHeight) * _photoWidth);
+    desiredWidth = floorf((desiredHeight / _photoHeight) * _photoWidth);
   }
   _photoView.width = desiredWidth;
   _photoView.height = desiredHeight;
-  [self animateImage];
 }
 
 - (void)dealloc {

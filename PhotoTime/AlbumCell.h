@@ -35,4 +35,9 @@
 - (void)loadPhoto;
 - (void)animateImage;
 
+- (void)resumeAnimations;
+- (void)pauseAnimations;
+- (void)pauseLayer:(CALayer*)layer;
+- (void)resumeLayer:(CALayer*)layer;
+
 @end

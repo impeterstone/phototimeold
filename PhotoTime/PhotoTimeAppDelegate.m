@@ -438,7 +438,6 @@
   // This is called the first time logging in
   NSURL *callHomeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users", API_BASE_URL]];
   
-#warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:callHomeUrl];
   request.userInfo = [NSDictionary dictionaryWithObject:@"callHome" forKey:@"requestType"];
   request.requestMethod = @"POST";
@@ -474,7 +473,6 @@
   // This is called the first time logging in
   NSURL *meUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me?fields=id,name,friends&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
   
-#warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:meUrl];
   request.userInfo = [NSDictionary dictionaryWithObject:@"me" forKey:@"requestType"];
   request.requestMethod = @"GET";
@@ -482,7 +480,7 @@
   
   // Request Completion Block
   [request setCompletionBlock:^{
-    [self serializeMeWithResponse:[[request responseData] JSONValue]];
+    [self serializeMeWithResponse:[[request responseData] objectFromJSONData]];
     [self startDownloadAlbums];
     [self callHome];
   }];
@@ -511,7 +509,6 @@
   // This is called subsequent app launches when already logged in
   NSURL *friendsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/me/friends?fields=name,gender&access_token=%@", FB_GRAPH, [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookAccessToken"]]];
   
-#warning don't use blocks
   __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:friendsUrl];
   request.userInfo = [NSDictionary dictionaryWithObject:@"friends" forKey:@"requestType"];
   request.requestMethod = @"GET";
@@ -519,7 +516,7 @@
   
   // Request Completion Block
   [request setCompletionBlock:^{
-    [self serializeFriendsWithResponse:[[request responseData] JSONValue] shouldDownload:YES];
+    [self serializeFriendsWithResponse:[[request responseData] objectFromJSONData] shouldDownload:YES];
     [self startDownloadAlbums];
   }];
   [request setFailedBlock:^{

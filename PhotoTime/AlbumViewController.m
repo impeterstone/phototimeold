@@ -26,6 +26,9 @@
     _fetchLimit = 25;
     _fetchTotal = _fetchLimit;
     _frcDelegate = nil;
+    _scrollCount = 0;
+    _cellCache = [[NSMutableArray alloc] init];
+    
 //    _sectionNameKeyPathForFetchedResultsController = [@"daysAgo" retain];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource) name:kReloadAlbumController object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetAlbums) name:kLogoutRequested object:nil];
@@ -40,6 +43,7 @@
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReloadAlbumController object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kLogoutRequested object:nil];
+  RELEASE_SAFELY(_cellCache);
   RELEASE_SAFELY(_albumTitle);
   RELEASE_SAFELY(_albumConfig);
   [super dealloc];
@@ -75,15 +79,25 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+  
+  [_cellCache makeObjectsPerformSelector:@selector(resumeAnimations)];
+  
 //  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logoutRequested"]) {
 //    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 //      [[NSNotificationCenter defaultCenter] postNotificationName:kLogoutRequested object:nil];
 //    }];
 //  }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  
+  [_cellCache makeObjectsPerformSelector:@selector(pauseAnimations)];
 }
 
 - (void)loadView {
@@ -121,6 +135,9 @@
 
 - (void)dataSourceDidLoad {
   [super dataSourceDidLoad];
+  if (![self isEqual:[[PSExposeController sharedController] selectedViewController]]) {
+    [_cellCache makeObjectsPerformSelector:@selector(pauseAnimations)];
+  }
 }
 
 - (void)updateState {
@@ -182,6 +199,7 @@
   cell = (AlbumCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
   if(cell == nil) { 
     cell = [[[AlbumCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier] autorelease];
+    [_cellCache addObject:cell];
   }
   
   [self tableView:tableView configureCell:cell atIndexPath:indexPath];
@@ -247,6 +265,35 @@
   [fetchRequest setFetchBatchSize:10];
   [fetchRequest setFetchLimit:_fetchTotal];
   return fetchRequest;
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+  [super scrollViewDidScroll:scrollView];
+  
+  if (_scrollCount == 0) {
+    _scrollCount++;
+    [_cellCache makeObjectsPerformSelector:@selector(pauseAnimations)];
+  }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+  [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+  
+  if (!decelerate && (_scrollCount == 1)) {
+    _scrollCount--;
+    [_cellCache makeObjectsPerformSelector:@selector(resumeAnimations)];
+  }
+
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  [super scrollViewDidEndDecelerating:scrollView];
+  
+  if (_scrollCount == 1) {
+    _scrollCount--;
+    [_cellCache makeObjectsPerformSelector:@selector(resumeAnimations)];
+  }
 }
 
 @end

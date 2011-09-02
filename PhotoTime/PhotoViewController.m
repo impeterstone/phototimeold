@@ -281,7 +281,7 @@
 
 #pragma mark - Actions
 - (void)upload {
-#warning seems to crash on ipad
+#warning seems to crash on ipad, so i disabled it
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebookCanPublish"]) {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.allowsEditing = NO;

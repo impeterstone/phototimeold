@@ -23,6 +23,12 @@ typedef enum {
   AlbumType _albumType;
   NSDictionary *_albumConfig;
   NSString *_albumTitle;
+  
+  // This is used to reference cells
+  // So that we can tell them to pause/resume animations
+  NSMutableArray *_cellCache;
+  
+  NSInteger _scrollCount;
 }
 
 @property (nonatomic, assign) AlbumType albumType;

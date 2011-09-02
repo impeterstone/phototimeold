@@ -94,7 +94,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   [queries setValue:[NSString stringWithFormat:@"SELECT aid,object_id,cover_pid,owner,name,description,location,size,type,modified_major,created,modified,can_upload FROM album WHERE owner = me() AND modified_major > %0.0f", since] forKey:@"query1"];
   [queries setValue:[NSString stringWithFormat:@"SELECT aid,src_big FROM photo WHERE pid IN (SELECT cover_pid FROM #query1)"] forKey:@"query2"];
 
-  [params setValue:[queries JSONRepresentation] forKey:@"queries"];
+  [params setValue:[queries JSONString] forKey:@"queries"];
   
 //  _pendingRequestsToParse++;
   [self sendRequestWithURL:albumsUrl andMethod:POST andHeaders:nil andParams:params andUserInfo:[NSDictionary dictionaryWithObject:@"me" forKey:@"albumRequestType"]];
@@ -113,7 +113,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     [friendQueries setValue:[NSString stringWithFormat:@"SELECT aid,object_id,owner,cover_pid,name,description,location,size,type,modified_major,created,modified,can_upload FROM album WHERE owner IN (%@) AND modified_major > %0.0f", [batchFriends componentsJoinedByString:@","], since] forKey:@"query1"];
     [friendQueries setValue:[NSString stringWithFormat:@"SELECT aid,src_big FROM photo WHERE pid IN (SELECT cover_pid FROM #query1)"] forKey:@"query2"];
     
-    [friendParams setValue:[friendQueries JSONRepresentation] forKey:@"queries"];
+    [friendParams setValue:[friendQueries JSONString] forKey:@"queries"];
     
     _pendingRequestsToParse++;
     [self sendRequestWithURL:albumsUrl andMethod:POST andHeaders:nil andParams:friendParams andUserInfo:nil];
@@ -130,7 +130,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
   [friendQueries setValue:[NSString stringWithFormat:@"SELECT aid,object_id,owner,cover_pid,name,description,location,size,type,modified_major,created,modified,can_upload FROM album WHERE owner IN (%@)", [friendIds componentsJoinedByString:@","]] forKey:@"query1"];
   [friendQueries setValue:[NSString stringWithFormat:@"SELECT aid,src_big FROM photo WHERE pid IN (SELECT cover_pid FROM #query1)"] forKey:@"query2"];
   
-  [friendParams setValue:[friendQueries JSONRepresentation] forKey:@"queries"];
+  [friendParams setValue:[friendQueries JSONString] forKey:@"queries"];
   
   _pendingRequestsToParse++;
   [self sendRequestWithURL:albumsUrl andMethod:POST andHeaders:nil andParams:friendParams andUserInfo:nil];
@@ -236,7 +236,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
     NSMutableArray *pendingResponses = [NSMutableArray arrayWithCapacity:1];
     
     for (ASIHTTPRequest *request in _requestsToParse) {
-      id response = [[request responseData] JSONValue];
+      id response = [[request responseData] objectFromJSONData];
       
       // Validate response
       if (![self validateFacebookResponse:response]) {
@@ -295,7 +295,7 @@ static dispatch_queue_t _coreDataSerializationQueue = nil;
 
 - (void)parseMeWithRequest:(ASIHTTPRequest *)request {
   dispatch_async(_coreDataSerializationQueue, ^{    
-    id response = [[request responseData] JSONValue];
+    id response = [[request responseData] objectFromJSONData];
     
     // Validate response
     if (![self validateFacebookResponse:response]) {

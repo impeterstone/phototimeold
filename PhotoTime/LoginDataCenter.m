@@ -38,7 +38,7 @@
 #pragma mark -
 #pragma mark Request finished
 - (void)dataCenterRequestFinished:(ASIHTTPRequest *)request {
-  id response = [[request responseData] JSONValue];
+  id response = [[request responseData] objectFromJSONData];
   
   // Inform Delegate
   if (_delegate && [_delegate respondsToSelector:@selector(dataCenterDidFinish:withResponse:)]) {
