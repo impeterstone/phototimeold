@@ -255,24 +255,32 @@ static UIImage *_disclosureImage = nil;
   CGFloat width = _photoView.image.size.width;
   CGFloat height = _photoView.image.size.height;
   
+//  if (width == height == 0) return;
+  
   // Zoom/Scale
   CABasicAnimation *zoomAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
   // Move/Position
   CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
   
-  if (width >= height) {
-    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
-    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
-    
-    moveAnimation.fromValue = [NSNumber numberWithFloat:-15];
-    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(15)];
-  } else {
-    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
-    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
-    
-    moveAnimation.fromValue = [NSNumber numberWithFloat:-50];
-    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(50)];
-  }
+  zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+  zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+  
+  moveAnimation.fromValue = [NSNumber numberWithFloat:15];
+  moveAnimation.toValue = [NSNumber numberWithFloat:floorf(-15)];
+  
+//  if (width >= height) {
+//    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+//    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+//    
+//    moveAnimation.fromValue = [NSNumber numberWithFloat:-15];
+//    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(15)];
+//  } else {
+//    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+//    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+//    
+//    moveAnimation.fromValue = [NSNumber numberWithFloat:-50];
+//    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(50)];
+//  }
   
   // Animation Group
   CAAnimationGroup *group = [CAAnimationGroup animation]; 

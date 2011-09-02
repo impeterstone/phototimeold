@@ -207,18 +207,18 @@
   return YES;
 }
 
-- (void)reloadDataSource {
-  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
-}
-
 - (void)loadDataSource {
   [super loadDataSource];
   [self executeFetch:FetchTypeCold];
-  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
 }
 
 - (void)dataSourceDidLoad {
   [super dataSourceDidLoad];
+}
+
+- (void)dataSourceDidFetch {
+  [super loadDataSource];
+  [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
 }
 
 - (void)updateState {

@@ -138,6 +138,10 @@
   }
 }
 
+- (void)dataSourceDidFetch {
+  [self dataSourceDidLoad];
+}
+
 - (void)updateState {
   [super updateState];
 }
