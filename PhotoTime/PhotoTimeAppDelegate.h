@@ -54,6 +54,9 @@
 // Private
 + (void)setupDefaults;
 
+- (void)setupAlbums;
+- (void)resetAlbums;
+
 - (void)back;
 
 - (void)startSession;

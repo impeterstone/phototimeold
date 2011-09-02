@@ -90,6 +90,34 @@
   [[PSExposeController sharedController] setDelegate:self];
   [[PSExposeController sharedController] setDataSource:self];
   
+  [self setupAlbums];
+  
+  // Global Nav Buttons
+  _filterButton = [[UIBarButtonItem barButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) width:60 height:30 buttonType:BarButtonTypeBlue] retain];
+  _cancelButton = [[UIBarButtonItem barButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) width:60 height:30 buttonType:BarButtonTypeSilver] retain];
+  _logoutButton = [[UIBarButtonItem barButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) width:60 height:30 buttonType:BarButtonTypeNormal] retain];
+  _editButton = [[UIBarButtonItem barButtonWithTitle:@"Edit" withTarget:self action:@selector(edit) width:60 height:30 buttonType:BarButtonTypeNormal] retain];
+  _doneButton = [[UIBarButtonItem barButtonWithTitle:@"Done" withTarget:self action:@selector(edit) width:60 height:30 buttonType:BarButtonTypeBlue] retain];
+  
+  // Window
+  _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  [self.window addSubview:[[PSExposeController sharedController] view]];
+  [self.window makeKeyAndVisible];
+  
+  // Setup Search Controller
+  [_headerNavItem setRightBarButtonItem:_filterButton];
+  [self setupSearchField];
+  [self setupSearch];
+  
+  // Login if necessary
+  _loginViewController = [[LoginViewController alloc] init];
+  _loginViewController.delegate = self;
+  [self tryLogin];
+  
+  return YES;
+}
+
+- (void)setupAlbums {
   // Setup the 4 standard streams
   NSMutableArray *albums = [NSMutableArray array];
   
@@ -123,7 +151,7 @@
     [albums addObject:avc];
     [avc release];
   }
-
+  
   NSMutableArray *navControllers = [NSMutableArray array];
   for (AlbumViewController *avc in albums) {
     UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:avc] autorelease];
@@ -132,34 +160,20 @@
     [navControllers addObject:nc];
   }
   [[PSExposeController sharedController] setViewControllers:navControllers];
-  
-  // Global Nav Buttons
-  _filterButton = [[UIBarButtonItem barButtonWithImage:[UIImage imageNamed:@"icon_expose.png"] withTarget:self action:@selector(filter) width:60 height:30 buttonType:BarButtonTypeBlue] retain];
-  _cancelButton = [[UIBarButtonItem barButtonWithTitle:@"Cancel" withTarget:self action:@selector(cancelSearch) width:60 height:30 buttonType:BarButtonTypeSilver] retain];
-  _logoutButton = [[UIBarButtonItem barButtonWithTitle:@"Logout" withTarget:self action:@selector(logout) width:60 height:30 buttonType:BarButtonTypeNormal] retain];
-  _editButton = [[UIBarButtonItem barButtonWithTitle:@"Edit" withTarget:self action:@selector(edit) width:60 height:30 buttonType:BarButtonTypeNormal] retain];
-  _doneButton = [[UIBarButtonItem barButtonWithTitle:@"Done" withTarget:self action:@selector(edit) width:60 height:30 buttonType:BarButtonTypeBlue] retain];
-  
-  // Window
-  _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  [self.window addSubview:[[PSExposeController sharedController] view]];
-  [self.window makeKeyAndVisible];
-  
-  // Setup Search Controller
-  [_headerNavItem setRightBarButtonItem:_filterButton];
-  [self setupSearchField];
-  [self setupSearch];
-  
-  // Login if necessary
-  _loginViewController = [[LoginViewController alloc] init];
-  _loginViewController.delegate = self;
-  [self tryLogin];
-  
-  return YES;
+}
+
+- (void)resetAlbums {
+  NSInteger count = [[[PSExposeController sharedController] viewControllers] count];
+  if (count > 4) {
+    for (int i = 4; i < count; i++) {
+      [[PSExposeController sharedController] deleteViewControllerAtIndex:i animated:NO];
+    }
+  }
 }
 
 - (void)setupSearchField {
-  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 6)];
+  _searchField = [[PSTextField alloc] initWithFrame:CGRectMake(5, 6, 60, 30) withInset:CGSizeMake(30, 0)];
+  _searchField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
   _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
   _searchField.font = NORMAL_FONT;
   _searchField.delegate = self;
@@ -283,6 +297,8 @@
 }
 
 - (void)exposeController:(PSExposeController *)exposeController didDeleteViewController:(UIViewController *)viewController atIndex:(NSUInteger)index {
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) return;
+  
   NSUInteger offsetIndex = index - 4; // 4 non-deleteable spaces
   
   NSMutableArray *newUserAlbums = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"userAlbums"]];
@@ -390,6 +406,9 @@
   // Reset view controllers
   [_splashViewController.view removeFromSuperview];
   [_loginViewController.view removeFromSuperview];
+  
+  // Reset Expose Spaces
+  [self resetAlbums];
   
   [self tryLogin];
 }

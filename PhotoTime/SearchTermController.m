@@ -80,7 +80,7 @@
 - (void)searchWithTerm:(NSString *)term {
   [self.items removeAllObjects];
   
-  NSArray *filteredArray = [[PSSearchCenter defaultCenter] searchResultsForTerm:term];
+  NSArray *filteredArray = [[PSSearchCenter defaultCenter] searchResultsForTerm:term inContainer:@"albums"];
 
   if ([filteredArray count] > 0) {
     _dismissGesture.enabled = NO;

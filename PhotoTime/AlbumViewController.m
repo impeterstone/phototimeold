@@ -103,6 +103,10 @@
 }
 
 #pragma mark - State Machine
+- (BOOL)shouldLoadMore {
+  return YES;
+}
+
 - (void)reloadDataSource {
   [super loadDataSource];
   [self executeFetch:FetchTypeRefresh];

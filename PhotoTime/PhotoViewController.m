@@ -195,7 +195,7 @@
 }
 
 - (UIBarButtonItem *)rightBarButton {
-  if ([_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
+  if (!isDeviceIPad() && [_album.fromId isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"facebookId"]]) {
     return [UIBarButtonItem barButtonWithImage:[UIImage imageNamed:@"icon_camera.png"] withTarget:self action:@selector(upload) width:60 height:30 buttonType:BarButtonTypeGreen];
   } else {
     return nil;
@@ -203,6 +203,10 @@
 }
 
 #pragma mark - State Machine
+- (BOOL)shouldLoadMore {
+  return YES;
+}
+
 - (void)reloadDataSource {
   [[PhotoDataCenter defaultCenter] getPhotosForAlbumId:_album.id];
 }
@@ -277,6 +281,7 @@
 
 #pragma mark - Actions
 - (void)upload {
+#warning seems to crash on ipad
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebookCanPublish"]) {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.allowsEditing = NO;
@@ -291,7 +296,11 @@
     imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
     //  imagePicker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
     
-    [[PSExposeController sharedController] presentModalViewController:imagePicker animated:YES];
+    if (isDeviceIPad()) {
+      // disabled
+    } else {
+      [[PSExposeController sharedController] presentModalViewController:imagePicker animated:YES];
+    }
   } else {
     [APP_DELEGATE requestPublishStream];
   }
