@@ -167,8 +167,6 @@ static UIImage *_disclosureImage = nil;
   _disclosureView.frame = CGRectMake(self.contentView.width - _disclosureView.width - MARGIN_X, 0, _disclosureView.width, self.contentView.height);
   _overlayView.frame = CGRectMake(0, 0, self.contentView.width, cellHeight);
   
-  [self animateImage];
-  
   // Add Gradient Overlay
   if (![[[_overlayView.layer sublayers] lastObject] isKindOfClass:[CAGradientLayer class]]) {
     CAGradientLayer *gradient = [CAGradientLayer layer];
@@ -254,6 +252,8 @@ static UIImage *_disclosureImage = nil;
   
   CGFloat width = _photoView.image.size.width;
   CGFloat height = _photoView.image.size.height;
+//  CGFloat width = _photoView.width;
+//  CGFloat height = _photoView.height;
   
 //  if (width == height == 0) return;
   
@@ -262,25 +262,25 @@ static UIImage *_disclosureImage = nil;
   // Move/Position
   CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
   
-  zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
-  zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+//  zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+//  zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+//  
+//  moveAnimation.fromValue = [NSNumber numberWithFloat:(0)];
+//  moveAnimation.toValue = [NSNumber numberWithFloat:(height / 3)];
   
-  moveAnimation.fromValue = [NSNumber numberWithFloat:15];
-  moveAnimation.toValue = [NSNumber numberWithFloat:floorf(-15)];
-  
-//  if (width >= height) {
-//    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
-//    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
-//    
-//    moveAnimation.fromValue = [NSNumber numberWithFloat:-15];
-//    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(15)];
-//  } else {
-//    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
-//    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
-//    
-//    moveAnimation.fromValue = [NSNumber numberWithFloat:-50];
-//    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(50)];
-//  }
+  if (width >= height) {
+    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+    
+    moveAnimation.fromValue = [NSNumber numberWithFloat:0];
+    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(height * 0.15)];
+  } else {
+    zoomAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    zoomAnimation.toValue = [NSNumber numberWithFloat:1.2];
+    
+    moveAnimation.fromValue = [NSNumber numberWithFloat:0];
+    moveAnimation.toValue = [NSNumber numberWithFloat:floorf(height * 0.15)];
+  }
   
   // Animation Group
   CAAnimationGroup *group = [CAAnimationGroup animation]; 
@@ -357,6 +357,8 @@ static UIImage *_disclosureImage = nil;
   }
   _photoView.width = desiredWidth;
   _photoView.height = desiredHeight;
+  
+  [self animateImage];
 }
 
 - (void)dealloc {
